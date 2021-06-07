@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "92.0.4515.40"
+PV = "93.0.4530.5"
 
-SRC_URI[sha256sum] = "17c1ffce98c88321bbc4975a9a68791d887fa64555e9707116ed60dcbead1bec"
+SRC_URI[sha256sum] = "a56bdb3f28cf9cf72e166fdd83885630df1f942dc3aaf23f98ae3ebe5cb2b677"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -160,10 +160,6 @@ LIC_FILES_CHKSUM = "\
   file://${S}/v8/LICENSE;md5=6611673a9587a522034a4be8f4df564c \
   file://${S}/v8/LICENSE.fdlibm;md5=b17367d6c97e638599071d99a3049dfe \
   file://${S}/v8/LICENSE.strongtalk;md5=956a43818dd13f2e93088fc2c93589d2 \
-"
-
-SRC_URI += " \
-  file://0001-ARM64-VRegister-from_code-expected-to-be-constexpr.patch;patchdir=v8 \
 "
 
 do_install_append() {
