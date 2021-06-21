@@ -1,0 +1,46 @@
+From 3ad01ebc867b1e4c9bb2ce542e8c7ada7d40dd0e Mon Sep 17 00:00:00 2001
+From: Stephan Hartmann <stha09@googlemail.com>
+Date: Tue, 22 Jun 2021 12:21:02 +0000
+Subject: libstdc++: add copy constructor for PendingMessage
+
+libstdc++ requires a copy constructor for creating a reference to
+std::queue<PendingMessage> from base::flat_map<Key, Mapped>[].
+
+Bug: 957519
+Change-Id: I79dd7e8ea0705543a5e28620eaec9644c1dfba80
+Reviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/2973145
+Reviewed-by: Rayan Kanso <rayankans@chromium.org>
+Commit-Queue: Stephan Hartmann <stha09@googlemail.com>
+Cr-Commit-Position: refs/heads/master@{#894633}
+---
+ chrome/browser/push_messaging/push_messaging_service_impl.cc | 1 +
+ chrome/browser/push_messaging/push_messaging_service_impl.h  | 1 +
+ 2 files changed, 2 insertions(+)
+
+diff --git a/chrome/browser/push_messaging/push_messaging_service_impl.cc b/chrome/browser/push_messaging/push_messaging_service_impl.cc
+index b80559c301f6..3c1e04b79c01 100644
+--- a/chrome/browser/push_messaging/push_messaging_service_impl.cc
++++ b/chrome/browser/push_messaging/push_messaging_service_impl.cc
+@@ -191,6 +191,7 @@ PendingMessage::PendingMessage(std::string app_id, gcm::IncomingMessage message)
+     : app_id(std::move(app_id)),
+       message(std::move(message)),
+       received_time(base::Time::Now()) {}
++PendingMessage::PendingMessage(const PendingMessage& other) = default;
+ PendingMessage::PendingMessage(PendingMessage&& other) = default;
+ PendingMessage& PendingMessage::operator=(PendingMessage&& other) = default;
+ PendingMessage::~PendingMessage() = default;
+diff --git a/chrome/browser/push_messaging/push_messaging_service_impl.h b/chrome/browser/push_messaging/push_messaging_service_impl.h
+index 09be58d27d9c..93c18e8445aa 100644
+--- a/chrome/browser/push_messaging/push_messaging_service_impl.h
++++ b/chrome/browser/push_messaging/push_messaging_service_impl.h
+@@ -68,6 +68,7 @@ class InstanceIDDriver;
+ namespace {
+ struct PendingMessage {
+   PendingMessage(std::string app_id, gcm::IncomingMessage message);
++  PendingMessage(const PendingMessage& other);
+   PendingMessage(PendingMessage&& other);
+   ~PendingMessage();
+ 
+-- 
+2.30.2
+

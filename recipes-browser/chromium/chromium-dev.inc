@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "93.0.4530.5"
+PV = "93.0.4549.3"
 
-SRC_URI[sha256sum] = "a56bdb3f28cf9cf72e166fdd83885630df1f942dc3aaf23f98ae3ebe5cb2b677"
+SRC_URI[sha256sum] = "f7c90a5e5230f2797844dafda6de40b92099123b45e9d442f3aa9c16ec31792e"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -78,7 +78,7 @@ LIC_FILES_CHKSUM = "\
   file://${S}/third_party/decklink/LICENSE;md5=85b197f7b7b1ef270b01a1b6377be50e \
   file://${S}/third_party/dom_distiller_js/LICENSE;md5=1399a5b89c7ed8167d261770432511e8 \
   file://${S}/third_party/expat/src/expat/COPYING;md5=9e2ce3b3c4c0f2670883a23bbd7c37a9 \
-  file://${S}/third_party/ffmpeg/CREDITS.chromium;md5=28c3eb351f68aa1d038e0e299dad5637 \
+  file://${S}/third_party/ffmpeg/CREDITS.chromium;md5=aa2247c58648fadacf4d7f865259eebe \
   file://${S}/third_party/flac/COPYING.Xiph;md5=a2c4b71c0198682376d483eb5bcc9197 \
   file://${S}/third_party/flatbuffers/LICENSE;md5=a873c5645c184d51e0f9b34e1d7cf559 \
   file://${S}/third_party/fontconfig/src/COPYING;md5=7a0449e9bc5370402a94c00204beca3d \
@@ -87,7 +87,7 @@ LIC_FILES_CHKSUM = "\
   file://${S}/third_party/google_input_tools/LICENSE;md5=ff0b0f0202337c9d4ae2d869797049d3 \
   file://${S}/third_party/google_toolbox_for_mac/LICENSE;md5=3b83ef96387f14655fc854ddc3c6bd57 \
   file://${S}/third_party/gvr-android-sdk/LICENSE;md5=50b9d1f02b2ee0d8a568ccf4d35216e2 \
-  file://${S}/third_party/harfbuzz-ng/src/COPYING;md5=8f787620b7d3866d9552fd1924c07572 \
+  file://${S}/third_party/harfbuzz-ng/src/COPYING;md5=6ee0f16281694fb6aa689cca1e0fb3da \
   file://${S}/third_party/hunspell/COPYING.MPL;md5=bfe1f75d606912a4111c90743d6c7325 \
   file://${S}/third_party/iaccessible2/LICENSE;md5=43bbd0bfb581347ec10def720000a645 \
   file://${S}/third_party/iccjpeg/LICENSE;md5=26834d132689a03abf860f4572705494 \
@@ -160,6 +160,11 @@ LIC_FILES_CHKSUM = "\
   file://${S}/v8/LICENSE;md5=6611673a9587a522034a4be8f4df564c \
   file://${S}/v8/LICENSE.fdlibm;md5=b17367d6c97e638599071d99a3049dfe \
   file://${S}/v8/LICENSE.strongtalk;md5=956a43818dd13f2e93088fc2c93589d2 \
+"
+
+SRC_URI += " \
+  file://0001-libstdc-add-copy-constructor-for-PendingMessage.patch \
+  file://0001-libstdc-remove-format-include.patch \
 "
 
 do_install_append() {
