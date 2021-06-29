@@ -1,3 +1,3 @@
-# Introduction
+# meta-chromium
 
-Yocto Layer for building different flavours of Chromium.
+Yocto Layer for building Chromium using GCC.
