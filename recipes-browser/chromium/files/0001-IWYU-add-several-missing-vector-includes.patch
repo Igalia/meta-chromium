@@ -1,0 +1,268 @@
+From 527df839a6bc70b5a484a29cfe3a78cd3200da85 Mon Sep 17 00:00:00 2001
+From: Stephan Hartmann <stha09@googlemail.com>
+Date: Mon, 12 Jul 2021 23:31:26 +0000
+Subject: IWYU: add several missing vector includes
+
+Bug: 957519
+Change-Id: Iaf7bbe970e0950d8dbc0b02cbed262652d14e54f
+Reviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/3001885
+Commit-Queue: Stephan Hartmann <stha09@googlemail.com>
+Reviewed-by: Vasilii Sukhanov <vasilii@chromium.org>
+Reviewed-by: Tommy Steimel <steimel@chromium.org>
+Reviewed-by: Richard Knoll <knollr@chromium.org>
+Reviewed-by: Sunny Sachanandani <sunnyps@chromium.org>
+Reviewed-by: Liquan (Max) Gu <maxlg@chromium.org>
+Reviewed-by: Megan Jablonski <megjablon@chromium.org>
+Reviewed-by: Dominick Ng <dominickn@chromium.org>
+Reviewed-by: Kinuko Yasuda <kinuko@chromium.org>
+Reviewed-by: Jonathan Backer <backer@chromium.org>
+Reviewed-by: Nico Weber <thakis@chromium.org>
+Reviewed-by: Nick Harper <nharper@chromium.org>
+Cr-Commit-Position: refs/heads/master@{#900706}
+---
+ chrome/browser/cart/cart_db.h                                   | 2 ++
+ chrome/browser/login_detection/oauth_login_detector.h           | 1 +
+ chrome/browser/media/history/media_history_origin_table.h       | 1 +
+ chrome/browser/sharing/sms/sms_remote_fetcher.h                 | 1 +
+ .../web_applications/components/web_app_shortcut_linux.h        | 1 +
+ components/language/core/browser/language_prefs.h               | 1 +
+ components/network_hints/renderer/renderer_dns_prefetch.h       | 1 +
+ components/password_manager/core/browser/field_info_table.h     | 2 ++
+ components/payments/core/journey_logger.h                       | 1 +
+ .../content/renderer/phishing_classifier/phishing_classifier.h  | 1 +
+ content/public/browser/hid_chooser.h                            | 2 ++
+ content/public/browser/sms_fetcher.h                            | 1 +
+ content/public/browser/url_loader_throttles.h                   | 2 ++
+ gpu/ipc/gpu_task_scheduler_helper.h                             | 2 ++
+ net/http/http_basic_state.h                                     | 1 +
+ net/http/http_basic_stream.h                                    | 1 +
+ .../quiche/overrides/quiche_platform_impl/quiche_logging_impl.h | 2 ++
+ ui/events/event_handler.h                                       | 2 ++
+ 18 files changed, 25 insertions(+)
+
+diff --git a/chrome/browser/cart/cart_db.h b/chrome/browser/cart/cart_db.h
+index 82b2a56c340c..0f8472f3e9c4 100644
+--- a/chrome/browser/cart/cart_db.h
++++ b/chrome/browser/cart/cart_db.h
+@@ -5,6 +5,8 @@
+ #ifndef CHROME_BROWSER_CART_CART_DB_H_
+ #define CHROME_BROWSER_CART_CART_DB_H_
+ 
++#include <vector>
++
+ #include "base/callback_helpers.h"
+ #include "base/memory/weak_ptr.h"
+ 
+diff --git a/chrome/browser/login_detection/oauth_login_detector.h b/chrome/browser/login_detection/oauth_login_detector.h
+index 6844529c7442..c0c3b185ffc5 100644
+--- a/chrome/browser/login_detection/oauth_login_detector.h
++++ b/chrome/browser/login_detection/oauth_login_detector.h
+@@ -7,6 +7,7 @@
+ 
+ #include <set>
+ #include <string>
++#include <vector>
+ 
+ #include "third_party/abseil-cpp/absl/types/optional.h"
+ #include "url/gurl.h"
+diff --git a/chrome/browser/media/history/media_history_origin_table.h b/chrome/browser/media/history/media_history_origin_table.h
+index c28d5e3a8b53..32e1757de3af 100644
+--- a/chrome/browser/media/history/media_history_origin_table.h
++++ b/chrome/browser/media/history/media_history_origin_table.h
+@@ -6,6 +6,7 @@
+ #define CHROME_BROWSER_MEDIA_HISTORY_MEDIA_HISTORY_ORIGIN_TABLE_H_
+ 
+ #include <string>
++#include <vector>
+ 
+ #include "base/updateable_sequenced_task_runner.h"
+ #include "chrome/browser/media/history/media_history_table_base.h"
+diff --git a/chrome/browser/sharing/sms/sms_remote_fetcher.h b/chrome/browser/sharing/sms/sms_remote_fetcher.h
+index 2cbe6acdded5..678c1b2e5b2e 100644
+--- a/chrome/browser/sharing/sms/sms_remote_fetcher.h
++++ b/chrome/browser/sharing/sms/sms_remote_fetcher.h
+@@ -6,6 +6,7 @@
+ #define CHROME_BROWSER_SHARING_SMS_SMS_REMOTE_FETCHER_H_
+ 
+ #include <string>
++#include <vector>
+ 
+ #include "base/callback.h"
+ #include "third_party/abseil-cpp/absl/types/optional.h"
+diff --git a/chrome/browser/web_applications/components/web_app_shortcut_linux.h b/chrome/browser/web_applications/components/web_app_shortcut_linux.h
+index 4f1e5b93ed6b..3d28e8b5217d 100644
+--- a/chrome/browser/web_applications/components/web_app_shortcut_linux.h
++++ b/chrome/browser/web_applications/components/web_app_shortcut_linux.h
+@@ -6,6 +6,7 @@
+ #define CHROME_BROWSER_WEB_APPLICATIONS_COMPONENTS_WEB_APP_SHORTCUT_LINUX_H_
+ 
+ #include <string>
++#include <vector>
+ 
+ #include "base/callback.h"
+ 
+diff --git a/components/language/core/browser/language_prefs.h b/components/language/core/browser/language_prefs.h
+index 28c89546c513..617d1ed91277 100644
+--- a/components/language/core/browser/language_prefs.h
++++ b/components/language/core/browser/language_prefs.h
+@@ -7,6 +7,7 @@
+ 
+ #include <set>
+ #include <string>
++#include <vector>
+ 
+ #include "base/macros.h"
+ #include "base/strings/string_piece.h"
+diff --git a/components/network_hints/renderer/renderer_dns_prefetch.h b/components/network_hints/renderer/renderer_dns_prefetch.h
+index 87f1bb1bbec3..3ead6b3a65a0 100644
+--- a/components/network_hints/renderer/renderer_dns_prefetch.h
++++ b/components/network_hints/renderer/renderer_dns_prefetch.h
+@@ -25,6 +25,7 @@
+ 
+ #include <map>
+ #include <string>
++#include <vector>
+ 
+ #include "base/callback.h"
+ #include "base/macros.h"
+diff --git a/components/password_manager/core/browser/field_info_table.h b/components/password_manager/core/browser/field_info_table.h
+index fb6d84005ba2..e4c88aab30ce 100644
+--- a/components/password_manager/core/browser/field_info_table.h
++++ b/components/password_manager/core/browser/field_info_table.h
+@@ -5,6 +5,8 @@
+ #ifndef COMPONENTS_PASSWORD_MANAGER_CORE_BROWSER_FIELD_INFO_TABLE_H_
+ #define COMPONENTS_PASSWORD_MANAGER_CORE_BROWSER_FIELD_INFO_TABLE_H_
+ 
++#include <vector>
++
+ #include "base/macros.h"
+ #include "base/time/time.h"
+ #include "components/autofill/core/browser/field_types.h"
+diff --git a/components/payments/core/journey_logger.h b/components/payments/core/journey_logger.h
+index 026b38e7e838..e63673de33ec 100644
+--- a/components/payments/core/journey_logger.h
++++ b/components/payments/core/journey_logger.h
+@@ -6,6 +6,7 @@
+ #define COMPONENTS_PAYMENTS_CORE_JOURNEY_LOGGER_H_
+ 
+ #include <string>
++#include <vector>
+ 
+ #include "base/macros.h"
+ #include "base/time/time.h"
+diff --git a/components/safe_browsing/content/renderer/phishing_classifier/phishing_classifier.h b/components/safe_browsing/content/renderer/phishing_classifier/phishing_classifier.h
+index e86d14e8d3f8..b3e74406cbd6 100644
+--- a/components/safe_browsing/content/renderer/phishing_classifier/phishing_classifier.h
++++ b/components/safe_browsing/content/renderer/phishing_classifier/phishing_classifier.h
+@@ -23,6 +23,7 @@
+ #include <memory>
+ #include <set>
+ #include <string>
++#include <vector>
+ 
+ #include "base/callback.h"
+ #include "base/macros.h"
+diff --git a/content/public/browser/hid_chooser.h b/content/public/browser/hid_chooser.h
+index d40cf59be7a7..b2b9613cfea1 100644
+--- a/content/public/browser/hid_chooser.h
++++ b/content/public/browser/hid_chooser.h
+@@ -5,6 +5,8 @@
+ #ifndef CONTENT_PUBLIC_BROWSER_HID_CHOOSER_H_
+ #define CONTENT_PUBLIC_BROWSER_HID_CHOOSER_H_
+ 
++#include <vector>
++
+ #include "base/callback_forward.h"
+ #include "base/macros.h"
+ #include "content/common/content_export.h"
+diff --git a/content/public/browser/sms_fetcher.h b/content/public/browser/sms_fetcher.h
+index 13f683243a08..983d8189103b 100644
+--- a/content/public/browser/sms_fetcher.h
++++ b/content/public/browser/sms_fetcher.h
+@@ -6,6 +6,7 @@
+ #define CONTENT_PUBLIC_BROWSER_SMS_FETCHER_H_
+ 
+ #include <string>
++#include <vector>
+ 
+ #include "base/observer_list_types.h"
+ #include "content/common/content_export.h"
+diff --git a/content/public/browser/url_loader_throttles.h b/content/public/browser/url_loader_throttles.h
+index 0e67d38f73a4..aa029011806f 100644
+--- a/content/public/browser/url_loader_throttles.h
++++ b/content/public/browser/url_loader_throttles.h
+@@ -5,6 +5,8 @@
+ #ifndef CONTENT_PUBLIC_BROWSER_URL_LOADER_THROTTLES_H_
+ #define CONTENT_PUBLIC_BROWSER_URL_LOADER_THROTTLES_H_
+ 
++#include <vector>
++
+ #include "base/callback.h"
+ #include "content/common/content_export.h"
+ 
+diff --git a/gpu/ipc/gpu_task_scheduler_helper.h b/gpu/ipc/gpu_task_scheduler_helper.h
+index 4315277b2c82..01c9c8ed9c94 100644
+--- a/gpu/ipc/gpu_task_scheduler_helper.h
++++ b/gpu/ipc/gpu_task_scheduler_helper.h
+@@ -5,6 +5,8 @@
+ #ifndef GPU_IPC_GPU_TASK_SCHEDULER_HELPER_H_
+ #define GPU_IPC_GPU_TASK_SCHEDULER_HELPER_H_
+ 
++#include <vector>
++
+ #include "base/callback.h"
+ #include "gpu/command_buffer/common/sync_token.h"
+ #include "gpu/command_buffer/service/sequence_id.h"
+diff --git a/net/http/http_basic_state.h b/net/http/http_basic_state.h
+index 5fd1ee514cab..06c46df6be82 100644
+--- a/net/http/http_basic_state.h
++++ b/net/http/http_basic_state.h
+@@ -10,6 +10,7 @@
+ 
+ #include <memory>
+ #include <string>
++#include <vector>
+ 
+ #include "base/macros.h"
+ #include "base/memory/ref_counted.h"
+diff --git a/net/http/http_basic_stream.h b/net/http/http_basic_stream.h
+index e50f6baa27d0..eeea6749ded7 100644
+--- a/net/http/http_basic_stream.h
++++ b/net/http/http_basic_stream.h
+@@ -13,6 +13,7 @@
+ 
+ #include <memory>
+ #include <string>
++#include <vector>
+ 
+ #include "base/macros.h"
+ #include "base/strings/string_piece.h"
+diff --git a/net/third_party/quiche/overrides/quiche_platform_impl/quiche_logging_impl.h b/net/third_party/quiche/overrides/quiche_platform_impl/quiche_logging_impl.h
+index 8ff5e27f8ee1..326ed9307019 100644
+--- a/net/third_party/quiche/overrides/quiche_platform_impl/quiche_logging_impl.h
++++ b/net/third_party/quiche/overrides/quiche_platform_impl/quiche_logging_impl.h
+@@ -5,6 +5,8 @@
+ #ifndef NET_THIRD_PARTY_QUICHE_OVERRIDES_QUICHE_PLATFORM_IMPL_QUICHE_LOGGING_IMPL_H_
+ #define NET_THIRD_PARTY_QUICHE_OVERRIDES_QUICHE_PLATFORM_IMPL_QUICHE_LOGGING_IMPL_H_
+ 
++#include <vector>
++
+ #include "base/check_op.h"
+ #include "base/logging.h"
+ #include "base/notreached.h"
+diff --git a/ui/events/event_handler.h b/ui/events/event_handler.h
+index 3870be3556f6..81ebc0e7fc25 100644
+--- a/ui/events/event_handler.h
++++ b/ui/events/event_handler.h
+@@ -5,6 +5,8 @@
+ #ifndef UI_EVENTS_EVENT_HANDLER_H_
+ #define UI_EVENTS_EVENT_HANDLER_H_
+ 
++#include <vector>
++
+ #include "base/containers/stack.h"
+ #include "base/strings/string_piece.h"
+ #include "ui/events/events_export.h"
+-- 
+2.30.2
+

@@ -1,0 +1,43 @@
+From d707af25af6c692eb1f300f5b99b9e1c31ed10a2 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Jos=C3=A9=20Dapena=20Paz?= <jose.dapena@lge.com>
+Date: Tue, 20 Jul 2021 12:19:05 +0200
+Subject: IWYU: memset and memcmp are used in CJPX decoder without its include.
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Fix build breakage affecting GCC:
+../../third_party/pdfium/core/fxcodec/jpx/cjpx_decoder.cpp: In member function ‘bool fxcodec::CJPX_Decoder::Init(pdfium::span<const unsigned char>)’:
+../../third_party/pdfium/core/fxcodec/jpx/cjpx_decoder.cpp:432:7: error: ‘memcmp’ was not declared in this scope
+  432 |   if (memcmp(m_SrcData.data(), szJP2Header, sizeof(szJP2Header)) == 0) {
+      |       ^~~~~~
+../../third_party/pdfium/core/fxcodec/jpx/cjpx_decoder.cpp:22:1: note: ‘memcmp’ is defined in header ‘<cstring>’; did you forget to ‘#include <cstring>’?
+   21 | #include "third_party/libopenjpeg20/opj_malloc.h"
+  +++ |+#include <cstring>
+   22 | #endif
+../../third_party/pdfium/core/fxcodec/jpx/cjpx_decoder.cpp: In member function ‘bool fxcodec::CJPX_Decoder::Decode(uint8_t*, uint32_t, bool)’:
+../../third_party/pdfium/core/fxcodec/jpx/cjpx_decoder.cpp:516:3: error: ‘memset’ was not declared in this scope
+  516 |   memset(dest_buf, 0xff, m_Image->y1 * pitch);
+      |   ^~~~~~
+../../third_party/pdfium/core/fxcodec/jpx/cjpx_decoder.cpp:516:3: note: ‘memset’ is defined in header ‘<cstring>’; did you forget to ‘#include <cstring>’?
+
+Bug: 819294
+---
+ core/fxcodec/jpx/cjpx_decoder.cpp | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/core/fxcodec/jpx/cjpx_decoder.cpp b/core/fxcodec/jpx/cjpx_decoder.cpp
+index c66985a7f..bc8bb6859 100644
+--- a/core/fxcodec/jpx/cjpx_decoder.cpp
++++ b/core/fxcodec/jpx/cjpx_decoder.cpp
+@@ -7,6 +7,7 @@
+ #include "core/fxcodec/jpx/cjpx_decoder.h"
+ 
+ #include <algorithm>
++#include <cstring>
+ #include <limits>
+ #include <utility>
+ #include <vector>
+-- 
+2.30.2
+

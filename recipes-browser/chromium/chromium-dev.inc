@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "93.0.4549.3"
+PV = "93.0.4573.0"
 
-SRC_URI[sha256sum] = "f7c90a5e5230f2797844dafda6de40b92099123b45e9d442f3aa9c16ec31792e"
+SRC_URI[sha256sum] = "93e19f690c8f7acb31ea1a09d116b59f795b0e6a62bc2b2d8798d1a62ed0d34e"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -163,8 +163,10 @@ LIC_FILES_CHKSUM = "\
 "
 
 SRC_URI += " \
-  file://0001-libstdc-add-copy-constructor-for-PendingMessage.patch \
-  file://0001-libstdc-remove-format-include.patch \
+  file://0001-IWYU-memset-and-memcmp-are-used-in-CJPX-decoder-with.patch;patchdir=third_party/pdfium \
+  file://0001-IWYU-add-several-missing-vector-includes.patch \
+  file://0001-IWYU-missing-include-for-using-std-vector-in-hash-pa.patch \
+  file://0001-IWYU-missing-include-for-std-vector-usage-in-devtool.patch \
 "
 
 do_install_append() {
