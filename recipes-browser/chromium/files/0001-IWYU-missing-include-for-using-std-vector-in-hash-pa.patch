@@ -1,4 +1,4 @@
-From ff266408e46bc755dcbf5c3b928b7ce74ba93acb Mon Sep 17 00:00:00 2001
+From a2bd9c2a6ae2febe6a88e98773e57373041a9089 Mon Sep 17 00:00:00 2001
 From: Jose Dapena Paz <jdapena@igalia.com>
 Date: Tue, 20 Jul 2021 12:45:18 +0200
 Subject: IWYU: missing include for using std::vector in hash password manager.

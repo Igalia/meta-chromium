@@ -1,0 +1,40 @@
+From dfc04668b201f94059c79079eb211406f59f7db4 Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Tue, 20 Jul 2021 16:58:15 +0200
+Subject: IWYU: usage of std::strcpy requires including cstring, in extension
+ dialog auto confirm.
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Fix build breakage with libstdc++:
+    ../../extensions/browser/extension_dialog_auto_confirm.cc: In destructor ‘extensions::ScopedTestDialogAutoConfirm::~ScopedTestDialogAutoConfirm()’:
+    ../../extensions/browser/extension_dialog_auto_confirm.cc:43:8: error: ‘strcpy’ is not a member of ‘std’
+       43 |   std::strcpy(g_extension_dialog_justification, old_justification_.c_str());
+          |        ^~~~~~
+    ../../extensions/browser/extension_dialog_auto_confirm.cc: In member function ‘void extensions::ScopedTestDialogAutoConfirm::set_justification(const string&)’:
+    ../../extensions/browser/extension_dialog_auto_confirm.cc:66:8: error: ‘strcpy’ is not a member of ‘std’
+       66 |   std::strcpy(g_extension_dialog_justification, justification.c_str());
+          |        ^~~~~~
+
+Bug: 957519
+Change-Id: I313c38f22cab599fb8f0e4a339e8143af5bda3ee
+---
+ extensions/browser/extension_dialog_auto_confirm.cc | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/extensions/browser/extension_dialog_auto_confirm.cc b/extensions/browser/extension_dialog_auto_confirm.cc
+index adb4ac3f92ec..be8b161bc165 100644
+--- a/extensions/browser/extension_dialog_auto_confirm.cc
++++ b/extensions/browser/extension_dialog_auto_confirm.cc
+@@ -4,6 +4,7 @@
+ 
+ #include "extensions/browser/extension_dialog_auto_confirm.h"
+ 
++#include <cstring>
+ #include <utility>
+ 
+ #include "base/check.h"
+-- 
+2.30.2
+

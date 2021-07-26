@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "93.0.4573.0"
+PV = "93.0.4577.8"
 
-SRC_URI[sha256sum] = "93e19f690c8f7acb31ea1a09d116b59f795b0e6a62bc2b2d8798d1a62ed0d34e"
+SRC_URI[sha256sum] = "6189bcd4992784a9aecd3d5fef0d10f87e9b6a689ebdb4d89d0b49cbea2ad1f4"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -163,10 +163,14 @@ LIC_FILES_CHKSUM = "\
 "
 
 SRC_URI += " \
-  file://0001-IWYU-memset-and-memcmp-are-used-in-CJPX-decoder-with.patch;patchdir=third_party/pdfium \
-  file://0001-IWYU-add-several-missing-vector-includes.patch \
+  file://0001-GCC-Remove-double-declaration-of-ContextSet.patch;patchdir=third_party/angle \
+  file://0001-fxcodec-fxge-fix-missing-includes-with-libstdc.patch;patchdir=third_party/pdfium \
+  file://0001-IWYU-missing-memory-include-for-unique_ptr-usage-in-.patch \
   file://0001-IWYU-missing-include-for-using-std-vector-in-hash-pa.patch \
+  file://0001-IWYU-usage-of-unique_ptr-requires-including-memory-i.patch \
+  file://0001-libstdc-do-not-use-unique_ptr-bool-operator-in-a-con.patch \
   file://0001-IWYU-missing-include-for-std-vector-usage-in-devtool.patch \
+  file://0001-IWYU-usage-of-std-strcpy-requires-including-cstring-.patch \
 "
 
 do_install_append() {
