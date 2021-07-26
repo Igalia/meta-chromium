@@ -305,7 +305,7 @@ do_compile() {
         # We need to do this because curl by default will try to fetch ca-certificates.crt
         # from the native sysroot used to compile curl-native
         export CURL_CA_BUNDLE=${STAGING_DIR_NATIVE}/etc/ssl/certs/ca-certificates.crt
-	ninja -v "${PARALLEL_MAKE}" chrome chrome_sandbox
+	ninja "${PARALLEL_MAKE}" chrome chrome_sandbox
 }
 
 PRODUCT_LOGO_SIZES = "24 48 64 128 256"
