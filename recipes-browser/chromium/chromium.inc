@@ -234,7 +234,6 @@ GN_ARGS += '\
   cros_v8_snapshot_ar="${BUILD_AR}" \
   cros_v8_snapshot_cc="${BUILD_CC}" \
   cros_v8_snapshot_cxx="${BUILD_CXX}" \
-  linux_use_bundled_binutils=false \
   gold_path="" \
   v8_enable_embedded_builtins=false \
   use_v8_context_snapshot=false \
