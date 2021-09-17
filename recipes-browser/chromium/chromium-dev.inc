@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "95.0.4628.3"
+PV = "95.0.4636.4"
 
-SRC_URI[sha256sum] = "43b9e09ea8c8d190326111966f978bb94f090ebb0148ef25b9f41c3ad36a2213"
+SRC_URI[sha256sum] = "723cc2d2292f688b6e1e200d8cd8b88f77a9fe8d40672d6d6748899b94ac13e6"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -162,9 +162,11 @@ LIC_FILES_CHKSUM = "\
   file://${S}/v8/LICENSE.strongtalk;md5=956a43818dd13f2e93088fc2c93589d2 \
 "
 
+# GCC build fixes: upstreamed
 SRC_URI += " \
-  file://0001-IWYU-add-string.h-for-strlen-in-text_fragments_utils.patch \
+  file://0001-GCC-fix-template-specialization-in-webrtc-BitstreamR.patch;patchdir=third_party/webrtc \
 "
+
 
 # Runtime fix for Chromecast crash
 SRC_URI += " file://0001-Workaround-crash-in-cast-message-handling.patch "
