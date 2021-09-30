@@ -1,0 +1,30 @@
+From 7f5b55fadfd7a8fba9ed80929359b1ed58a9fba7 Mon Sep 17 00:00:00 2001
+From: Stephan Hartmann <stha09@googlemail.com>
+Date: Mon, 27 Sep 2021 11:11:11 +0000
+Subject: IWYU: add vector for std::vector in messaging_util
+
+Bug: None
+Change-Id: I3ed19c7b2e1308eec212973fa897dd6a290071ee
+Reviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/3184860
+Reviewed-by: Finnur Thorarinsson <finnur@chromium.org>
+Commit-Queue: Stephan Hartmann <stha09@googlemail.com>
+Cr-Commit-Position: refs/heads/main@{#925217}
+---
+ extensions/renderer/messaging_util.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/extensions/renderer/messaging_util.h b/extensions/renderer/messaging_util.h
+index 8c30d8d0dd91c..525ff1db85b90 100644
+--- a/extensions/renderer/messaging_util.h
++++ b/extensions/renderer/messaging_util.h
+@@ -7,6 +7,7 @@
+ 
+ #include <memory>
+ #include <string>
++#include <vector>
+ 
+ #include "v8/include/v8-forward.h"
+ 
+-- 
+2.30.2
+

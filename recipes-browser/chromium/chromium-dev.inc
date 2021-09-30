@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "95.0.4638.17"
+PV = "96.0.4655.0"
 
-SRC_URI[sha256sum] = "3fe6882db5851d20ea20bb439a0c1ae491acf3fda4ad2359be0672ca4745b9ec"
+SRC_URI[sha256sum] = "61b7decb80e666c8df728d4f36952c0bdf3a081bc4b9cb7194c48688fbe9ea01"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -164,7 +164,9 @@ LIC_FILES_CHKSUM = "\
 
 # GCC build fixes: upstreamed
 SRC_URI += " \
-  file://0001-GCC-fix-template-specialization-in-webrtc-BitstreamR.patch;patchdir=third_party/webrtc \
+  file://0001-IWYU-add-memory-for-std-unique_ptr-in-ResourceBundle.patch \
+  file://0001-IWYU-add-vector-for-std-vector-in-messaging_util.patch \
+  file://0001-IWYU-add-memory-for-std-unique_ptr-in-AppliedTextDec.patch \
 "
 
 
