@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "96.0.4655.0"
+PV = "96.0.4662.6"
 
-SRC_URI[sha256sum] = "61b7decb80e666c8df728d4f36952c0bdf3a081bc4b9cb7194c48688fbe9ea01"
+SRC_URI[sha256sum] = "5868db2f88bed014df504d70570eca78e4445d748334ed3804b0a470a9057993"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -162,13 +162,12 @@ LIC_FILES_CHKSUM = "\
   file://${S}/v8/LICENSE.strongtalk;md5=956a43818dd13f2e93088fc2c93589d2 \
 "
 
-# GCC build fixes: upstreamed
+# Build fixes backported from upstream
 SRC_URI += " \
-  file://0001-IWYU-add-memory-for-std-unique_ptr-in-ResourceBundle.patch \
-  file://0001-IWYU-add-vector-for-std-vector-in-messaging_util.patch \
-  file://0001-IWYU-add-memory-for-std-unique_ptr-in-AppliedTextDec.patch \
+  file://0001-GCC-fix-non-template-friend-function.patch \
+  file://0001-GCC-fix-brace-initialization-with-NoDestructor.patch \
+  file://0001-IWYU-add-vector-for-std-vector-in-CouponDB.patch \
 "
-
 
 # Runtime fix for Chromecast crash
 SRC_URI += " file://0001-Workaround-crash-in-cast-message-handling.patch "

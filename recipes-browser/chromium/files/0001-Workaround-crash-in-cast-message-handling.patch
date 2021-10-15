@@ -1,4 +1,4 @@
-From 1d3d6923aa8a7178c5f25b0a55b82cecc4ce2793 Mon Sep 17 00:00:00 2001
+From 316e4210174021c99e64f17bf5d203cea2903a3a Mon Sep 17 00:00:00 2001
 From: Stephan Hartmann <stha09@googlemail.com>
 Date: Tue, 20 Jul 2021 20:40:12 +0200
 Subject: Workaround crash in cast message handling.
@@ -8,11 +8,11 @@ https://gitweb.gentoo.org/repo/gentoo.git/commit/?id=c580af0345725e2d81819433a0d
 
 Change-Id: Ib824303724c2b266c85da46610b62ae5d4efd553
 ---
- components/cast_channel/enum_table.h | 20 +++++++++-----------
- 1 file changed, 9 insertions(+), 11 deletions(-)
+ components/cast_channel/enum_table.h | 17 +++++++----------
+ 1 file changed, 7 insertions(+), 10 deletions(-)
 
 diff --git a/components/cast_channel/enum_table.h b/components/cast_channel/enum_table.h
-index a63ae86cf1adc..83ada659b4559 100644
+index aad9e0886447c..2f3fcad805edc 100644
 --- a/components/cast_channel/enum_table.h
 +++ b/components/cast_channel/enum_table.h
 @@ -8,6 +8,7 @@
@@ -23,26 +23,23 @@ index a63ae86cf1adc..83ada659b4559 100644
  
  #include "base/check_op.h"
  #include "base/macros.h"
-@@ -213,7 +214,7 @@ class
+@@ -188,7 +189,6 @@ class
+   inline constexpr GenericEnumTableEntry(int32_t value);
+   inline constexpr GenericEnumTableEntry(int32_t value, base::StringPiece str);
  
-   template <typename E>
-   friend class EnumTable;
--  DISALLOW_COPY_AND_ASSIGN(GenericEnumTableEntry);
-+  DISALLOW_ASSIGN(GenericEnumTableEntry);
- };
+-  GenericEnumTableEntry(const GenericEnumTableEntry&) = delete;
+   GenericEnumTableEntry& operator=(const GenericEnumTableEntry&) = delete;
  
- // Yes, these constructors really needs to be inlined.  Even though they look
-@@ -251,8 +252,7 @@ class EnumTable {
-     // Constructor for regular entries.
+  private:
+@@ -254,7 +254,6 @@ class EnumTable {
      constexpr Entry(E value, base::StringPiece str)
          : GenericEnumTableEntry(static_cast<int32_t>(value), str) {}
--
--    DISALLOW_COPY_AND_ASSIGN(Entry);
-+    DISALLOW_ASSIGN(Entry);
+ 
+-    Entry(const Entry&) = delete;
+     Entry& operator=(const Entry&) = delete;
    };
  
-   static_assert(sizeof(E) <= sizeof(int32_t),
-@@ -307,15 +307,14 @@ class EnumTable {
+@@ -313,15 +312,14 @@ class EnumTable {
      if (is_sorted_) {
        const std::size_t index = static_cast<std::size_t>(value);
        if (ANALYZER_ASSUME_TRUE(index < data_.size())) {
@@ -60,7 +57,7 @@ index a63ae86cf1adc..83ada659b4559 100644
    }
  
    // This overload of GetString is designed for cases where the argument is a
-@@ -343,8 +342,7 @@ class EnumTable {
+@@ -349,8 +347,7 @@ class EnumTable {
    // enum value directly.
    absl::optional<E> GetEnum(base::StringPiece str) const {
      auto* entry = GenericEnumTableEntry::FindByString(
@@ -70,7 +67,7 @@ index a63ae86cf1adc..83ada659b4559 100644
      return entry ? static_cast<E>(entry->value) : absl::optional<E>();
    }
  
-@@ -359,7 +357,7 @@ class EnumTable {
+@@ -365,7 +362,7 @@ class EnumTable {
    // Align the data on a cache line boundary.
    alignas(64)
  #endif
@@ -79,7 +76,7 @@ index a63ae86cf1adc..83ada659b4559 100644
    bool is_sorted_;
  
    constexpr EnumTable(std::initializer_list<Entry> data, bool is_sorted)
-@@ -371,8 +369,8 @@ class EnumTable {
+@@ -377,8 +374,8 @@ class EnumTable {
  
      for (std::size_t i = 0; i < data.size(); i++) {
        for (std::size_t j = i + 1; j < data.size(); j++) {
