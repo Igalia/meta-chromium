@@ -41,17 +41,17 @@ SRC_URI += " \
 # At the moment, this recipe has only been tested on i586, x86-64, ARMv6,
 # ARMv7a and aarch64.
 COMPATIBLE_MACHINE = "(-)"
-COMPATIBLE_MACHINE_aarch64 = "(.*)"
-COMPATIBLE_MACHINE_armv6 = "(.*)"
-COMPATIBLE_MACHINE_armv7a = "(.*)"
-COMPATIBLE_MACHINE_x86 = "(.*)"
-COMPATIBLE_MACHINE_x86-64 = "(.*)"
-COMPATIBLE_MACHINE_raspberrypi4 = "(.*)"
-COMPATIBLE_MACHINE_raspberrypi3 = "(.*)"
-COMPATIBLE_MACHINE_raspberrypi2 = "(.*)"
+COMPATIBLE_MACHINE:aarch64 = "(.*)"
+COMPATIBLE_MACHINE:armv6 = "(.*)"
+COMPATIBLE_MACHINE:armv7a = "(.*)"
+COMPATIBLE_MACHINE:x86 = "(.*)"
+COMPATIBLE_MACHINE:x86-64 = "(.*)"
+COMPATIBLE_MACHINE:raspberrypi4 = "(.*)"
+COMPATIBLE_MACHINE:raspberrypi3 = "(.*)"
+COMPATIBLE_MACHINE:raspberrypi2 = "(.*)"
 
 # The wrapper script we use from upstream requires bash.
-RDEPENDS_${PN} = "bash"
+RDEPENDS:${PN} = "bash"
 
 PACKAGECONFIG ??= "\
   ftp \
@@ -129,7 +129,7 @@ GN_ARGS += "is_debug=false is_official_build=true"
 #    of debugging information. WARNING: do not set it debugging for ELF 32
 #    bits platforms as it will cause issues compiling, linking and
 #    packaging.
-DEBUG_FLAGS_remove = "-g"
+DEBUG_FLAGS:remove = "-g"
 SELECTED_OPTIMIZATION = "${DEBUG_FLAGS}"
 PACKAGECONFIG[debug] = "symbol_level=2, symbol_level=1"
 GN_ARGS += "use_debug_fission=false"
@@ -247,35 +247,35 @@ GN_ARGS += '\
 
 # ARM builds need special additional flags (see ${S}/build/config/arm.gni).
 ARM_FLOAT_ABI = "${@bb.utils.contains('TUNE_FEATURES', 'callconvention-hard', 'hard', 'softfp', d)}"
-GN_ARGS_append_armv6 = ' arm_version=6 arm_float_abi="${ARM_FLOAT_ABI}"'
-GN_ARGS_append_armv7a = ' arm_version=7 arm_float_abi="${ARM_FLOAT_ABI}"'
+GN_ARGS:append:armv6 = ' arm_version=6 arm_float_abi="${ARM_FLOAT_ABI}"'
+GN_ARGS:append:armv7a = ' arm_version=7 arm_float_abi="${ARM_FLOAT_ABI}"'
 # tcmalloc's atomicops-internals-arm-v6plus.h uses the "dmb" instruction that
 # is not available on (some?) ARMv6 models, which causes the build to fail.
-GN_ARGS_append_armv6 += 'use_allocator="none"'
+GN_ARGS:append:armv6 += 'use_allocator="none"'
 # The WebRTC code fails to build on ARMv6 when NEON is enabled.
 # https://bugs.chromium.org/p/webrtc/issues/detail?id=6574
-GN_ARGS_append_armv6 += 'arm_use_neon=false'
+GN_ARGS:append:armv6 += 'arm_use_neon=false'
 
 # For Raspberry PI, default arm_arch setting is not valid and caused warnings
-GN_ARGS_append_armv7ve += 'arm_arch="armv7ve"'
+GN_ARGS:append:armv7ve += 'arm_arch="armv7ve"'
 
 # Crashpad uses zlib internally, but it still does not handle properly the
 # NEON codepath for GCC.
-GN_ARGS_append_armv7ve += 'arm_use_neon=false'
+GN_ARGS:append:armv7ve += 'arm_use_neon=false'
 
 # Libaom fails to build on ARM because of missing aom_arm_cpu_caps symbol
-GN_ARGS_append_arm = ' enable_libaom=false'
+GN_ARGS:append:arm = ' enable_libaom=false'
 
 # Right now GBM buffers are not working properly on v3d driver used in RPI4
-GN_ARGS_append_raspberrypi4 = " use_wayland_gbm=false"
-GN_ARGS_append_raspberrypi4-64 = " use_wayland_gbm=false"
+GN_ARGS:append:raspberrypi4 = " use_wayland_gbm=false"
+GN_ARGS:append:raspberrypi4-64 = " use_wayland_gbm=false"
 
 # JXL decoder depends on highway, that fails to build NEON instrinsics in GCC
-GN_ARGS_append_aarch64 = " enable_jxl_decoder=false"
+GN_ARGS:append:aarch64 = " enable_jxl_decoder=false"
 
 # Temporary fix while libyuv ARM64 neon support is broken on GCC
 SRC_URI += " file://0001-GCC-allow-to-disable-NEON-with-GN.patch;patchdir=third_party/libyuv "
-GN_ARGS_append_aarch64 = " libyuv_use_neon=false "
+GN_ARGS:append:aarch64 = " libyuv_use_neon=false "
 
 CHROMIUM_EXTRA_ARGS ?= "\
   --enable-features=UseOzonePlatform \
@@ -362,16 +362,16 @@ do_install() {
 }
 
 # Swiftshader libraries installed in chromium libdir do not have versioning
-INSANE_SKIP_${PN} = "dev-elf"
+INSANE_SKIP:${PN} = "dev-elf"
 
-FILES_${PN} = " \
+FILES:${PN} = " \
         ${bindir}/chromium \
         ${datadir}/applications/chromium.desktop \
         ${datadir}/icons/hicolor/*x*/apps/chromium.png \
         ${libdir}/chromium/* \
         "
-FILES_${PN}-dbg = "${libdir}/${PN}/.debug/"
+FILES:${PN}-dbg = "${libdir}/${PN}/.debug/"
 PACKAGE_DEBUG_SPLIT_STYLE = "debug-without-src"
 
 # There is no need to ship empty -dev packages.
-ALLOW_EMPTY_${PN}-dev = "0"
+ALLOW_EMPTY:${PN}-dev = "0"
