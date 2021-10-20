@@ -352,6 +352,7 @@ do_install() {
 	install -m 0755 chrome ${D}${libdir}/chromium/chromium-bin
 	install -m 0644 *.bin ${D}${libdir}/chromium/
 	install -m 0644 chrome_*.pak ${D}${libdir}/chromium/
+        install -m 0755 lib*.so ${D}${libdir}/chromium/
 	install -m 0644 icudtl.dat ${D}${libdir}/chromium/icudtl.dat
 	install -m 0644 resources.pak ${D}${libdir}/chromium/resources.pak
 

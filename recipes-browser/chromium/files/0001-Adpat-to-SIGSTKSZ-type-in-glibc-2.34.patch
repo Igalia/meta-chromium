@@ -1,0 +1,47 @@
+From 2c62f1939cdff9e2dceb065b1fc95ea8c021c33b Mon Sep 17 00:00:00 2001
+From: Stephan Bergmann <sbergman@redhat.com>
+Date: Fri, 15 Oct 2021 15:56:59 +0200
+Subject: Adpat to SIGSTKSZ type in glibc 2.34
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+<https://sourceware.org/git/?p=glibc.git;a=commit;h=6c57d320484988e87e446e2e60ce42816bf51d53>
+"sysconf: Add _SC_MINSIGSTKSZ/_SC_SIGSTKSZ [BZ #20305]" introduced
+sysdeps/unix/sysv/linux/bits/sigstksz.h containing
+
+> # define SIGSTKSZ sysconf (_SC_SIGSTKSZ)
+
+so that SIGSTKSZ would have type long, causing
+
+> src/client/linux/handler/exception_handler.cc: In function ‘void google_breakpad::{anonymous}::InstallAlternateStackLocked()’:
+> src/client/linux/handler/exception_handler.cc:141:49: error: no matching function for call to ‘max(int, long int)’
+>   141 |   static const unsigned kSigStackSize = std::max(16384, SIGSTKSZ);
+>       |                                         ~~~~~~~~^~~~~~~~~~~~~~~~~
+
+when building ExternalProject_breakpad as part of LibreOffice (see
+<https://git.libreoffice.org/core/+/c90cb1b3c265c1f81e614e47652fe24137d7928c%5E!/>
+"external/breakpad: Adpat to SIGSTKSZ type in glibc 2.34").  At least SuS4
+appears to be silent about a required type of SIGSTKSZ defined in signal.h.
+
+Change-Id: I669063bdfc563fda7286ea4900ac871ffc57f52d
+---
+ src/client/linux/handler/exception_handler.cc | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/client/linux/handler/exception_handler.cc b/src/client/linux/handler/exception_handler.cc
+index ca353c40..0672d900 100644
+--- a/src/client/linux/handler/exception_handler.cc
++++ b/src/client/linux/handler/exception_handler.cc
+@@ -138,7 +138,7 @@ void InstallAlternateStackLocked() {
+   // SIGSTKSZ may be too small to prevent the signal handlers from overrunning
+   // the alternative stack. Ensure that the size of the alternative stack is
+   // large enough.
+-  static const unsigned kSigStackSize = std::max(16384, SIGSTKSZ);
++  static const unsigned kSigStackSize = std::max<decltype(SIGSTKSZ)>(16384, SIGSTKSZ);
+ 
+   // Only set an alternative stack if there isn't already one, or if the current
+   // one is too small.
+-- 
+2.32.0
+

@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "96.0.4662.6"
+PV = "96.0.4664.9"
 
-SRC_URI[sha256sum] = "5868db2f88bed014df504d70570eca78e4445d748334ed3804b0a470a9057993"
+SRC_URI[sha256sum] = "69306c64b5789f7ce56ac2974a138a4873535cad297231c76229344b9f8a9642"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -162,11 +162,15 @@ LIC_FILES_CHKSUM = "\
   file://${S}/v8/LICENSE.strongtalk;md5=956a43818dd13f2e93088fc2c93589d2 \
 "
 
-# Build fixes backported from upstream
+# Patches proposed to upstream
+SRC_URI += " file://0001-Adpat-to-SIGSTKSZ-type-in-glibc-2.34.patch;patchdir=third_party/breakpad/breakpad "
+
+# Patches from upstream
 SRC_URI += " \
-  file://0001-GCC-fix-non-template-friend-function.patch \
-  file://0001-GCC-fix-brace-initialization-with-NoDestructor.patch \
+  file://0001-IWYU-add-memory-for-std-unique_ptr-in-base-CommandLi.patch \
+  file://0001-IWYU-add-string.h-for-memcmp-in-ui-DrmRenderNodePath.patch \
   file://0001-IWYU-add-vector-for-std-vector-in-CouponDB.patch \
+  file://0001-libstdc-no-implicit-conversion-from-tuple-created-wi.patch \
 "
 
 # Runtime fix for Chromecast crash
