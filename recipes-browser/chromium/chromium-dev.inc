@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "96.0.4664.18"
+PV = "97.0.4676.0"
 
-SRC_URI[sha256sum] = "eef6190869d3b8e931f89742c82183c1e22716fb5bb1ad0fb08bd6441dbdf07c"
+SRC_URI[sha256sum] = "6521834995979160de0764b3fc1019b5f3ca0973ff90338c6ea4057b2030c6b1"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -162,15 +162,16 @@ LIC_FILES_CHKSUM = "\
   file://${S}/v8/LICENSE.strongtalk;md5=956a43818dd13f2e93088fc2c93589d2 \
 "
 
+# Patches not submitted to upstream yet
+SRC_URI += " file://0001-Do-not-use-ARMv8.5-memory-tagging-extension-in-GCC.patch "
+
 # Patches proposed to upstream
 SRC_URI += " file://0001-Adpat-to-SIGSTKSZ-type-in-glibc-2.34.patch;patchdir=third_party/breakpad/breakpad "
 
 # Patches from upstream
 SRC_URI += " \
-  file://0001-IWYU-add-memory-for-std-unique_ptr-in-base-CommandLi.patch \
-  file://0001-IWYU-add-string.h-for-memcmp-in-ui-DrmRenderNodePath.patch \
-  file://0001-IWYU-add-vector-for-std-vector-in-CouponDB.patch \
-  file://0001-libstdc-no-implicit-conversion-from-tuple-created-wi.patch \
+  file://0001-GCC-fix-error-with-base-Environment-name-retrieval-i.patch \
+  file://0001-IWYU-missing-include-for-numeric-limits-used-in-part.patch \
 "
 
 # Runtime fix for Chromecast crash
