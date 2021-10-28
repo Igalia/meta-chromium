@@ -1,4 +1,4 @@
-From 3c399f6888c8c12dbc8f25a60de246929e959e8c Mon Sep 17 00:00:00 2001
+From 2dab835ef9612c0a3a5e5018528a190f6c7feafb Mon Sep 17 00:00:00 2001
 From: Jose Dapena Paz <jdapena@igalia.com>
 Date: Fri, 22 Oct 2021 20:03:51 +0200
 Subject: Do not use ARMv8.5 memory tagging extension in GCC.
@@ -18,7 +18,7 @@ Change-Id: I2b3e918dd41500e86d6bb802b535b66403cc4cf1
  2 files changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/base/BUILD.gn b/base/BUILD.gn
-index 0c31e92ab0b9b..03e43f191c55e 100644
+index 0caa283e2de32..5d8510f5d4ae3 100644
 --- a/base/BUILD.gn
 +++ b/base/BUILD.gn
 @@ -95,7 +95,7 @@ if (is_fuchsia) {
@@ -31,7 +31,7 @@ index 0c31e92ab0b9b..03e43f191c55e 100644
      # base/ has access to the MTE intrinsics because it needs to use them,
      # but they're not backwards compatible. Use base::CPU::has_mte()
 diff --git a/base/memory/tagging.h b/base/memory/tagging.h
-index 3aa74a4a40b83..a027982889c6a 100644
+index 3aa74a4a40b83..b67dd90b13fab 100644
 --- a/base/memory/tagging.h
 +++ b/base/memory/tagging.h
 @@ -13,7 +13,8 @@
@@ -39,7 +39,7 @@ index 3aa74a4a40b83..a027982889c6a 100644
  #include "build/build_config.h"
  
 -#if defined(ARCH_CPU_ARM64) && (defined(OS_LINUX) || defined(OS_ANDROID))
-+#if defined(ARCH_CPU_ARM64) && !defined(COMPILER_GCC) && \
++#if defined(ARCH_CPU_ARM64) && defined(__clang__) && \
 +    (defined(OS_LINUX) || defined(OS_ANDROID))
  #define HAS_MEMORY_TAGGING 1
  #endif
