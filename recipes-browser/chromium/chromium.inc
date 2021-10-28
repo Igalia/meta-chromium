@@ -42,13 +42,10 @@ SRC_URI += " \
 # ARMv7a and aarch64.
 COMPATIBLE_MACHINE = "(-)"
 COMPATIBLE_MACHINE:aarch64 = "(.*)"
-COMPATIBLE_MACHINE:armv6 = "(.*)"
 COMPATIBLE_MACHINE:armv7a = "(.*)"
-COMPATIBLE_MACHINE:x86 = "(.*)"
 COMPATIBLE_MACHINE:x86-64 = "(.*)"
 COMPATIBLE_MACHINE:raspberrypi4 = "(.*)"
 COMPATIBLE_MACHINE:raspberrypi3 = "(.*)"
-COMPATIBLE_MACHINE:raspberrypi2 = "(.*)"
 
 # The wrapper script we use from upstream requires bash.
 RDEPENDS:${PN} = "bash"
@@ -247,14 +244,7 @@ GN_ARGS += '\
 
 # ARM builds need special additional flags (see ${S}/build/config/arm.gni).
 ARM_FLOAT_ABI = "${@bb.utils.contains('TUNE_FEATURES', 'callconvention-hard', 'hard', 'softfp', d)}"
-GN_ARGS:append:armv6 = ' arm_version=6 arm_float_abi="${ARM_FLOAT_ABI}"'
 GN_ARGS:append:armv7a = ' arm_version=7 arm_float_abi="${ARM_FLOAT_ABI}"'
-# tcmalloc's atomicops-internals-arm-v6plus.h uses the "dmb" instruction that
-# is not available on (some?) ARMv6 models, which causes the build to fail.
-GN_ARGS:append:armv6 += 'use_allocator="none"'
-# The WebRTC code fails to build on ARMv6 when NEON is enabled.
-# https://bugs.chromium.org/p/webrtc/issues/detail?id=6574
-GN_ARGS:append:armv6 += 'arm_use_neon=false'
 
 # For Raspberry PI, default arm_arch setting is not valid and caused warnings
 GN_ARGS:append:armv7ve += 'arm_arch="armv7ve"'
