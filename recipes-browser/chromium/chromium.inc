@@ -253,9 +253,6 @@ GN_ARGS:append:armv7ve += 'arm_arch="armv7ve"'
 # NEON codepath for GCC.
 GN_ARGS:append:armv7ve += 'arm_use_neon=false'
 
-# Libaom fails to build on ARM because of missing aom_arm_cpu_caps symbol
-GN_ARGS:append:arm = ' enable_libaom=false'
-
 # Right now GBM buffers are not working properly on v3d driver used in RPI4
 GN_ARGS:append:raspberrypi4 = " use_wayland_gbm=false"
 GN_ARGS:append:raspberrypi4-64 = " use_wayland_gbm=false"
