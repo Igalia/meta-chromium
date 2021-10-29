@@ -257,9 +257,6 @@ GN_ARGS:append:armv7ve += 'arm_use_neon=false'
 GN_ARGS:append:raspberrypi4 = " use_wayland_gbm=false"
 GN_ARGS:append:raspberrypi4-64 = " use_wayland_gbm=false"
 
-# JXL decoder depends on highway, that fails to build NEON instrinsics in GCC
-GN_ARGS:append:aarch64 = " enable_jxl_decoder=false"
-
 CHROMIUM_EXTRA_ARGS ?= "\
   --enable-features=UseOzonePlatform \
 "
