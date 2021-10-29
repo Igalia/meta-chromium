@@ -263,10 +263,6 @@ GN_ARGS:append:raspberrypi4-64 = " use_wayland_gbm=false"
 # JXL decoder depends on highway, that fails to build NEON instrinsics in GCC
 GN_ARGS:append:aarch64 = " enable_jxl_decoder=false"
 
-# Temporary fix while libyuv ARM64 neon support is broken on GCC
-SRC_URI += " file://0001-GCC-allow-to-disable-NEON-with-GN.patch;patchdir=third_party/libyuv "
-GN_ARGS:append:aarch64 = " libyuv_use_neon=false "
-
 CHROMIUM_EXTRA_ARGS ?= "\
   --enable-features=UseOzonePlatform \
 "
