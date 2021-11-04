@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "97.0.4682.3"
+PV = "97.0.4688.2"
 
-SRC_URI[sha256sum] = "c4de304c62675fa3d4061fef5d1080d3ed4da91c44e8716e78763cd2461e4dfc"
+SRC_URI[sha256sum] = "08356a7fece37e0e6d56e780328f5c186fa71c79a0b8ba5d2d9f88d51f31b128"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -161,12 +161,6 @@ LIC_FILES_CHKSUM = "\
   file://${S}/v8/LICENSE.fdlibm;md5=b17367d6c97e638599071d99a3049dfe \
   file://${S}/v8/LICENSE.strongtalk;md5=956a43818dd13f2e93088fc2c93589d2 \
 "
-
-# Upstream patches
-SRC_URI += " file://0001-IWYU-add-string-for-std-string-in-viz-SharedElementR.patch "
-
-# Patches not submitted to upstream yet
-SRC_URI += " file://0001-Do-not-use-ARMv8.5-memory-tagging-extension-in-GCC.patch "
 
 # Patches proposed to upstream
 SRC_URI += " file://0001-Adpat-to-SIGSTKSZ-type-in-glibc-2.34.patch;patchdir=third_party/breakpad/breakpad "
