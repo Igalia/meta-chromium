@@ -38,14 +38,10 @@ SRC_URI += " \
         file://wrapper-extra-flags.patch \
         "
 
-# At the moment, this recipe has only been tested on i586, x86-64, ARMv6,
-# ARMv7a and aarch64.
+# At the moment, this recipe is being maintained for x86-64 and aarch64.
 COMPATIBLE_MACHINE = "(-)"
 COMPATIBLE_MACHINE:aarch64 = "(.*)"
-COMPATIBLE_MACHINE:armv7a = "(.*)"
 COMPATIBLE_MACHINE:x86-64 = "(.*)"
-COMPATIBLE_MACHINE:raspberrypi4 = "(.*)"
-COMPATIBLE_MACHINE:raspberrypi3 = "(.*)"
 
 # The wrapper script we use from upstream requires bash.
 RDEPENDS:${PN} = "bash"
@@ -241,17 +237,6 @@ GN_ARGS += '\
   is_cfi=false \
   use_thin_lto=false \
 '
-
-# ARM builds need special additional flags (see ${S}/build/config/arm.gni).
-ARM_FLOAT_ABI = "${@bb.utils.contains('TUNE_FEATURES', 'callconvention-hard', 'hard', 'softfp', d)}"
-GN_ARGS:append:armv7a = ' arm_version=7 arm_float_abi="${ARM_FLOAT_ABI}"'
-
-# For Raspberry PI, default arm_arch setting is not valid and caused warnings
-GN_ARGS:append:armv7ve += 'arm_arch="armv7ve"'
-
-# Crashpad uses zlib internally, but it still does not handle properly the
-# NEON codepath for GCC.
-GN_ARGS:append:armv7ve += 'arm_use_neon=false'
 
 CHROMIUM_EXTRA_ARGS ?= "\
   --enable-features=UseOzonePlatform \
