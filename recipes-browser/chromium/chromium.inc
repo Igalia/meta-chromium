@@ -253,10 +253,6 @@ GN_ARGS:append:armv7ve += 'arm_arch="armv7ve"'
 # NEON codepath for GCC.
 GN_ARGS:append:armv7ve += 'arm_use_neon=false'
 
-# Right now GBM buffers are not working properly on v3d driver used in RPI4
-GN_ARGS:append:raspberrypi4 = " use_wayland_gbm=false"
-GN_ARGS:append:raspberrypi4-64 = " use_wayland_gbm=false"
-
 CHROMIUM_EXTRA_ARGS ?= "\
   --enable-features=UseOzonePlatform \
 "
