@@ -18,19 +18,8 @@ DEPENDS = "\
 "
 
 inherit gtk-icon-cache
-
-# Chromium expects python3 by default for building, but it did not complete the migration
-# so some scripts also require python2 in the path (see python2_action in codebase).
-inherit python3native setuptools
-DEPENDS += "python-native"
-EXTRANATIVEPATH += "python-native"
-# We need to define this to allow using Python2. Yes, I swear we are on it. Hopefully
-# soon Chromium will drop python2_action. So, if you want build to work, add this to your
-# local.conf or equivalent
-# I_SWEAR_TO_MIGRATE_TO_PYTHON3 = "yes"
-
+inherit python3native setuptools3
 inherit mime-xdg
-
 
 B = "${WORKDIR}/build"
 
