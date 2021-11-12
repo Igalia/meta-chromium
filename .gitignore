@@ -1,4 +1,5 @@
 *~
+.vscode
 build
 kas/local.yml
 layers
