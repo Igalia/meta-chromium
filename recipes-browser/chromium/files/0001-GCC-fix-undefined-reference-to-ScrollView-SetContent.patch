@@ -1,0 +1,38 @@
+From cabcde151397e1eba886a0400a0d30c168442c15 Mon Sep 17 00:00:00 2001
+From: Stephan Hartmann <stha09@googlemail.com>
+Date: Sat, 6 Nov 2021 10:52:46 +0000
+Subject: GCC: fix undefined reference to ScrollView::SetContents()
+
+Compiling Chrome fails at linking stage with an undefined reference:
+
+../../ui/views/metadata/view_factory_internal.h:183:
+ error: undefined reference to 'views::View*
+ views::ScrollView::SetContents<views::View>
+  (std::unique_ptr<views::View, std::default_delete<views::View> >)'
+
+This was introduced with https://crrev.com/c/3257538.
+Add an explicit specialization for ScrollView::SetContents().
+
+Bug: 819294
+Change-Id: Ie7089686ae1e997727277266103efe5b7c2bd40e
+---
+ ui/views/controls/scroll_view.h | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/ui/views/controls/scroll_view.h b/ui/views/controls/scroll_view.h
+index 6096d6539b4fb..892f65e06c078 100644
+--- a/ui/views/controls/scroll_view.h
++++ b/ui/views/controls/scroll_view.h
+@@ -385,6 +385,9 @@ class VIEWS_EXPORT ScrollView : public View, public ScrollBarController {
+   ScrollViewCallbackList on_contents_scroll_ended_;
+ };
+ 
++// Required for WebAppUrlHandlerIntentPickerView
++template View* ScrollView::SetContents<View>(std::unique_ptr<View> a_view);
++
+ BEGIN_VIEW_BUILDER(VIEWS_EXPORT, ScrollView, View)
+ VIEW_BUILDER_VIEW_TYPE_PROPERTY(View, Contents)
+ VIEW_BUILDER_PROPERTY(ui::LayerType, ContentsLayerType)
+-- 
+2.32.0
+
