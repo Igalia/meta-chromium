@@ -1,0 +1,38 @@
+header:
+  version: 10
+distro: poky
+target: core-image-weston
+
+defaults:
+  repos:
+    refspec: honister
+
+repos:
+  meta-chromium:
+
+  poky:
+    url: git://git.yoctoproject.org/poky.git
+    path: layers/poky
+    layers:
+      meta:
+      meta-poky:
+      meta-yocto-bsp:
+
+  meta-openembedded:
+    url: git://git.openembedded.org/meta-openembedded
+    path: layers/meta-openembedded
+    layers:
+      meta-oe:
+      meta-python:
+      meta-multimedia:
+
+  meta-raspberrypi:
+    url: git://git.yoctoproject.org/meta-raspberrypi
+    refspec: "master"
+    path: layers/meta-raspberrypi
+
+local_conf_header:
+  chromium: |
+    CORE_IMAGE_EXTRA_INSTALL += " chromium-dev"
+    PACKAGECONFIG:append:x86_pn-${CHROMIUM_PACKAGE} = " vaapi"
+    PACKAGECONFIG:append:x86-64:pn-${CHROMIUM_PACKAGE} = " vaapi"

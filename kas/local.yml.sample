@@ -1,0 +1,9 @@
+header:
+  version: 10
+
+local_conf_header:
+  local_standard: |
+    IMAGE_FSTYPES:append:qemux86 = " wic.bz2 wic.bmap"
+    IMAGE_FSTYPES:append:qemux86-64 = " wic.bz2 wic.bmap"
+  local_debug: |
+    CORE_IMAGE_EXTRA_INSTALL += " gdbserver"
