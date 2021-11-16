@@ -27,7 +27,6 @@ repos:
 
   meta-raspberrypi:
     url: git://git.yoctoproject.org/meta-raspberrypi
-    refspec: "master"
     path: layers/meta-raspberrypi
 
 local_conf_header:
