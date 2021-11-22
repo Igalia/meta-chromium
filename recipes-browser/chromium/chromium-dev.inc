@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "97.0.4692.20"
+PV = "98.0.4710.4"
 
-SRC_URI[sha256sum] = "e28cd1eac2f95365035a5156a4121bec3fe11b3d84e1a995f2fe863fc7774fda"
+SRC_URI[sha256sum] = "154d1d550e288e844e3db60a18a694c69a2f7c0cccf130f65a670e93925dc42b"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -91,7 +91,7 @@ LIC_FILES_CHKSUM = "\
   file://${S}/third_party/hunspell/COPYING.MPL;md5=bfe1f75d606912a4111c90743d6c7325 \
   file://${S}/third_party/iaccessible2/LICENSE;md5=43bbd0bfb581347ec10def720000a645 \
   file://${S}/third_party/iccjpeg/LICENSE;md5=26834d132689a03abf860f4572705494 \
-  file://${S}/third_party/icu/LICENSE;md5=002d2fdc32d17f0ec06e9a47f2c0c8d0 \
+  file://${S}/third_party/icu/LICENSE;md5=dc9d616e558490c389609a0e8b81ae6d \
   file://${S}/third_party/inspector_protocol/LICENSE;md5=db90dcb101891a7285d25f2fbceca752 \
   file://${S}/third_party/isimpledom/LICENSE;md5=822502c0e010ccdbb6a3e681dd47888e \
   file://${S}/third_party/jsoncpp/LICENSE;md5=c56ee55c03a55f8105b969d8270632ce \
@@ -161,9 +161,6 @@ LIC_FILES_CHKSUM = "\
   file://${S}/v8/LICENSE.fdlibm;md5=b17367d6c97e638599071d99a3049dfe \
   file://${S}/v8/LICENSE.strongtalk;md5=956a43818dd13f2e93088fc2c93589d2 \
 "
-
-# Upstream patches
-SRC_URI += " file://0001-GCC-make-gfx-Point-operator-constexpr.patch "
 
 # Patches proposed to upstream
 SRC_URI += " \
