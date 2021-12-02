@@ -1,0 +1,36 @@
+From 426f4c15c5b3593f6ed2a997b03945a7d841fc01 Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Fri, 26 Nov 2021 13:09:59 +0100
+Subject: IWYU: missing cstring include for memset call in WebPrivatePtr
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Fix build break with libstdc++:
+../../third_party/blink/public/platform/web_private_ptr.h: In constructor ‘blink::WebPrivatePtr<T, crossThreadDestruction, strongOrWeak>::WebPrivatePtr()’:
+../../third_party/blink/public/platform/web_private_ptr.h:292:21: error: there are no arguments to ‘memset’ that depend on a template parameter, so a declaration of ‘memset’ must be available [-fpermissive]
+  292 |   WebPrivatePtr() { memset(&storage_, 0, sizeof(storage_)); }
+      |                     ^~~~~~
+
+Bug: 957519
+Change-Id: Ib0ae0cfc5f14f2f2dc34d4abdcd4b18be0877e5e
+---
+ third_party/blink/public/platform/web_private_ptr.h | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/third_party/blink/public/platform/web_private_ptr.h b/third_party/blink/public/platform/web_private_ptr.h
+index 399184ea0c285..2dedda89173e0 100644
+--- a/third_party/blink/public/platform/web_private_ptr.h
++++ b/third_party/blink/public/platform/web_private_ptr.h
+@@ -31,6 +31,8 @@
+ #ifndef THIRD_PARTY_BLINK_PUBLIC_PLATFORM_WEB_PRIVATE_PTR_H_
+ #define THIRD_PARTY_BLINK_PUBLIC_PLATFORM_WEB_PRIVATE_PTR_H_
+ 
++#include <cstring>
++
+ #include "base/check.h"
+ #include "third_party/blink/public/platform/web_common.h"
+ #include "v8/include/cppgc/persistent.h"
+-- 
+2.32.0
+

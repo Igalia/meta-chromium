@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "98.0.4710.4"
+PV = "98.0.4736.0"
 
-SRC_URI[sha256sum] = "154d1d550e288e844e3db60a18a694c69a2f7c0cccf130f65a670e93925dc42b"
+SRC_URI[sha256sum] = "f660fb2528c3fd195819cf4e45bc33ea230de8aa9d9a7081980418d0fffe53ad"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -144,7 +144,6 @@ LIC_FILES_CHKSUM = "\
   file://${S}/third_party/sudden_motion_sensor/LICENSE;md5=6f89397ba4dda73a940f27f76e9ad9d4 \
   file://${S}/third_party/swiftshader/LICENSE.txt;md5=d273d63619c9aeaf15cdaf76422c4f87 \
   file://${S}/third_party/tcmalloc/LICENSE;md5=8ecc91ee1a2c17333b40126bfa32b7ca \
-  file://${S}/third_party/tlslite/LICENSE;md5=aab0efc53fd36d5832963dc71fd2316e \
   file://${S}/third_party/usb_ids/LICENSE;md5=8f694e3758e3e57a5223bfa2bf29d452 \
   file://${S}/third_party/usrsctp/LICENSE;md5=d8ad24c2ddd0e7bc1b0a6e4c7c80443e \
   file://${S}/third_party/v4l-utils/COPYING.libv4l;md5=d749e86a105281d7a44c2328acebc4b0 \
@@ -162,10 +161,16 @@ LIC_FILES_CHKSUM = "\
   file://${S}/v8/LICENSE.strongtalk;md5=956a43818dd13f2e93088fc2c93589d2 \
 "
 
+# Patches from upstream
+SRC_URI += " file://0001-GCC-Use-arguments-with-same-type-for-std-max.patch "
+
 # Patches proposed to upstream
+SRC_URI += " file://0001-Adpat-to-SIGSTKSZ-type-in-glibc-2.34.patch;patchdir=third_party/breakpad/breakpad "
+
+# Patches to propose to upstream
 SRC_URI += " \
-  file://0001-Adpat-to-SIGSTKSZ-type-in-glibc-2.34.patch;patchdir=third_party/breakpad/breakpad \
-  file://0001-GCC-fix-undefined-reference-to-ScrollView-SetContent.patch \
+  file://0001-GCC-do-not-use-with-the-new-raw_ptr.patch \
+  file://0001-IWYU-missing-cstring-include-for-memset-call-in-WebP.patch \
 "
 
 # Runtime fix for Chromecast crash
