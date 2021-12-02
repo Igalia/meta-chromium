@@ -116,6 +116,13 @@ SELECTED_OPTIMIZATION = "${DEBUG_FLAGS}"
 PACKAGECONFIG[debug] = "symbol_level=2, symbol_level=1"
 GN_ARGS += "use_debug_fission=false"
 
+# Raspberry PI 4 uses cortexa72, but does not provide crypto extensions.
+# boringssl assumes crypto extensions are enabled if they are passed
+# in -march, so it will cause SIGILL trying to use AESE instruction.
+TUNE_CCARGS:raspberrypi4-64:remove = "-march=armv8-a+crc+crypto"
+TUNE_CCARGS:raspberrypi4-64:append = "-march=armv8-a+crc"
+PACKAGE_ARCH:raspberrypi4-64 = "${MACHINE_ARCH}"
+
 # By default we discard adding debug symbols for Blink. In case debug-blink is
 # added to PACKAGECONFIG, then the debugging level will match the one set for
 # the whole package (2 if "debug" variable is added, 1 if not).
