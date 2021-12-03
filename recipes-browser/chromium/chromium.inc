@@ -159,9 +159,6 @@ GN_ARGS += "fieldtrial_testing_like_official_build=true"
 # Disable compiling closures, as they require java runtime
 GN_ARGS += "enable_js_type_check=false"
 
-# Libaom fails to build in 
-GN_ARGS += "enable_libaom=false"
-
 # Ozone and X11 backends
 GN_ARGS += "\
     ozone_auto_platforms=false \
