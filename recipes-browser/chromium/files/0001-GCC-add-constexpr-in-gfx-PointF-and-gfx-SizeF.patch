@@ -1,0 +1,80 @@
+From ce3684aa8074f549061340d7b80e49cf411bcb22 Mon Sep 17 00:00:00 2001
+From: Stephan Hartmann <stha09@googlemail.com>
+Date: Fri, 3 Dec 2021 18:41:52 +0000
+Subject: GCC: add constexpr in gfx::PointF and gfx::SizeF
+
+Some operators and methods in blink::FloatRoundedRect are constexpr
+and require that the used operators/methods in gfx::PointF and
+gfx::SizeF are constexpr as well. To improve readability make
+operator!= constexpr too if operator== requires constexpr.
+
+Bug: 819294
+Change-Id: Ic55579cf599a1f63d9641101bb1b82255bc46916
+Reviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/3313128
+Reviewed-by: danakj chromium <danakj@chromium.org>
+Commit-Queue: Stephan Hartmann <stha09@googlemail.com>
+Cr-Commit-Position: refs/heads/main@{#948076}
+---
+ ui/gfx/geometry/rect_f.h | 6 +++---
+ ui/gfx/geometry/size_f.h | 8 ++++----
+ 2 files changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/ui/gfx/geometry/rect_f.h b/ui/gfx/geometry/rect_f.h
+index 245944a32892e..3eeb8691062a5 100644
+--- a/ui/gfx/geometry/rect_f.h
++++ b/ui/gfx/geometry/rect_f.h
+@@ -119,7 +119,7 @@ class GEOMETRY_EXPORT RectF {
+   InsetsF InsetsFrom(const RectF& inner) const;
+ 
+   // Returns true if the area of the rectangle is zero.
+-  bool IsEmpty() const { return size_.IsEmpty(); }
++  constexpr bool IsEmpty() const { return size_.IsEmpty(); }
+ 
+   // A rect is less than another rect if its origin is less than
+   // the other rect's origin. If the origins are equal, then the
+@@ -243,11 +243,11 @@ class GEOMETRY_EXPORT RectF {
+   SizeF size_;
+ };
+ 
+-inline bool operator==(const RectF& lhs, const RectF& rhs) {
++constexpr bool operator==(const RectF& lhs, const RectF& rhs) {
+   return lhs.origin() == rhs.origin() && lhs.size() == rhs.size();
+ }
+ 
+-inline bool operator!=(const RectF& lhs, const RectF& rhs) {
++constexpr bool operator!=(const RectF& lhs, const RectF& rhs) {
+   return !(lhs == rhs);
+ }
+ 
+diff --git a/ui/gfx/geometry/size_f.h b/ui/gfx/geometry/size_f.h
+index 5a056afa04d38..320e3d806fd96 100644
+--- a/ui/gfx/geometry/size_f.h
++++ b/ui/gfx/geometry/size_f.h
+@@ -66,8 +66,8 @@ class GEOMETRY_EXPORT SizeF {
+   void SetToMin(const SizeF& other);
+   void SetToMax(const SizeF& other);
+ 
+-  bool IsEmpty() const { return !width() || !height(); }
+-  bool IsZero() const { return !width() && !height(); }
++  constexpr bool IsEmpty() const { return !width() || !height(); }
++  constexpr bool IsZero() const { return !width() && !height(); }
+ 
+   void Scale(float scale) {
+     Scale(scale, scale);
+@@ -97,11 +97,11 @@ class GEOMETRY_EXPORT SizeF {
+   float height_;
+ };
+ 
+-inline bool operator==(const SizeF& lhs, const SizeF& rhs) {
++constexpr bool operator==(const SizeF& lhs, const SizeF& rhs) {
+   return lhs.width() == rhs.width() && lhs.height() == rhs.height();
+ }
+ 
+-inline bool operator!=(const SizeF& lhs, const SizeF& rhs) {
++constexpr bool operator!=(const SizeF& lhs, const SizeF& rhs) {
+   return !(lhs == rhs);
+ }
+ 
+-- 
+2.32.0
+

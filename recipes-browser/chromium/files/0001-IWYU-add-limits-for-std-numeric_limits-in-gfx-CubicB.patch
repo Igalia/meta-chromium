@@ -1,0 +1,30 @@
+From 7d4a2858e05fcd1d33fd3d2435b07b68902525ab Mon Sep 17 00:00:00 2001
+From: Stephan Hartmann <stha09@googlemail.com>
+Date: Mon, 6 Dec 2021 16:55:17 +0000
+Subject: IWYU: add limits for std::numeric_limits in gfx::CubicBezier
+
+Bug: 957519
+Change-Id: I4895b7597631a7f835db717225f28a48a0db9589
+Reviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/3314830
+Reviewed-by: Ali Juma <ajuma@chromium.org>
+Commit-Queue: Stephan Hartmann <stha09@googlemail.com>
+Cr-Commit-Position: refs/heads/main@{#948554}
+---
+ ui/gfx/geometry/cubic_bezier.cc | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/ui/gfx/geometry/cubic_bezier.cc b/ui/gfx/geometry/cubic_bezier.cc
+index 8546aece632ce..3064548f17def 100644
+--- a/ui/gfx/geometry/cubic_bezier.cc
++++ b/ui/gfx/geometry/cubic_bezier.cc
+@@ -6,6 +6,7 @@
+ 
+ #include <algorithm>
+ #include <cmath>
++#include <limits>
+ 
+ #include "base/check_op.h"
+ #include "base/cxx17_backports.h"
+-- 
+2.32.0
+

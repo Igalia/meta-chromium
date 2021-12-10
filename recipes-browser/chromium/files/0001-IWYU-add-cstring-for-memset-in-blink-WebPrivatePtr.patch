@@ -1,0 +1,31 @@
+From 51596eab97360072521c8145c4f734b70c176884 Mon Sep 17 00:00:00 2001
+From: Stephan Hartmann <stha09@googlemail.com>
+Date: Sat, 4 Dec 2021 09:32:24 +0000
+Subject: IWYU: add cstring for memset in blink::WebPrivatePtr
+
+Bug: 957519
+Change-Id: If16babe8660d4fb685f7e7600a546215c7fcd285
+Reviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/3310899
+Reviewed-by: Daniel Cheng <dcheng@chromium.org>
+Commit-Queue: Stephan Hartmann <stha09@googlemail.com>
+Cr-Commit-Position: refs/heads/main@{#948313}
+---
+ third_party/blink/public/platform/web_private_ptr.h | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/third_party/blink/public/platform/web_private_ptr.h b/third_party/blink/public/platform/web_private_ptr.h
+index 399184ea0c285..f90d58358f96d 100644
+--- a/third_party/blink/public/platform/web_private_ptr.h
++++ b/third_party/blink/public/platform/web_private_ptr.h
+@@ -35,6 +35,8 @@
+ #include "third_party/blink/public/platform/web_common.h"
+ #include "v8/include/cppgc/persistent.h"
+ 
++#include <cstring>
++
+ #if INSIDE_BLINK
+ #include "base/memory/scoped_refptr.h"
+ #include "third_party/blink/renderer/platform/heap/handle.h"      // nogncheck
+-- 
+2.32.0
+

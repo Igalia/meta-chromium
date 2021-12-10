@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "98.0.4736.0"
+PV = "98.0.4744.1"
 
-SRC_URI[sha256sum] = "f660fb2528c3fd195819cf4e45bc33ea230de8aa9d9a7081980418d0fffe53ad"
+SRC_URI[sha256sum] = "aa26a19b66657f742bdf9bcb85291b825903a2ae6473b53188212a8ad6047a67"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -162,16 +162,17 @@ LIC_FILES_CHKSUM = "\
 "
 
 # Patches from upstream
-SRC_URI += " file://0001-GCC-Use-arguments-with-same-type-for-std-max.patch "
+SRC_URI += " \
+  file://0001-IWYU-add-cstring-for-memset-in-blink-WebPrivatePtr.patch \
+  file://0001-IWYU-add-limits-for-std-numeric_limits-in-gfx-CubicB.patch \
+  file://0001-GCC-add-constexpr-in-gfx-PointF-and-gfx-SizeF.patch \
+"
 
 # Patches proposed to upstream
 SRC_URI += " file://0001-Adpat-to-SIGSTKSZ-type-in-glibc-2.34.patch;patchdir=third_party/breakpad/breakpad "
 
 # Patches to propose to upstream
-SRC_URI += " \
-  file://0001-GCC-do-not-use-with-the-new-raw_ptr.patch \
-  file://0001-IWYU-missing-cstring-include-for-memset-call-in-WebP.patch \
-"
+SRC_URI += " file://0001-GCC-do-not-use-with-the-new-raw_ptr.patch "
 
 # Runtime fix for Chromecast crash
 SRC_URI += " file://0001-Workaround-crash-in-cast-message-handling.patch "
