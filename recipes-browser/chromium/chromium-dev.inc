@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "98.0.4744.1"
+PV = "98.0.4758.9"
 
-SRC_URI[sha256sum] = "aa26a19b66657f742bdf9bcb85291b825903a2ae6473b53188212a8ad6047a67"
+SRC_URI[sha256sum] = "b279a69f63d4090d8fd3beb38f59f3e2d8c97771f27c7d0617615ed8a0d806eb"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -162,11 +162,7 @@ LIC_FILES_CHKSUM = "\
 "
 
 # Patches from upstream
-SRC_URI += " \
-  file://0001-IWYU-add-cstring-for-memset-in-blink-WebPrivatePtr.patch \
-  file://0001-IWYU-add-limits-for-std-numeric_limits-in-gfx-CubicB.patch \
-  file://0001-GCC-add-constexpr-in-gfx-PointF-and-gfx-SizeF.patch \
-"
+SRC_URI += " file://0001-GCC-use-initializer-list-for-NoDestructor-constructi.patch "
 
 # Patches proposed to upstream
 SRC_URI += " file://0001-Adpat-to-SIGSTKSZ-type-in-glibc-2.34.patch;patchdir=third_party/breakpad/breakpad "

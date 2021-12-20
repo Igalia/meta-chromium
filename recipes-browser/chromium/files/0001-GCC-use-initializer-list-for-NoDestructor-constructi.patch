@@ -1,0 +1,51 @@
+From 3488e4c5cd7bff75410704b9b1dcddbba6df3500 Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Fri, 10 Dec 2021 17:05:25 +0000
+Subject: GCC: use initializer list for NoDestructor construction in
+ AXPosition.
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Fix build issue with GCC:
+    ../../ui/accessibility/ax_position.h:4356:61: error: call of overloaded ‘NoDestructor(<brace-enclosed initializer list>)’ is ambiguous
+     4356 |       static const base::NoDestructor<std::vector<int32_t>> embedded_word_ends(
+          |                                                             ^~~~~~~~~~~~~~~~~~
+
+Bug: 819294
+Change-Id: I63233b3a201d969b9acabaee87f81a8b58d43453
+Reviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/3326825
+Reviewed-by: Nektarios Paisios <nektar@chromium.org>
+Commit-Queue: José Dapena Paz <jdapena@igalia.com>
+Cr-Commit-Position: refs/heads/main@{#950583}
+---
+ ui/accessibility/ax_position.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/ui/accessibility/ax_position.h b/ui/accessibility/ax_position.h
+index 186aba71cb022..a66cecb7a24c5 100644
+--- a/ui/accessibility/ax_position.h
++++ b/ui/accessibility/ax_position.h
+@@ -4324,7 +4324,7 @@ class AXPosition {
+       // Using braces ensures that the vector will contain the given value, and
+       // not create a vector of size 0.
+       static const base::NoDestructor<std::vector<int32_t>>
+-          embedded_word_starts({0});
++          embedded_word_starts{{0}};
+       return *embedded_word_starts;
+     }
+ 
+@@ -4353,8 +4353,8 @@ class AXPosition {
+     if (IsEmptyObjectReplacedByCharacter()) {
+       // Using braces ensures that the vector will contain the given value, and
+       // not create a vector of size 1.
+-      static const base::NoDestructor<std::vector<int32_t>> embedded_word_ends(
+-          {1});
++      static const base::NoDestructor<std::vector<int32_t>> embedded_word_ends{
++          {1}};
+       return *embedded_word_ends;
+     }
+ 
+-- 
+2.32.0
+
