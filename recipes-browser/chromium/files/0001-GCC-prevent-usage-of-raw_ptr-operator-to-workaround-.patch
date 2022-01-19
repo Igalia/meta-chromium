@@ -1,0 +1,324 @@
+From dbfd8239644f55ba4ac267a278b3039997e1355f Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Tue, 11 Jan 2022 21:16:09 +0000
+Subject: GCC: prevent usage of raw_ptr ->* operator to workaround GCC compiler
+ crash
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Using operator ->* with raw_ptr crashes GCC compiler on parsing stage.
+To prevent this crash, this patch deletes the implementation of those
+operators so they are not available for raw_ptr users, breaking
+compilation accordingly.
+
+To use the operator with raw_ptr, it is required to use get() first to
+obtain the C++ raw pointer, and then apply the operator to it.
+
+Bug: 819294
+Change-Id: I8903069bbcd9e6dc749d43f19467598be47fbb17
+Reviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/3377523
+Reviewed-by: Corentin Wallez <cwallez@chromium.org>
+Reviewed-by: Nektarios Paisios <nektar@chromium.org>
+Reviewed-by: Dana Fried <dfried@chromium.org>
+Reviewed-by: Mike Wasserman <msw@chromium.org>
+Reviewed-by: Yuki Shiino <yukishiino@chromium.org>
+Reviewed-by: Bartek Nowierski <bartekn@chromium.org>
+Commit-Queue: José Dapena Paz <jdapena@igalia.com>
+Cr-Commit-Position: refs/heads/main@{#957712}
+---
+ base/memory/raw_ptr.h                         | 47 +----------
+ base/memory/raw_ptr_unittest.cc               | 84 -------------------
+ base/memory/raw_ptr_unittest.nc               | 14 ++++
+ .../auto_signin_first_run_dialog_view.cc      |  2 +-
+ gpu/command_buffer/client/gl_helper.h         |  8 +-
+ ui/accessibility/ax_node.h                    | 10 +--
+ ui/views/layout/flex_layout_types.cc          |  2 +-
+ 7 files changed, 29 insertions(+), 138 deletions(-)
+
+diff --git a/base/memory/raw_ptr.h b/base/memory/raw_ptr.h
+index 7777f443b78f1..de6259e441433 100644
+--- a/base/memory/raw_ptr.h
++++ b/base/memory/raw_ptr.h
+@@ -543,50 +543,11 @@ class TRIVIAL_ABI raw_ptr {
+   }
+   RAW_PTR_FUNC_ATTRIBUTES T* operator->() const { return GetForDereference(); }
+ 
+-  // PendingMemberFunctionCall implements a temporary object returned by
+-  // operator->*.  PendingMemberFunctionCall::operator() runs the member
+-  // function taking arguments.
+-  template <typename PMF,  // PMF = pointer to member function
+-            typename ReturnType,
+-            typename... ArgTypes>
+-  class PendingMemberFunctionCall {
+-   public:
+-    explicit PendingMemberFunctionCall(T* receiver, PMF pmf)
+-        : receiver_(receiver), pmf_(pmf) {}
+-    // It's possible to support copy and move semantics, but we don't need them
+-    // at this moment.
+-    PendingMemberFunctionCall(const PendingMemberFunctionCall&) = delete;
+-    PendingMemberFunctionCall& operator=(const PendingMemberFunctionCall&) =
+-        delete;
+-
+-    ReturnType operator()(ArgTypes... args) const {
+-      return (receiver_->*pmf_)(std::forward<ArgTypes>(args)...);
+-    }
+-
+-   private:
+-    T* receiver_;
+-    PMF pmf_;
+-  };
+-
+-  // Implements `(my_raw_ptr->*pmf)(arg1, arg2, ...)` as a workaround for
++  // Disables `(my_raw_ptr->*pmf)(...)` as a workaround for
++  // the ICE in GCC parsing the code, reported at
+   // https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103455
+-  template <typename ReceiverType, typename ReturnType, typename... ArgTypes>
+-  RAW_PTR_FUNC_ATTRIBUTES auto operator->*(
+-      ReturnType (ReceiverType::*pmf)(ArgTypes...) const) const -> const
+-      PendingMemberFunctionCall<decltype(pmf), ReturnType, ArgTypes...> {
+-    Impl::IncrementPointerToMemberOperatorCountForTest();
+-    return PendingMemberFunctionCall<decltype(pmf), ReturnType, ArgTypes...>(
+-        GetForDereference(), pmf);
+-  }
+-  template <typename ReceiverType, typename ReturnType, typename... ArgTypes>
+-  RAW_PTR_FUNC_ATTRIBUTES auto operator->*(
+-      ReturnType (ReceiverType::*pmf)(ArgTypes...)) const -> const
+-      PendingMemberFunctionCall<decltype(pmf), ReturnType, ArgTypes...> {
+-    Impl::IncrementPointerToMemberOperatorCountForTest();
+-    return PendingMemberFunctionCall<decltype(pmf), ReturnType, ArgTypes...>(
+-        GetForDereference(), pmf);
+-  }
+-  // Ref-qualified variants should be added on demand.
++  template <typename PMF>
++  void operator->*(PMF) const = delete;
+ 
+   // Deliberately implicit, because raw_ptr is supposed to resemble raw ptr.
+   // NOLINTNEXTLINE(runtime/explicit)
+diff --git a/base/memory/raw_ptr_unittest.cc b/base/memory/raw_ptr_unittest.cc
+index 28e24c0c0eab2..370ae46887a1a 100644
+--- a/base/memory/raw_ptr_unittest.cc
++++ b/base/memory/raw_ptr_unittest.cc
+@@ -892,90 +892,6 @@ class PmfTestDerived : public PmfTestBase {
+   int MemFunc(float, double) { return 22; }
+ };
+ 
+-TEST_F(RawPtrTest, PointerToMemberFunction) {
+-  PmfTestDerived object;
+-  int (PmfTestBase::*pmf_base_base)(char, double) const = &PmfTestBase::MemFunc;
+-  int (PmfTestDerived::*pmf_derived_base)(char, double) const =
+-      &PmfTestDerived::MemFunc;
+-  int (PmfTestDerived::*pmf_derived_derived)(float, double) =
+-      &PmfTestDerived::MemFunc;
+-  int base_count = g_pointer_to_member_operator_cnt;
+-  EXPECT_EQ(base_count, 0);
+-
+-  // Test for `derived_ptr`
+-  CountingRawPtr<PmfTestDerived> derived_ptr = &object;
+-
+-  static_assert(
+-      std::is_same<decltype(derived_ptr->*pmf_base_base),
+-                   const decltype(derived_ptr)::PendingMemberFunctionCall<
+-                       decltype(pmf_base_base), int, char, double>>::value);
+-  static_assert(
+-      std::is_same<decltype(derived_ptr->*pmf_derived_base),
+-                   const decltype(derived_ptr)::PendingMemberFunctionCall<
+-                       decltype(pmf_derived_base), int, char, double>>::value);
+-  static_assert(std::is_same<
+-                decltype(derived_ptr->*pmf_derived_derived),
+-                const decltype(derived_ptr)::PendingMemberFunctionCall<
+-                    decltype(pmf_derived_derived), int, float, double>>::value);
+-
+-  base_count = g_pointer_to_member_operator_cnt;
+-  EXPECT_EQ((derived_ptr->*pmf_base_base)(0, 0), 11);
+-  EXPECT_EQ(g_pointer_to_member_operator_cnt, base_count + 1);
+-  EXPECT_EQ((derived_ptr->*pmf_derived_base)(0, 0), 11);
+-  EXPECT_EQ(g_pointer_to_member_operator_cnt, base_count + 2);
+-  EXPECT_EQ((derived_ptr->*pmf_derived_derived)(0, 0), 22);
+-  EXPECT_EQ(g_pointer_to_member_operator_cnt, base_count + 3);
+-
+-  // Test for `derived_ptr_const`
+-  const CountingRawPtr<PmfTestDerived> derived_ptr_const = &object;
+-
+-  static_assert(
+-      std::is_same<decltype(derived_ptr_const->*pmf_base_base),
+-                   const decltype(derived_ptr_const)::PendingMemberFunctionCall<
+-                       decltype(pmf_base_base), int, char, double>>::value);
+-  static_assert(
+-      std::is_same<decltype(derived_ptr_const->*pmf_derived_base),
+-                   const decltype(derived_ptr_const)::PendingMemberFunctionCall<
+-                       decltype(pmf_derived_base), int, char, double>>::value);
+-  static_assert(std::is_same<
+-                decltype(derived_ptr_const->*pmf_derived_derived),
+-                const decltype(derived_ptr_const)::PendingMemberFunctionCall<
+-                    decltype(pmf_derived_derived), int, float, double>>::value);
+-
+-  base_count = g_pointer_to_member_operator_cnt;
+-  EXPECT_EQ((derived_ptr_const->*pmf_base_base)(0, 0), 11);
+-  EXPECT_EQ(g_pointer_to_member_operator_cnt, base_count + 1);
+-  EXPECT_EQ((derived_ptr_const->*pmf_derived_base)(0, 0), 11);
+-  EXPECT_EQ(g_pointer_to_member_operator_cnt, base_count + 2);
+-  EXPECT_EQ((derived_ptr_const->*pmf_derived_derived)(0, 0), 22);
+-  EXPECT_EQ(g_pointer_to_member_operator_cnt, base_count + 3);
+-
+-  // Test for `const_derived_ptr`
+-  CountingRawPtr<const PmfTestDerived> const_derived_ptr = &object;
+-
+-  static_assert(
+-      std::is_same<decltype(const_derived_ptr->*pmf_base_base),
+-                   const decltype(const_derived_ptr)::PendingMemberFunctionCall<
+-                       decltype(pmf_base_base), int, char, double>>::value);
+-  static_assert(
+-      std::is_same<decltype(const_derived_ptr->*pmf_derived_base),
+-                   const decltype(const_derived_ptr)::PendingMemberFunctionCall<
+-                       decltype(pmf_derived_base), int, char, double>>::value);
+-  static_assert(std::is_same<
+-                decltype(const_derived_ptr->*pmf_derived_derived),
+-                const decltype(const_derived_ptr)::PendingMemberFunctionCall<
+-                    decltype(pmf_derived_derived), int, float, double>>::value);
+-
+-  base_count = g_pointer_to_member_operator_cnt;
+-  EXPECT_EQ((const_derived_ptr->*pmf_base_base)(0, 0), 11);
+-  EXPECT_EQ(g_pointer_to_member_operator_cnt, base_count + 1);
+-  EXPECT_EQ((const_derived_ptr->*pmf_derived_base)(0, 0), 11);
+-  EXPECT_EQ(g_pointer_to_member_operator_cnt, base_count + 2);
+-  // Despite that it's possible to make a temporary PendingMemberFunctionCall
+-  // object for the case of `const_derived_ptr->*pmf_derived_derived`, it's not
+-  // possible to invoke the member function due to constness.
+-}
+-
+ }  // namespace
+ 
+ namespace base {
+diff --git a/base/memory/raw_ptr_unittest.nc b/base/memory/raw_ptr_unittest.nc
+index 48475c333fea6..617bf271963a4 100644
+--- a/base/memory/raw_ptr_unittest.nc
++++ b/base/memory/raw_ptr_unittest.nc
+@@ -17,6 +17,10 @@ struct DerivedProducer : Producer {};
+ struct OtherDerivedProducer : Producer {};
+ struct Unrelated {};
+ struct DerivedUnrelated : Unrelated {};
++struct PmfTest {
++ public:
++  int Func(char, double) const { return 11; }
++};
+ 
+ #if defined(NCTEST_AUTO_DOWNCAST)  // [r"no viable conversion from 'raw_ptr<\(anonymous namespace\)::Producer>' to 'raw_ptr<\(anonymous namespace\)::DerivedProducer>'"]
+ 
+@@ -89,6 +93,16 @@ void WontCompile() {
+   std::ignore = raw_ptr_var.get();
+ }
+ 
++#elif defined(NCTEST_POINTER_TO_MEMBER) // [r"overload resolution selected deleted operator '->\*'"]
++
++void WontCompile() {
++  PmfTest object;
++  int (PmfTest::*pmf_func)(char, double) const = &PmfTest::Func;
++
++  raw_ptr<PmfTest> object_ptr = &object;
++  std::ignore = object_ptr->*pmf_func;
++}
++
+ #endif
+ 
+ }  // namespace
+diff --git a/chrome/browser/ui/views/passwords/auto_signin_first_run_dialog_view.cc b/chrome/browser/ui/views/passwords/auto_signin_first_run_dialog_view.cc
+index f446c22ba3b18..564e92cf75d23 100644
+--- a/chrome/browser/ui/views/passwords/auto_signin_first_run_dialog_view.cc
++++ b/chrome/browser/ui/views/passwords/auto_signin_first_run_dialog_view.cc
+@@ -37,7 +37,7 @@ AutoSigninFirstRunDialogView::AutoSigninFirstRunDialogView(
+   auto call_controller = [](AutoSigninFirstRunDialogView* dialog,
+                             ControllerCallbackFn func) {
+     if (dialog->controller_) {
+-      (dialog->controller_->*func)();
++      (dialog->controller_.get()->*func)();
+     }
+   };
+   SetAcceptCallback(
+diff --git a/gpu/command_buffer/client/gl_helper.h b/gpu/command_buffer/client/gl_helper.h
+index cb0b95a2a850e..6be5cd502de0f 100644
+--- a/gpu/command_buffer/client/gl_helper.h
++++ b/gpu/command_buffer/client/gl_helper.h
+@@ -34,7 +34,7 @@ class ScopedGLuint {
+                GenFunc gen_func,
+                DeleteFunc delete_func)
+       : gl_(gl), id_(0u), delete_func_(delete_func) {
+-    (gl_->*gen_func)(1, &id_);
++    (gl_.get()->*gen_func)(1, &id_);
+   }
+ 
+   operator GLuint() const { return id_; }
+@@ -46,7 +46,7 @@ class ScopedGLuint {
+ 
+   ~ScopedGLuint() {
+     if (id_ != 0) {
+-      (gl_->*delete_func_)(1, &id_);
++      (gl_.get()->*delete_func_)(1, &id_);
+     }
+   }
+ 
+@@ -86,13 +86,13 @@ class ScopedBinder {
+   typedef void (gles2::GLES2Interface::*BindFunc)(GLenum target, GLuint id);
+   ScopedBinder(gles2::GLES2Interface* gl, GLuint id, BindFunc bind_func)
+       : gl_(gl), bind_func_(bind_func) {
+-    (gl_->*bind_func_)(Target, id);
++    (gl_.get()->*bind_func_)(Target, id);
+   }
+ 
+   ScopedBinder(const ScopedBinder&) = delete;
+   ScopedBinder& operator=(const ScopedBinder&) = delete;
+ 
+-  virtual ~ScopedBinder() { (gl_->*bind_func_)(Target, 0); }
++  virtual ~ScopedBinder() { (gl_.get()->*bind_func_)(Target, 0); }
+ 
+  private:
+   raw_ptr<gles2::GLES2Interface> gl_;
+diff --git a/ui/accessibility/ax_node.h b/ui/accessibility/ax_node.h
+index 3db59f6e94bad..fc09e384ac996 100644
+--- a/ui/accessibility/ax_node.h
++++ b/ui/accessibility/ax_node.h
+@@ -819,10 +819,10 @@ AXNode::ChildIteratorBase<NodeType,
+   // increment the iterator past the end, we remain at the past-the-end iterator
+   // condition.
+   if (child_ && parent_) {
+-    if (child_ == (parent_->*LastChild)())
++    if (child_ == (parent_.get()->*LastChild)())
+       child_ = nullptr;
+     else
+-      child_ = (child_->*NextSibling)();
++      child_ = (child_.get()->*NextSibling)();
+   }
+ 
+   return *this;
+@@ -847,12 +847,12 @@ AXNode::ChildIteratorBase<NodeType,
+     // If the iterator is past the end, |child_=nullptr|, decrement the iterator
+     // gives us the last iterator element.
+     if (!child_)
+-      child_ = (parent_->*LastChild)();
++      child_ = (parent_.get()->*LastChild)();
+     // Decrement the iterator gives us the previous element, except when the
+     // iterator is at the beginning; in which case, decrementing the iterator
+     // remains at the beginning.
+-    else if (child_ != (parent_->*FirstChild)())
+-      child_ = (child_->*PreviousSibling)();
++    else if (child_ != (parent_.get()->*FirstChild)())
++      child_ = (child_.get()->*PreviousSibling)();
+   }
+ 
+   return *this;
+diff --git a/ui/views/layout/flex_layout_types.cc b/ui/views/layout/flex_layout_types.cc
+index 7c4bd3f8413a5..a263d6f859807 100644
+--- a/ui/views/layout/flex_layout_types.cc
++++ b/ui/views/layout/flex_layout_types.cc
+@@ -59,7 +59,7 @@ class LazySize {
+   const gfx::Size& operator*() const { return *get(); }
+   const gfx::Size* get() const {
+     if (!size_)
+-      size_ = (view_->*size_func_)();
++      size_ = (view_.get()->*size_func_)();
+     return &size_.value();
+   }
+   LazyDimension width() const {
+-- 
+2.32.0
+

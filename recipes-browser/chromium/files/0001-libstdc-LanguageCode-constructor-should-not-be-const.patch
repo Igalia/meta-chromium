@@ -1,0 +1,31 @@
+From 692f265695c078fdd4e3d6be0743ac04afde1fef Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Wed, 12 Jan 2022 12:18:40 +0100
+Subject: libstdc++: LanguageCode constructor should not be constexpr
+
+The default constructor of LanguageCode is declared with constexpr, same as
+StrongAlias. But building with libstdc++ rejects it as the underlying type,
+std::string, is not declared as constexpr.
+
+Bug: 957519
+Change-Id: I78a745111d75df6615704558fd6dfb829940fbb1
+---
+ components/autofill/core/common/language_code.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/components/autofill/core/common/language_code.h b/components/autofill/core/common/language_code.h
+index d5116891cc7b0..ae6570fea99d3 100644
+--- a/components/autofill/core/common/language_code.h
++++ b/components/autofill/core/common/language_code.h
+@@ -27,7 +27,7 @@ class LanguageCode
+   using BaseClass = base::StrongAlias<LanguageCodeTag, std::string>;
+ 
+  public:
+-  constexpr LanguageCode() = default;
++  LanguageCode() = default;
+   explicit LanguageCode(const char* s) : BaseClass(s) { Check(); }
+   explicit LanguageCode(std::string&& s) : BaseClass(std::move(s)) { Check(); }
+   explicit LanguageCode(const std::string& s) : BaseClass(s) { Check(); }
+-- 
+2.32.0
+

@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "98.0.4758.9"
+PV = "99.0.4818.0"
 
-SRC_URI[sha256sum] = "b279a69f63d4090d8fd3beb38f59f3e2d8c97771f27c7d0617615ed8a0d806eb"
+SRC_URI[sha256sum] = "95f2e54eefecbb6a938c259a7a028bfc6683887ca31f4b9e678fd7bc7cfd1dcd"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -161,14 +161,15 @@ LIC_FILES_CHKSUM = "\
   file://${S}/v8/LICENSE.strongtalk;md5=956a43818dd13f2e93088fc2c93589d2 \
 "
 
-# Patches from upstream
-SRC_URI += " file://0001-GCC-use-initializer-list-for-NoDestructor-constructi.patch "
-
-# Patches proposed to upstream
-SRC_URI += " file://0001-Adpat-to-SIGSTKSZ-type-in-glibc-2.34.patch;patchdir=third_party/breakpad/breakpad "
+# Backports from upstream
+SRC_URI += " \
+  file://0001-GCC-prevent-usage-of-raw_ptr-operator-to-workaround-.patch \
+  file://0001-IWYU-missing-include-for-using-memset-in-ScopedResSt.patch \
+  file://0001-IWYU-add-cmath-for-roundf-in-prediction_common.patch \
+"
 
 # Patches to propose to upstream
-SRC_URI += " file://0001-GCC-do-not-use-with-the-new-raw_ptr.patch "
+SRC_URI += " file://0001-libstdc-LanguageCode-constructor-should-not-be-const.patch "
 
 # Runtime fix for Chromecast crash
 SRC_URI += " file://0001-Workaround-crash-in-cast-message-handling.patch "
