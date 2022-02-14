@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "99.0.4840.0"
+PV = "100.0.4878.0"
 
-SRC_URI[sha256sum] = "f2b05597b097a6d28e4ee5a5b6a8e15b526dec1b61582b9fe01659759aff2a50"
+SRC_URI[sha256sum] = "79eb948ddc8ab3e45aea1712e49c54317f03520c9ad0e007e6c6b80157738829"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -57,7 +57,6 @@ LIC_FILES_CHKSUM = "\
   file://${S}/third_party/accessibility-audit/LICENSE;md5=3b83ef96387f14655fc854ddc3c6bd57 \
   file://${S}/third_party/afl/src/docs/COPYING;md5=3b83ef96387f14655fc854ddc3c6bd57 \
   file://${S}/third_party/android_crazy_linker/LICENSE;md5=997351b5bb1c56ca5be66be8060bb383 \
-  file://${S}/third_party/android_data_chart/LICENSE;md5=3b83ef96387f14655fc854ddc3c6bd57 \
   file://${S}/third_party/android_media/LICENSE;md5=3b83ef96387f14655fc854ddc3c6bd57 \
   file://${S}/third_party/android_opengl/LICENSE;md5=d10e92761a860d4113a7a525c78daf13 \
   file://${S}/third_party/android_swipe_refresh/LICENSE;md5=3b83ef96387f14655fc854ddc3c6bd57 \
@@ -78,7 +77,7 @@ LIC_FILES_CHKSUM = "\
   file://${S}/third_party/decklink/LICENSE;md5=85b197f7b7b1ef270b01a1b6377be50e \
   file://${S}/third_party/dom_distiller_js/LICENSE;md5=1399a5b89c7ed8167d261770432511e8 \
   file://${S}/third_party/expat/src/expat/COPYING;md5=9e2ce3b3c4c0f2670883a23bbd7c37a9 \
-  file://${S}/third_party/ffmpeg/CREDITS.chromium;md5=aa2247c58648fadacf4d7f865259eebe \
+  file://${S}/third_party/ffmpeg/CREDITS.chromium;md5=59444bcdde2b97bcd19305f2f60e1b54 \
   file://${S}/third_party/flac/COPYING.Xiph;md5=a2c4b71c0198682376d483eb5bcc9197 \
   file://${S}/third_party/flatbuffers/LICENSE;md5=a873c5645c184d51e0f9b34e1d7cf559 \
   file://${S}/third_party/fontconfig/src/COPYING;md5=7a0449e9bc5370402a94c00204beca3d \
@@ -143,7 +142,6 @@ LIC_FILES_CHKSUM = "\
   file://${S}/third_party/sqlite/LICENSE;md5=7256769d4613c0af5a72be32ba20ccf7 \
   file://${S}/third_party/sudden_motion_sensor/LICENSE;md5=6f89397ba4dda73a940f27f76e9ad9d4 \
   file://${S}/third_party/swiftshader/LICENSE.txt;md5=d273d63619c9aeaf15cdaf76422c4f87 \
-  file://${S}/third_party/tcmalloc/LICENSE;md5=8ecc91ee1a2c17333b40126bfa32b7ca \
   file://${S}/third_party/usb_ids/LICENSE;md5=8f694e3758e3e57a5223bfa2bf29d452 \
   file://${S}/third_party/usrsctp/LICENSE;md5=d8ad24c2ddd0e7bc1b0a6e4c7c80443e \
   file://${S}/third_party/v4l-utils/COPYING.libv4l;md5=d749e86a105281d7a44c2328acebc4b0 \
@@ -161,10 +159,11 @@ LIC_FILES_CHKSUM = "\
   file://${S}/v8/LICENSE.strongtalk;md5=956a43818dd13f2e93088fc2c93589d2 \
 "
 
-# Backports from upstream
+# Proposed to upstream
 SRC_URI += " \
-  file://0001-libstdc-LanguageCode-constructor-should-not-be-const.patch \
-  file://0001-GCC-use-braces-initialization-for-NoDestructor-in-Au.patch \
+  file://0001-IWYU-missing-include-for-usage-of-memset-in-SimplePa.patch \
+  file://0001-GCC-make-TimeDelta-InMilliseconds-to-be-used-in-cons.patch \
+  file://0001-libstdc-fix-use-of-instance-as-member-of-map-recursi.patch \
 "
 
 # Runtime fix for Chromecast crash
