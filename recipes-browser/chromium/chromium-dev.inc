@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "100.0.4878.0"
+PV = "100.0.4892.0"
 
-SRC_URI[sha256sum] = "79eb948ddc8ab3e45aea1712e49c54317f03520c9ad0e007e6c6b80157738829"
+SRC_URI[sha256sum] = "d613c4dbf404944d4ea5b301d35ba64d0d089d1d57037a98ea788399ef00c00d"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -28,7 +28,7 @@ LIC_FILES_CHKSUM = "\
   file://${S}/base/third_party/superfasthash/LICENSE;md5=c66981f8ad23c9f279a5b9e07385128c \
   file://${S}/base/third_party/symbolize/LICENSE;md5=17ae3b22fe8fa438966625593e2eea85 \
   file://${S}/base/third_party/valgrind/LICENSE;md5=b95c9cb2560f157c60ea60ac1aa69469 \
-  file://${S}/base/third_party/xdg_mime/LICENSE;md5=8e8261c342b33e06648483ac7f4862c9 \
+  file://${S}/base/third_party/xdg_mime/LICENSE;md5=743a91118d40f173467c8ecfd8793c62 \
   file://${S}/base/third_party/xdg_user_dirs/LICENSE;md5=d998f250c491c329a8254dd1ca62c647 \
   file://${S}/buildtools/third_party/libc++/trunk/LICENSE.TXT;md5=55d89dd7eec8d3b4204b680e27da3953 \
   file://${S}/buildtools/third_party/libc++abi/trunk/LICENSE.TXT;md5=7b9334635b542c56868400a46b272b1e \
@@ -159,12 +159,11 @@ LIC_FILES_CHKSUM = "\
   file://${S}/v8/LICENSE.strongtalk;md5=956a43818dd13f2e93088fc2c93589d2 \
 "
 
+# From upstream
+SRC_URI += " file://0001-GCC-DecodeTimestamp-InMilliseconds-cannot-be-constex.patch "
+
 # Proposed to upstream
-SRC_URI += " \
-  file://0001-IWYU-missing-include-for-usage-of-memset-in-SimplePa.patch \
-  file://0001-GCC-make-TimeDelta-InMilliseconds-to-be-used-in-cons.patch \
-  file://0001-libstdc-fix-use-of-instance-as-member-of-map-recursi.patch \
-"
+SRC_URI += " file://0001-GCC-some-GLImplementationParts-equal-operators-canno.patch "
 
 # Runtime fix for Chromecast crash
 SRC_URI += " file://0001-Workaround-crash-in-cast-message-handling.patch "
