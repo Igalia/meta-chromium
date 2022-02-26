@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "100.0.4892.0"
+PV = "100.0.4896.12"
 
-SRC_URI[sha256sum] = "d613c4dbf404944d4ea5b301d35ba64d0d089d1d57037a98ea788399ef00c00d"
+SRC_URI[sha256sum] = "824273232502514393074b1c9ead571ffd3b1234b32fdb394fc568284b1b4d1e"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -159,11 +159,14 @@ LIC_FILES_CHKSUM = "\
   file://${S}/v8/LICENSE.strongtalk;md5=956a43818dd13f2e93088fc2c93589d2 \
 "
 
-# From upstream
-SRC_URI += " file://0001-GCC-DecodeTimestamp-InMilliseconds-cannot-be-constex.patch "
+# Backported from upstream
+SRC_URI += " file://0001-Fix-typo-in-non-clang-GSL_OWNER-macro.patch "
 
 # Proposed to upstream
-SRC_URI += " file://0001-GCC-some-GLImplementationParts-equal-operators-canno.patch "
+SRC_URI += " \
+  file://0001-GCC-make-GLImplementationParts-constructors-constexp.patch \
+  file://0001-GCC-explicitely-move-return-value-of-SCTHashdanceMet.patch \
+"
 
 # Runtime fix for Chromecast crash
 SRC_URI += " file://0001-Workaround-crash-in-cast-message-handling.patch "
