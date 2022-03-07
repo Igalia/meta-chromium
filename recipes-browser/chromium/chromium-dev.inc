@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "100.0.4896.20"
+PV = "101.0.4919.0"
 
-SRC_URI[sha256sum] = "d9b201ae073b1f345ce795542261e4401412601641ae2356993b8d5be3ef263c"
+SRC_URI[sha256sum] = "62e3f88fce50486b474ee6818a47c42046d6537aec61efb6c9a60a77e71db705"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -35,7 +35,6 @@ LIC_FILES_CHKSUM = "\
   file://${S}/chrome/installer/mac/third_party/bsdiff/LICENSE;md5=0dbe7a50f028269750631fcbded3846a \
   file://${S}/chrome/installer/mac/third_party/xz/LICENSE;md5=8bbde65ae0523dc878ed1ac1252d2d14 \
   file://${S}/chrome/third_party/mozilla_security_manager/LICENSE;md5=0c259b853bbf067b361100ce560adce7 \
-  file://${S}/chromeos/third_party/android_bionic_libc/NOTICE;md5=323acddf0a0970d8ad7a7af3ba745f67 \
   file://${S}/courgette/third_party/bsdiff/LICENCE;md5=7c2ad392281bc3d9b04a31102ee7abdd \
   file://${S}/courgette/third_party/divsufsort/LICENSE;md5=e261f081e52882dad3ff0225497ce451 \
   file://${S}/ios/third_party/blink/LICENSE;md5=9fdb47308c4e0a2b6d07c5af39e5da1a \
@@ -160,12 +159,9 @@ LIC_FILES_CHKSUM = "\
 "
 
 # Backported from upstream
-SRC_URI += " file://0001-Fix-typo-in-non-clang-GSL_OWNER-macro.patch "
-
-# Proposed to upstream
 SRC_URI += " \
-  file://0001-GCC-make-GLImplementationParts-constructors-constexp.patch \
-  file://0001-GCC-explicitely-move-return-value-of-SCTHashdanceMet.patch \
+  file://0001-IWYU-missing-include-for-usage-of-std-unique_ptr-in-.patch \
+  file://0001-GCC-use-all-brace-initializers-for-NoDestructor-init.patch \
 "
 
 # Runtime fix for Chromecast crash
