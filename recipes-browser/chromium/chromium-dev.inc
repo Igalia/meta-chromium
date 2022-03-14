@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "101.0.4919.0"
+PV = "101.0.4929.5"
 
-SRC_URI[sha256sum] = "62e3f88fce50486b474ee6818a47c42046d6537aec61efb6c9a60a77e71db705"
+SRC_URI[sha256sum] = "7ab41ce47fa1bbbbd45117ff0c5299aa4dbbea7f855947411a7d886b81de600c"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -157,12 +157,8 @@ LIC_FILES_CHKSUM = "\
   file://${S}/v8/LICENSE.fdlibm;md5=b17367d6c97e638599071d99a3049dfe \
   file://${S}/v8/LICENSE.strongtalk;md5=956a43818dd13f2e93088fc2c93589d2 \
 "
-
 # Backported from upstream
-SRC_URI += " \
-  file://0001-IWYU-missing-include-for-usage-of-std-unique_ptr-in-.patch \
-  file://0001-GCC-use-all-brace-initializers-for-NoDestructor-init.patch \
-"
+SRC_URI += " file://0001-libstdc-fix-incomplete-type-of-blink-WebURLLoaderFac.patch "
 
 # Runtime fix for Chromecast crash
 SRC_URI += " file://0001-Workaround-crash-in-cast-message-handling.patch "
