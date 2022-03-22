@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "101.0.4929.5"
+PV = "101.0.4947.0"
 
-SRC_URI[sha256sum] = "7ab41ce47fa1bbbbd45117ff0c5299aa4dbbea7f855947411a7d886b81de600c"
+SRC_URI[sha256sum] = "5e83de70d9ff4dd9300a8c1616ce3ecd1fbde97cb2f7be5d1c12e8d8915fcb9c"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -101,7 +101,7 @@ LIC_FILES_CHKSUM = "\
   file://${S}/third_party/libXNVCtrl/LICENSE;md5=9e6c209899aa4986d090320bbca2fc76 \
   file://${S}/third_party/libaddressinput/LICENSE;md5=3b83ef96387f14655fc854ddc3c6bd57 \
   file://${S}/third_party/libjingle_xmpp/LICENSE;md5=ad296492125bc71530d06234d9bfebe0 \
-  file://${S}/third_party/libjpeg_turbo/LICENSE.md;md5=970f17d51650fe54e4f839c6e6121f79 \
+  file://${S}/third_party/libjpeg_turbo/LICENSE.md;md5=a75feaa2de6d8942f50d412241fca1f1 \
   file://${S}/third_party/liblouis/LICENSE;md5=8ab69863de0d3a0e00c4f97a4d78dd4a \
   file://${S}/third_party/libphonenumber/LICENSE;md5=e23fadd6ceef8c618fc1c65191d846fa \
   file://${S}/third_party/libpng/LICENSE;md5=b0085051bf265bac2bfc38bc89f50000 \
@@ -157,9 +157,6 @@ LIC_FILES_CHKSUM = "\
   file://${S}/v8/LICENSE.fdlibm;md5=b17367d6c97e638599071d99a3049dfe \
   file://${S}/v8/LICENSE.strongtalk;md5=956a43818dd13f2e93088fc2c93589d2 \
 "
-# Backported from upstream
-SRC_URI += " file://0001-libstdc-fix-incomplete-type-of-blink-WebURLLoaderFac.patch "
-
 # Runtime fix for Chromecast crash
 SRC_URI += " file://0001-Workaround-crash-in-cast-message-handling.patch "
 
