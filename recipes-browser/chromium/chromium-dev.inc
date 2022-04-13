@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "101.0.4951.15"
+PV = "102.0.4987.0"
 
-SRC_URI[sha256sum] = "de985afe7ec748d6322ed2f53d53adca265c5e235820f0026c34fe677e05a7be"
+SRC_URI[sha256sum] = "fe5f3c7a688b2020ec4aa42ee75f5a330f1237f8bec2ba17879403d56ad54667"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -76,7 +76,7 @@ LIC_FILES_CHKSUM = "\
   file://${S}/third_party/decklink/LICENSE;md5=85b197f7b7b1ef270b01a1b6377be50e \
   file://${S}/third_party/dom_distiller_js/LICENSE;md5=1399a5b89c7ed8167d261770432511e8 \
   file://${S}/third_party/expat/src/expat/COPYING;md5=9e2ce3b3c4c0f2670883a23bbd7c37a9 \
-  file://${S}/third_party/ffmpeg/CREDITS.chromium;md5=59444bcdde2b97bcd19305f2f60e1b54 \
+  file://${S}/third_party/ffmpeg/CREDITS.chromium;md5=3554336ba19bba1f85e4bf7da9424f32 \
   file://${S}/third_party/flac/COPYING.Xiph;md5=a2c4b71c0198682376d483eb5bcc9197 \
   file://${S}/third_party/flatbuffers/LICENSE;md5=a873c5645c184d51e0f9b34e1d7cf559 \
   file://${S}/third_party/fontconfig/src/COPYING;md5=7a0449e9bc5370402a94c00204beca3d \
@@ -98,7 +98,6 @@ LIC_FILES_CHKSUM = "\
   file://${S}/third_party/lcov/COPYING;md5=751419260aa954499f7abaabaa882bbe \
   file://${S}/third_party/leveldatabase/src/LICENSE;md5=92d1b128950b11ba8495b64938fc164d \
   file://${S}/third_party/libFuzzer/LICENSE.TXT;md5=4c0bc17c954e99fd547528d938832bfa \
-  file://${S}/third_party/libXNVCtrl/LICENSE;md5=9e6c209899aa4986d090320bbca2fc76 \
   file://${S}/third_party/libaddressinput/LICENSE;md5=3b83ef96387f14655fc854ddc3c6bd57 \
   file://${S}/third_party/libjingle_xmpp/LICENSE;md5=ad296492125bc71530d06234d9bfebe0 \
   file://${S}/third_party/libjpeg_turbo/LICENSE.md;md5=a75feaa2de6d8942f50d412241fca1f1 \
@@ -132,7 +131,6 @@ LIC_FILES_CHKSUM = "\
   file://${S}/third_party/pylint/pylint/LICENSE.txt;md5=4325afd396febcb659c36b49533135d4 \
   file://${S}/third_party/qcms/src/COPYING;md5=65636fa951328d3be95f6047ec3936ce \
   file://${S}/third_party/re2/LICENSE;md5=3b5c31eb512bdf3cb11ffd5713963760 \
-  file://${S}/third_party/shaderc/src/LICENSE;md5=86d3f3a95c324c9479bd8986968f4327 \
   file://${S}/third_party/simplejson/LICENSE.txt;md5=8a9f8dcfcd28c34daa443e5b1d29813b \
   file://${S}/third_party/skia/LICENSE;md5=822f02cc7736281816581cd064afbb1c \
   file://${S}/third_party/smhasher/LICENSE;md5=0d948322ab524e2b74f55eb8ef57c74a \
@@ -142,7 +140,6 @@ LIC_FILES_CHKSUM = "\
   file://${S}/third_party/sudden_motion_sensor/LICENSE;md5=6f89397ba4dda73a940f27f76e9ad9d4 \
   file://${S}/third_party/swiftshader/LICENSE.txt;md5=d273d63619c9aeaf15cdaf76422c4f87 \
   file://${S}/third_party/usb_ids/LICENSE;md5=8f694e3758e3e57a5223bfa2bf29d452 \
-  file://${S}/third_party/usrsctp/LICENSE;md5=d8ad24c2ddd0e7bc1b0a6e4c7c80443e \
   file://${S}/third_party/v4l-utils/COPYING.libv4l;md5=d749e86a105281d7a44c2328acebc4b0 \
   file://${S}/third_party/wayland-protocols/src/COPYING;md5=c7b12b6702da38ca028ace54aae3d484 \
   file://${S}/third_party/wayland/src/COPYING;md5=b31d8f53b6aaf2b4985d7dd7810a70d1 \
@@ -156,6 +153,16 @@ LIC_FILES_CHKSUM = "\
   file://${S}/v8/LICENSE;md5=6611673a9587a522034a4be8f4df564c \
   file://${S}/v8/LICENSE.fdlibm;md5=b17367d6c97e638599071d99a3049dfe \
   file://${S}/v8/LICENSE.strongtalk;md5=956a43818dd13f2e93088fc2c93589d2 \
+"
+
+# Workaround for https://crbug.com/1313361 breaking GN configuration because of
+# missing files
+SRC_URI += " file://0001-Workaround-do-not-depend-on-infra-orchestrator.patch "
+
+# Upstream backports
+SRC_URI += " \
+  file://0001-Fix-commit-build-rule-to-use-empty-hash-and-not-thro.patch;patchdir=third_party/dawn \
+  file://0001-IWYU-add-memory-for-std-unique_ptr-in-view_utils.patch \
 "
 
 # Runtime fix for Chromecast crash
