@@ -311,9 +311,6 @@ do_install() {
 	install -m 0644 resources.pak ${D}${libdir}/chromium/resources.pak
 
 	install -m 0644 locales/*.pak ${D}${libdir}/chromium/locales/
-
-        install -d ${D}${libdir}/chromium/swiftshader
-        install -m 0755 swiftshader/* ${D}${libdir}/chromium/swiftshader
 }
 
 # Swiftshader libraries installed in chromium libdir do not have versioning

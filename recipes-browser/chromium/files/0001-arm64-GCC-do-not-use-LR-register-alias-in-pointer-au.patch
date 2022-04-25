@@ -1,0 +1,46 @@
+From 89250b013f05a4ffada7e51f9a2497db0b9eea0f Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Mon, 25 Apr 2022 12:18:42 +0200
+Subject: [arm64] GCC: do not use LR register alias in pointer authentication
+
+GCC does not support in its inline asm using lr as the register alias
+for x30. To fix that, just use x30 instead.
+
+Bug: chromium:819294
+---
+ src/execution/arm64/pointer-authentication-arm64.h | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
+
+diff --git a/src/execution/arm64/pointer-authentication-arm64.h b/src/execution/arm64/pointer-authentication-arm64.h
+index 3ac184ee72..a2811cb1c0 100644
+--- a/src/execution/arm64/pointer-authentication-arm64.h
++++ b/src/execution/arm64/pointer-authentication-arm64.h
+@@ -43,19 +43,20 @@ V8_INLINE Address PointerAuthentication::AuthenticatePC(
+ }
+ 
+ // Strip Pointer Authentication Code (PAC) from {pc} and return the raw value.
++// Do not use lr register alias as it is not supported in GCC, just use x30
+ V8_INLINE Address PointerAuthentication::StripPAC(Address pc) {
+ #ifdef USE_SIMULATOR
+   return Simulator::StripPAC(pc, Simulator::kInstructionPointer);
+ #else
+   asm volatile(
+-      "  mov x16, lr\n"
+-      "  mov lr, %[pc]\n"
++      "  mov x16, x30\n"
++      "  mov x30, %[pc]\n"
+       "  xpaclri\n"
+-      "  mov %[pc], lr\n"
+-      "  mov lr, x16\n"
++      "  mov %[pc], x30\n"
++      "  mov x30, x16\n"
+       : [pc] "+r"(pc)
+       :
+-      : "x16", "lr");
++      : "x16", "x30");
+   return pc;
+ #endif
+ }
+-- 
+2.32.0
+
