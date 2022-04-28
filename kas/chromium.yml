@@ -5,7 +5,7 @@ target: core-image-weston
 
 defaults:
   repos:
-    refspec: honister
+    refspec: kirkstone
 
 repos:
   meta-chromium:

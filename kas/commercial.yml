@@ -3,5 +3,5 @@ header:
 
 local_conf_header:
   chromium_commercial: |
-    LICENSE_FLAGS_WHITELIST:append = " commercial_x264 commercial_ffmpeg commercial_faad2"
+    LICENSE_FLAGS_ACCEPTED:append = " commercial_x264 commercial_ffmpeg commercial_faad2"
     PACKAGECONFIG:append:pn-chromium-dev = " proprietary-codecs "
