@@ -5,6 +5,7 @@ DEPENDS = "\
     ca-certificates-native \
     curl \
     gn-native \
+    gperf-native \
     gtk+3 \
     ninja-native \
     nodejs-native \

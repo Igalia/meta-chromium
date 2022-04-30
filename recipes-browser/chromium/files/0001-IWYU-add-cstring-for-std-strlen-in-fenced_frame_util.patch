@@ -1,0 +1,27 @@
+From ca1ac4d6ddd09f8054a8d5640af29ed8f01897f5 Mon Sep 17 00:00:00 2001
+From: Stephan Hartmann <stha09@googlemail.com>
+Date: Thu, 28 Apr 2022 11:38:36 +0200
+Subject: IWYU: add cstring for std::strlen in fenced_frame_utils
+
+Bug: 957519
+Change-Id: Ie886531bc4115f280ca109819c6515ae20ea7115
+---
+ third_party/blink/common/fenced_frame/fenced_frame_utils.cc | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/third_party/blink/common/fenced_frame/fenced_frame_utils.cc b/third_party/blink/common/fenced_frame/fenced_frame_utils.cc
+index 9e2d3ad5d8877..68f48237e1eb9 100644
+--- a/third_party/blink/common/fenced_frame/fenced_frame_utils.cc
++++ b/third_party/blink/common/fenced_frame/fenced_frame_utils.cc
+@@ -4,6 +4,8 @@
+ 
+ #include "third_party/blink/public/common/fenced_frame/fenced_frame_utils.h"
+ 
++#include <cstring>
++
+ #include "base/guid.h"
+ #include "base/strings/string_util.h"
+ 
+-- 
+2.32.0
+

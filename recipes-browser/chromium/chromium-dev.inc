@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "102.0.5005.22"
+PV = "103.0.5028.0"
 
-SRC_URI[sha256sum] = "cae147aeab7212ed99f3c26baa78d64160d1e8341c895a47c84785a331e2448b"
+SRC_URI[sha256sum] = "66e2bdce4989330401475f2c08d922066f0ccb0750072a977b85c6dcf49b261a"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -89,7 +89,7 @@ LIC_FILES_CHKSUM = "\
   file://${S}/third_party/hunspell/COPYING.MPL;md5=bfe1f75d606912a4111c90743d6c7325 \
   file://${S}/third_party/iaccessible2/LICENSE;md5=43bbd0bfb581347ec10def720000a645 \
   file://${S}/third_party/iccjpeg/LICENSE;md5=26834d132689a03abf860f4572705494 \
-  file://${S}/third_party/icu/LICENSE;md5=dc9d616e558490c389609a0e8b81ae6d \
+  file://${S}/third_party/icu/LICENSE;md5=a89d03060ff9c46552434dbd1fe3ed1f \
   file://${S}/third_party/inspector_protocol/LICENSE;md5=db90dcb101891a7285d25f2fbceca752 \
   file://${S}/third_party/isimpledom/LICENSE;md5=822502c0e010ccdbb6a3e681dd47888e \
   file://${S}/third_party/jsoncpp/LICENSE;md5=c56ee55c03a55f8105b969d8270632ce \
@@ -159,8 +159,14 @@ LIC_FILES_CHKSUM = "\
 # missing files
 SRC_URI += " file://0001-Workaround-do-not-depend-on-infra-orchestrator.patch "
 
+# Upstream fixes
+SRC_URI += " file://0001-GCC-fix-ambiguous-references-in-QueryProcessor.patch "
+
 # Upstreamable fixes
-SRC_URI += " file://0001-arm64-GCC-do-not-use-LR-register-alias-in-pointer-au.patch;patchdir=v8 "
+SRC_URI += " \
+  file://0001-arm64-GCC-do-not-use-LR-register-alias-in-pointer-au.patch;patchdir=v8 \
+  file://0001-IWYU-add-cstring-for-std-strlen-in-fenced_frame_util.patch \
+"
 
 # Runtime fix for Chromecast crash
 SRC_URI += " file://0001-Workaround-crash-in-cast-message-handling.patch "
