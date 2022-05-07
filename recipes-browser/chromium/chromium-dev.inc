@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "103.0.5028.0"
+PV = "103.0.5042.0"
 
-SRC_URI[sha256sum] = "66e2bdce4989330401475f2c08d922066f0ccb0750072a977b85c6dcf49b261a"
+SRC_URI[sha256sum] = "b09865a3dd8ebc81f9e4ca3edf2c626f4558f733c145c84f07eb21e76aa8a872"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -148,7 +148,7 @@ LIC_FILES_CHKSUM = "\
   file://${S}/third_party/woff2/LICENSE;md5=027c71da9e4664fdf192e6ec615f4d18 \
   file://${S}/third_party/wtl/Ms-PL.txt;md5=1d2c3cdd7e748a6bc4213321d9157c5a \
   file://${S}/third_party/xdg-utils/LICENSE;md5=a5367a90934098d6b05af3b746405014 \
-  file://${S}/third_party/zlib/LICENSE;md5=f09575dbfb09420642318b413159496f \
+  file://${S}/third_party/zlib/LICENSE;md5=8c75f2b4df47a77f9445315a9500cd1c \
   file://${S}/url/third_party/mozilla/LICENSE.txt;md5=437ced1e9b232651b0912a9594da43b2 \
   file://${S}/v8/LICENSE;md5=6611673a9587a522034a4be8f4df564c \
   file://${S}/v8/LICENSE.fdlibm;md5=b17367d6c97e638599071d99a3049dfe \
@@ -159,8 +159,8 @@ LIC_FILES_CHKSUM = "\
 # missing files
 SRC_URI += " file://0001-Workaround-do-not-depend-on-infra-orchestrator.patch "
 
-# Upstream fixes
-SRC_URI += " file://0001-GCC-fix-ambiguous-references-in-QueryProcessor.patch "
+# Upstream backports
+SRC_URI += " file://0001-IWYU-returning-unique_ptr-of-WebContentsViewDelegate.patch "
 
 # Upstreamable fixes
 SRC_URI += " \
