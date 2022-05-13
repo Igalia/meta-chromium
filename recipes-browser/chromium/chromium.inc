@@ -65,8 +65,8 @@ PACKAGECONFIG[wayland] = "ozone_platform_wayland=true,ozone_platform_wayland=fal
 
 # Compile with X11 support
 PACKAGECONFIG[x11] = "\
-    use_x11=true ozone_platform_x11=true,\
-    use_x11=false ozone_platform_x11=false,\
+    ozone_platform_x11=true,\
+    ozone_platform_x11=false,\
     libx11 libxcomposite libxcursor libxdamage libxext libxfixes libxi libxrandr libxrender libxscrnsaver libxtst\
 "
 
