@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "103.0.5042.0"
+PV = "103.0.5055.0"
 
-SRC_URI[sha256sum] = "b09865a3dd8ebc81f9e4ca3edf2c626f4558f733c145c84f07eb21e76aa8a872"
+SRC_URI[sha256sum] = "47422f96874d3ee0344b781c380c01edf4c94cb71670a47851c0b5a73b5ccd53"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -159,14 +159,11 @@ LIC_FILES_CHKSUM = "\
 # missing files
 SRC_URI += " file://0001-Workaround-do-not-depend-on-infra-orchestrator.patch "
 
-# Upstream backports
-SRC_URI += " file://0001-IWYU-returning-unique_ptr-of-WebContentsViewDelegate.patch "
-
 # Upstreamable fixes
-SRC_URI += " \
-  file://0001-arm64-GCC-do-not-use-LR-register-alias-in-pointer-au.patch;patchdir=v8 \
-  file://0001-IWYU-add-cstring-for-std-strlen-in-fenced_frame_util.patch \
-"
+SRC_URI += " file://0001-arm64-GCC-do-not-use-LR-register-alias-in-pointer-au.patch;patchdir=v8 "
+
+# Upstream fixes
+SRC_URI += " file://0001-add-stddef.h-for-function-offsetof.patch "
 
 # Runtime fix for Chromecast crash
 SRC_URI += " file://0001-Workaround-crash-in-cast-message-handling.patch "
