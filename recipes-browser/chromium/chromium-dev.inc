@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "103.0.5060.13"
+PV = "104.0.5098.0"
 
-SRC_URI[sha256sum] = "2d26c3a2f9b8be13b29213295d998eed53eefb81c3d2a3be60dd135e5d53f6f8"
+SRC_URI[sha256sum] = "12067ea955de21fa3bbf10ba6935cefecdd7286d9f09ed402dc58a2b8dffbac0"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -160,13 +160,10 @@ LIC_FILES_CHKSUM = "\
 SRC_URI += " file://0001-Workaround-do-not-depend-on-infra-orchestrator.patch "
 
 # Upstreamable fixes
-SRC_URI += " file://0001-arm64-GCC-do-not-use-LR-register-alias-in-pointer-au.patch;patchdir=v8 "
-
-# Upstream fixes
 SRC_URI += " \
-  file://0001-add-stddef.h-for-function-offsetof.patch \
-  file://0001-Make-AhoCorasickNode-4-aligned.patch \
-  file://0001-GCC-fix-ambiguous-references-in-blink-FrameLoadReque.patch \
+  file://0001-arm64-GCC-do-not-use-LR-register-alias-in-pointer-au.patch;patchdir=v8 \
+  file://0001-libstdc-Fix-incomplete-type-of-cast_streaming-Resour.patch \
+  file://0001-GCC-fix-compilation-of-NEON64-extract_first_nonzero_.patch;patchdir=v8 \
 "
 
 # Runtime fix for Chromecast crash
