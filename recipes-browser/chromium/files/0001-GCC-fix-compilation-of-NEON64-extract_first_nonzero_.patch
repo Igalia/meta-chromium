@@ -1,12 +1,20 @@
-From 992d05fbc3b7a786da70c3ba14ccfe62d35e6899 Mon Sep 17 00:00:00 2001
+From 0fc6592cf8867f0cd6d8d41b43392fb52d359649 Mon Sep 17 00:00:00 2001
 From: Jose Dapena Paz <jdapena@igalia.com>
 Date: Tue, 7 Jun 2022 15:44:35 +0200
 Subject: GCC: fix compilation of NEON64 extract_first_nonzero_index
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
 GCC fails to compile extract_first_nonzero_index because of the
 signedness type mismatch in the NEON intrinsics.
 
 Bug: chromium:819294
+Change-Id: I9b73e5fa1d5fbf161740ab1b5d77f5c494369dfa
+Reviewed-on: https://chromium-review.googlesource.com/c/v8/v8/+/3693709
+Reviewed-by: Toon Verwaest <verwaest@chromium.org>
+Commit-Queue: José Dapena Paz <jdapena@igalia.com>
+Cr-Commit-Position: refs/heads/main@{#81063}
 ---
  src/objects/simd.cc | 27 ++++++++++++---------------
  1 file changed, 12 insertions(+), 15 deletions(-)
