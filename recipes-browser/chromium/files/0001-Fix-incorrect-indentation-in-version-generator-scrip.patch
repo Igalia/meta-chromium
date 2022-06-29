@@ -1,0 +1,41 @@
+From 7223a5e7c9e122179e17f4faab6115e116c7ced3 Mon Sep 17 00:00:00 2001
+From: Loko Kung <lokokung@google.com>
+Date: Thu, 23 Jun 2022 01:14:24 +0000
+Subject: Fix incorrect indentation in version generator script.
+
+Bug: dawn:549
+Change-Id: I6eaa61c8339114fc3692251f263dea65816b618e
+Reviewed-on: https://dawn-review.googlesource.com/c/dawn/+/94528
+Commit-Queue: Austin Eng <enga@chromium.org>
+Kokoro: Kokoro <noreply+kokoro@google.com>
+Auto-Submit: Loko Kung <lokokung@google.com>
+Reviewed-by: Austin Eng <enga@chromium.org>
+---
+ generator/dawn_version_generator.py | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
+
+diff --git a/generator/dawn_version_generator.py b/generator/dawn_version_generator.py
+index c3c95475e..96d61291f 100644
+--- a/generator/dawn_version_generator.py
++++ b/generator/dawn_version_generator.py
+@@ -127,13 +127,12 @@ class DawnVersionGenerator(Generator):
+         if version_file:
+             return [version_file]
+         if git_exists(dawn_dir):
+-            deps = []
+             try:
+-                deps += [get_git_head(dawn_dir)
+-                         ] + get_git_resolved_head(dawn_dir)
++                return [get_git_head(dawn_dir)
++                        ] + get_git_resolved_head(dawn_dir)
+             except Exception:
+-                return deps
+-        return deps
++                return []
++        return []
+ 
+     def get_file_renders(self, args):
+         params = compute_params(args)
+-- 
+2.34.1
+
