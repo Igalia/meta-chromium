@@ -1,0 +1,43 @@
+From cb56277a17697d45ee3435d28f01e573270e7ae4 Mon Sep 17 00:00:00 2001
+From: Stephan Hartmann <stha09@googlemail.com>
+Date: Thu, 7 Jul 2022 20:44:37 +0200
+Subject: libstdc++: add missing atomic include for std::atomic
+
+Bug: chromium:957519
+Change-Id: I93242198ef8277d5f4d6044fb565d3126768b514
+Reviewed-on: https://webrtc-review.googlesource.com/c/src/+/268187
+Commit-Queue: Philipp Hancke <philipp.hancke@googlemail.com>
+Reviewed-by: Tomas Gunnarsson <tommi@webrtc.org>
+Cr-Commit-Position: refs/heads/main@{#37504}
+---
+ modules/audio_processing/aec3/render_delay_buffer.cc     | 1 +
+ modules/audio_processing/aec3/render_delay_controller.cc | 1 +
+ 2 files changed, 2 insertions(+)
+
+diff --git a/modules/audio_processing/aec3/render_delay_buffer.cc b/modules/audio_processing/aec3/render_delay_buffer.cc
+index 05791216a5..ec5d35507e 100644
+--- a/modules/audio_processing/aec3/render_delay_buffer.cc
++++ b/modules/audio_processing/aec3/render_delay_buffer.cc
+@@ -13,6 +13,7 @@
+ #include <string.h>
+ 
+ #include <algorithm>
++#include <atomic>
+ #include <cmath>
+ #include <memory>
+ #include <numeric>
+diff --git a/modules/audio_processing/aec3/render_delay_controller.cc b/modules/audio_processing/aec3/render_delay_controller.cc
+index 826c38a1e9..7fd2868c38 100644
+--- a/modules/audio_processing/aec3/render_delay_controller.cc
++++ b/modules/audio_processing/aec3/render_delay_controller.cc
+@@ -12,6 +12,7 @@
+ #include <stddef.h>
+ 
+ #include <algorithm>
++#include <atomic>
+ #include <memory>
+ 
+ #include "absl/types/optional.h"
+-- 
+2.34.1
+

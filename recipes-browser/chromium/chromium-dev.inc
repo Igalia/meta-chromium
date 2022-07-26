@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "104.0.5110.0"
+PV = "105.0.5176.3"
 
-SRC_URI[sha256sum] = "c1ed36985972de7647b9528dbdc6a2b486cf00e65d100c98acd34b0bf3e40d8b"
+SRC_URI[sha256sum] = "de9df8fee1b7928a5d759748dd66ada349b7ee3d872044dd1eedd8e0378ced87"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -23,7 +23,6 @@ LIC_FILES_CHKSUM = "\
   file://${S}/base/third_party/cityhash/COPYING;md5=f714c995c5bd9b175938acdd69226b60 \
   file://${S}/base/third_party/double_conversion/LICENSE;md5=1ea35644f0ec0d9767897115667e901f \
   file://${S}/base/third_party/dynamic_annotations/LICENSE;md5=b6bd7011ecc1a4f7ac3525589f45e565 \
-  file://${S}/base/third_party/libevent/LICENSE;md5=a2b0302a710150293fb85d2bfabd3de6 \
   file://${S}/base/third_party/nspr/LICENSE;md5=0806173dfb7e6d060074595e968fd02e \
   file://${S}/base/third_party/superfasthash/LICENSE;md5=c66981f8ad23c9f279a5b9e07385128c \
   file://${S}/base/third_party/symbolize/LICENSE;md5=17ae3b22fe8fa438966625593e2eea85 \
@@ -97,6 +96,7 @@ LIC_FILES_CHKSUM = "\
   file://${S}/third_party/khronos/LICENSE;md5=1d2ef853a9ae7ace4e16fda0d48f597b \
   file://${S}/third_party/lcov/COPYING;md5=751419260aa954499f7abaabaa882bbe \
   file://${S}/third_party/leveldatabase/src/LICENSE;md5=92d1b128950b11ba8495b64938fc164d \
+  file://${S}/third_party/libevent/LICENSE;md5=a2b0302a710150293fb85d2bfabd3de6 \
   file://${S}/third_party/libFuzzer/LICENSE.TXT;md5=4c0bc17c954e99fd547528d938832bfa \
   file://${S}/third_party/libaddressinput/LICENSE;md5=3b83ef96387f14655fc854ddc3c6bd57 \
   file://${S}/third_party/libjingle_xmpp/LICENSE;md5=ad296492125bc71530d06234d9bfebe0 \
@@ -160,12 +160,15 @@ LIC_FILES_CHKSUM = "\
 SRC_URI += " file://0001-Workaround-do-not-depend-on-infra-orchestrator.patch "
 
 # Upstream patches
-SRC_URI += " file://0001-GCC-fix-compilation-of-NEON64-extract_first_nonzero_.patch;patchdir=v8 "
+SRC_URI += " \
+  file://0001-libstdc-add-missing-atomic-include-for-std-atomic.patch;patchdir=third_party/webrtc \
+  file://0001-libstdc-fix-incomplete-type-of-media-ScreenEnumerato.patch \
+"
 
 # Upstreamable patches
 SRC_URI += " \
-  file://0001-arm64-GCC-do-not-use-LR-register-alias-in-pointer-au.patch;patchdir=v8 \
-  file://0001-libstdc-Fix-incomplete-type-of-cast_streaming-Resour.patch \
+  file://0001-Wayland-do-not-use-GN-wayland-includes-if-use_system.patch;patchdir=third_party/angle \
+  file://0001-GCC-do-not-break-compilation-enabling-BTI.patch;patchdir=v8 \
 "
 
 # Runtime fix for Chromecast crash
