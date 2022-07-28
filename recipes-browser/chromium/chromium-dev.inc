@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "105.0.5176.3"
+PV = "105.0.5191.2"
 
-SRC_URI[sha256sum] = "de9df8fee1b7928a5d759748dd66ada349b7ee3d872044dd1eedd8e0378ced87"
+SRC_URI[sha256sum] = "52552793fb08fc7dd79a946e481135804fdd6af5d6251f252e22c0e0d557cfed"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -16,7 +16,7 @@ SRC_URI[sha256sum] = "de9df8fee1b7928a5d759748dd66ada349b7ee3d872044dd1eedd8e037
 # LICENSE does not cover all the licenses in LIC_FILES_CHKSUM; instead, it
 # currently contains Chromium's license (BSD-3-Clause) as well as Blink's
 # (LGPL2.0, LGPL2.1 and BSD-2-Clause).
-LICENSE = "BSD-3-Clause & LGPL-2.0 & LGPL-2.1"
+LICENSE = "BSD-3-Clause & LGPL-2.0-only & LGPL-2.1-only"
 LIC_FILES_CHKSUM = "\
   file://${S}/LICENSE;md5=0fca02217a5d49a14dfe2d11837bb34d \
   file://${S}/LICENSE.chromium_os;md5=87dd8458232da630f5617873d42d8350 \
@@ -158,12 +158,6 @@ LIC_FILES_CHKSUM = "\
 # Workaround for https://crbug.com/1313361 breaking GN configuration because of
 # missing files
 SRC_URI += " file://0001-Workaround-do-not-depend-on-infra-orchestrator.patch "
-
-# Upstream patches
-SRC_URI += " \
-  file://0001-libstdc-add-missing-atomic-include-for-std-atomic.patch;patchdir=third_party/webrtc \
-  file://0001-libstdc-fix-incomplete-type-of-media-ScreenEnumerato.patch \
-"
 
 # Upstreamable patches
 SRC_URI += " \
