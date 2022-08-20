@@ -1,0 +1,31 @@
+From 47b82b2fbabc8b2eab0cb69a6a357769b118028e Mon Sep 17 00:00:00 2001
+From: Stephan Hartmann <stha09@googlemail.com>
+Date: Thu, 11 Aug 2022 18:18:49 +0000
+Subject: IWYU: add algorithm for std::find in PowerBookmarkService
+
+Bug: 957519
+Change-Id: I93d07fb87160b7b5ae9e39f45d3cf961ceca271f
+Reviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/3827823
+Reviewed-by: Matthew Jones <mdjones@chromium.org>
+Commit-Queue: Stephan Hartmann <stha09@googlemail.com>
+Cr-Commit-Position: refs/heads/main@{#1034088}
+---
+ components/power_bookmarks/core/power_bookmark_service.cc | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/components/power_bookmarks/core/power_bookmark_service.cc b/components/power_bookmarks/core/power_bookmark_service.cc
+index 7b9b35a5de6a0..3b733b5184bf0 100644
+--- a/components/power_bookmarks/core/power_bookmark_service.cc
++++ b/components/power_bookmarks/core/power_bookmark_service.cc
+@@ -4,6 +4,8 @@
+ 
+ #include "components/power_bookmarks/core/power_bookmark_service.h"
+ 
++#include <algorithm>
++
+ namespace power_bookmarks {
+ 
+ PowerBookmarkService::PowerBookmarkService() = default;
+-- 
+2.34.1
+

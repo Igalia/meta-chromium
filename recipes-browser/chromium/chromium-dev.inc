@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "105.0.5191.2"
+PV = "106.0.5231.2"
 
-SRC_URI[sha256sum] = "52552793fb08fc7dd79a946e481135804fdd6af5d6251f252e22c0e0d557cfed"
+SRC_URI[sha256sum] = "e6dace48aae67a3d1110213a8c8ff3e57098ef3cecce81e616ac4a80ac55cf33"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -158,6 +158,9 @@ LIC_FILES_CHKSUM = "\
 # Workaround for https://crbug.com/1313361 breaking GN configuration because of
 # missing files
 SRC_URI += " file://0001-Workaround-do-not-depend-on-infra-orchestrator.patch "
+
+# Upstream patches
+SRC_URI += " file://0001-IWYU-add-algorithm-for-std-find-in-PowerBookmarkServ.patch "
 
 # Upstreamable patches
 SRC_URI += " \
