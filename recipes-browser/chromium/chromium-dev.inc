@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "106.0.5249.12"
+PV = "106.0.5249.21"
 
-SRC_URI[sha256sum] = "beb8d32a93b1fef1d3784e3a48a974a519562ec95560f9ad6e6efca173b2382f"
+SRC_URI[sha256sum] = "9b56eb07f9a2c08f135eb7e481d6db9dd026e6cb1568a5600e5d6a52b2507034"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -163,6 +163,7 @@ SRC_URI += " file://0001-Workaround-do-not-depend-on-infra-orchestrator.patch "
 SRC_URI += " \
   file://0001-Wayland-do-not-use-GN-wayland-includes-if-use_system.patch;patchdir=third_party/angle \
   file://0001-GCC-do-not-break-compilation-enabling-BTI.patch;patchdir=v8 \
+  file://0001-libstdc-do-not-make-ReverseBeaconTimeoutSorter-funct.patch \
 "
 
 # Runtime fix for Chromecast crash

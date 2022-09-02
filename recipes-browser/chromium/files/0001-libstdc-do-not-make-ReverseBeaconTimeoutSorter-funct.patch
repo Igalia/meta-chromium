@@ -1,0 +1,36 @@
+From 420ffa4a76ac6758b024e2a3180408af0fb1cb2a Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Wed, 31 Aug 2022 20:14:23 +0200
+Subject: libstdc++: do not make ReverseBeaconTimeoutSorter function call
+ operator constexpr
+
+In C++17 STL, std::sort is not a constexpr in any case. So we do
+not get any benefit from making ReverseBeaconTimeoutSorter a
+constexpr. This will fail, as in GCC the function call operator is
+implicitely virtual, and virtuals cannot be constexpr before C++20.
+
+Bug: 819294, 957519
+Change-Id: I596f7ea9acb7747f4816b59a86ba794f16e195b2
+---
+ .../blink/renderer/core/frame/pending_beacon_dispatcher.cc   | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/third_party/blink/renderer/core/frame/pending_beacon_dispatcher.cc b/third_party/blink/renderer/core/frame/pending_beacon_dispatcher.cc
+index 777921b9b5fda..aef913ae85059 100644
+--- a/third_party/blink/renderer/core/frame/pending_beacon_dispatcher.cc
++++ b/third_party/blink/renderer/core/frame/pending_beacon_dispatcher.cc
+@@ -25,9 +25,8 @@ namespace {
+ constexpr base::TimeDelta kBeaconTimeoutInterval = base::Milliseconds(100);
+ 
+ struct ReverseBeaconTimeoutSorter {
+-  constexpr bool operator()(
+-      const Member<PendingBeaconDispatcher::PendingBeacon>& lhs,
+-      const Member<PendingBeaconDispatcher::PendingBeacon>& rhs) {
++  bool operator()(const Member<PendingBeaconDispatcher::PendingBeacon>& lhs,
++                  const Member<PendingBeaconDispatcher::PendingBeacon>& rhs) {
+     // Negative timeout is not accepted.
+     DCHECK(!lhs->GetBackgroundTimeout().is_negative());
+     DCHECK(!rhs->GetBackgroundTimeout().is_negative());
+-- 
+2.34.1
+
