@@ -1,0 +1,38 @@
+From cc371918095c22257d1f8d311304e6736562cf21 Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Wed, 7 Sep 2022 18:37:17 +0200
+Subject: IWYU: missing include for std::unique_lock in wasm module-compiler.cc
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Fix build error:
+    ../../v8/src/wasm/module-compiler.cc:147:10: error: ‘unique_lock’ is not a member of ‘std’
+      147 |     std::unique_lock<std::shared_mutex> queues_guard{queues_mutex_};
+          |          ^~~~~~~~~~~
+
+Bug: chromium:957519
+Change-Id: I0d14730d5b8dd76820fcc0a47d66ab0bd3e38f24
+Reviewed-on: https://chromium-review.googlesource.com/c/v8/v8/+/3880498
+Commit-Queue: Jakob Kummerow <jkummerow@chromium.org>
+Reviewed-by: Jakob Kummerow <jkummerow@chromium.org>
+Cr-Commit-Position: refs/heads/main@{#83189}
+---
+ src/wasm/module-compiler.cc | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/wasm/module-compiler.cc b/src/wasm/module-compiler.cc
+index d3f56a9517..55806d5141 100644
+--- a/src/wasm/module-compiler.cc
++++ b/src/wasm/module-compiler.cc
+@@ -5,6 +5,7 @@
+ #include "src/wasm/module-compiler.h"
+ 
+ #include <algorithm>
++#include <mutex>  // NOLINT(build/c++11)
+ #include <queue>
+ #include <shared_mutex>
+ 
+-- 
+2.34.1
+

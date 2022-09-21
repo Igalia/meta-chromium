@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "106.0.5249.21"
+PV = "107.0.5300.0"
 
-SRC_URI[sha256sum] = "9b56eb07f9a2c08f135eb7e481d6db9dd026e6cb1568a5600e5d6a52b2507034"
+SRC_URI[sha256sum] = "dbae90e8cd53b8a89151608c640c0ca18f964c5976e771a3fad3bca4aa4e05c0"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -18,8 +18,8 @@ SRC_URI[sha256sum] = "9b56eb07f9a2c08f135eb7e481d6db9dd026e6cb1568a5600e5d6a52b2
 # (LGPL2.0, LGPL2.1 and BSD-2-Clause).
 LICENSE = "BSD-3-Clause & LGPL-2.0-only & LGPL-2.1-only"
 LIC_FILES_CHKSUM = "\
-  file://${S}/LICENSE;md5=0fca02217a5d49a14dfe2d11837bb34d \
-  file://${S}/LICENSE.chromium_os;md5=87dd8458232da630f5617873d42d8350 \
+  file://${S}/LICENSE;md5=c408a301e3407c3803499ce9290515d6 \
+  file://${S}/LICENSE.chromium_os;md5=775979d3e1e3bf163e4882e231727de5 \
   file://${S}/base/third_party/cityhash/COPYING;md5=f714c995c5bd9b175938acdd69226b60 \
   file://${S}/base/third_party/double_conversion/LICENSE;md5=1ea35644f0ec0d9767897115667e901f \
   file://${S}/base/third_party/dynamic_annotations/LICENSE;md5=b6bd7011ecc1a4f7ac3525589f45e565 \
@@ -150,20 +150,19 @@ LIC_FILES_CHKSUM = "\
   file://${S}/third_party/xdg-utils/LICENSE;md5=a5367a90934098d6b05af3b746405014 \
   file://${S}/third_party/zlib/LICENSE;md5=8c75f2b4df47a77f9445315a9500cd1c \
   file://${S}/url/third_party/mozilla/LICENSE.txt;md5=437ced1e9b232651b0912a9594da43b2 \
-  file://${S}/v8/LICENSE;md5=6611673a9587a522034a4be8f4df564c \
+  file://${S}/v8/LICENSE;md5=f38a2942edcfe4abb45e9a83a1ad2f82 \
   file://${S}/v8/LICENSE.fdlibm;md5=b17367d6c97e638599071d99a3049dfe \
   file://${S}/v8/LICENSE.strongtalk;md5=956a43818dd13f2e93088fc2c93589d2 \
 "
 
-# Workaround for https://crbug.com/1313361 breaking GN configuration because of
-# missing files
-SRC_URI += " file://0001-Workaround-do-not-depend-on-infra-orchestrator.patch "
+# Upstream patches
+SRC_URI += " file://0001-IWYU-missing-include-for-std-unique_lock-in-wasm-mod.patch;patchdir=v8 "
 
 # Upstreamable patches
 SRC_URI += " \
   file://0001-Wayland-do-not-use-GN-wayland-includes-if-use_system.patch;patchdir=third_party/angle \
   file://0001-GCC-do-not-break-compilation-enabling-BTI.patch;patchdir=v8 \
-  file://0001-libstdc-do-not-make-ReverseBeaconTimeoutSorter-funct.patch \
+  file://0001-zlib-Fix-GCC-build-of-CRC32-extensions.patch \
 "
 
 # Runtime fix for Chromecast crash

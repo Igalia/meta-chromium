@@ -1,0 +1,46 @@
+From 1cfafda9fce83e9a9c6de47247ffc8ed67cc1969 Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Wed, 21 Sep 2022 10:17:08 +0200
+Subject: [zlib] Fix GCC build of CRC32 extensions
+
+Recent changes to include support for PMULL require arm_neon.h
+header. This was added for Clang, but not for GCC.
+
+Also, we need to add AES instruction set to the module level
+statement.
+
+Bug: 819294
+Change-Id: I442d5a3d3e33aa78f08f9ee1d5a4035f16b25b46
+---
+ third_party/zlib/BUILD.gn     | 2 +-
+ third_party/zlib/crc32_simd.c | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/third_party/zlib/BUILD.gn b/third_party/zlib/BUILD.gn
+index ee7483e9ef6a4..66e37a9dcf270 100644
+--- a/third_party/zlib/BUILD.gn
++++ b/third_party/zlib/BUILD.gn
+@@ -144,7 +144,7 @@ if (use_arm_neon_optimizations) {
+       if (!is_win && !is_clang) {
+         assert(!use_thin_lto,
+                "ThinLTO fails mixing different module-level targets")
+-        cflags_c = [ "-march=armv8-a+crc" ]
++        cflags_c = [ "-march=armv8-a+aes+crc" ]
+       }
+ 
+       sources = [
+diff --git a/third_party/zlib/crc32_simd.c b/third_party/zlib/crc32_simd.c
+index 14a8534220538..e94194500f1b1 100644
+--- a/third_party/zlib/crc32_simd.c
++++ b/third_party/zlib/crc32_simd.c
+@@ -202,6 +202,7 @@ uint32_t ZLIB_INTERNAL crc32_sse42_simd_(  /* SSE4.2+PCLMUL */
+  * allowed. We can just include arm_acle.h.
+  */
+ #include <arm_acle.h>
++#include <arm_neon.h>
+ #define TARGET_ARMV8_WITH_CRC
+ #else  // !defined(__GNUC__) && !defined(_aarch64__)
+ #error ARM CRC32 SIMD extensions only supported for Clang and GCC
+-- 
+2.34.1
+

@@ -159,6 +159,10 @@ GN_ARGS += "\
     ozone_platform_headless=true \
 "
 
+# Disable QT support
+# TODO(jdapena): make this a PACKAGECONFIG
+GN_ARGS += "use_qt=false"
+
 # API keys for accessing Google services. By default, we use an invalid key
 # only to prevent the "you are missing an API key" infobar from being shown on
 # startup.
