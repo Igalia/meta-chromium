@@ -1,7 +1,10 @@
-From 1cfafda9fce83e9a9c6de47247ffc8ed67cc1969 Mon Sep 17 00:00:00 2001
+From cdf142aad5b43835fb9947293ec3bcbe886fef18 Mon Sep 17 00:00:00 2001
 From: Jose Dapena Paz <jdapena@igalia.com>
-Date: Wed, 21 Sep 2022 10:17:08 +0200
+Date: Tue, 27 Sep 2022 10:22:17 +0000
 Subject: [zlib] Fix GCC build of CRC32 extensions
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
 Recent changes to include support for PMULL require arm_neon.h
 header. This was added for Clang, but not for GCC.
@@ -11,6 +14,10 @@ statement.
 
 Bug: 819294
 Change-Id: I442d5a3d3e33aa78f08f9ee1d5a4035f16b25b46
+Reviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/3917532
+Commit-Queue: José Dapena Paz <jdapena@igalia.com>
+Reviewed-by: Adenilson Cavalcanti <cavalcantii@chromium.org>
+Cr-Commit-Position: refs/heads/main@{#1051716}
 ---
  third_party/zlib/BUILD.gn     | 2 +-
  third_party/zlib/crc32_simd.c | 1 +

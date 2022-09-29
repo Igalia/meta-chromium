@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "107.0.5300.0"
+PV = "107.0.5304.8"
 
-SRC_URI[sha256sum] = "dbae90e8cd53b8a89151608c640c0ca18f964c5976e771a3fad3bca4aa4e05c0"
+SRC_URI[sha256sum] = "1b64c9579af41530ce2dbd942da6ea88ab54011d60e31ac7cacb26aa25bd841d"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -156,13 +156,12 @@ LIC_FILES_CHKSUM = "\
 "
 
 # Upstream patches
-SRC_URI += " file://0001-IWYU-missing-include-for-std-unique_lock-in-wasm-mod.patch;patchdir=v8 "
+SRC_URI += " file://0001-zlib-Fix-GCC-build-of-CRC32-extensions.patch "
 
 # Upstreamable patches
 SRC_URI += " \
   file://0001-Wayland-do-not-use-GN-wayland-includes-if-use_system.patch;patchdir=third_party/angle \
   file://0001-GCC-do-not-break-compilation-enabling-BTI.patch;patchdir=v8 \
-  file://0001-zlib-Fix-GCC-build-of-CRC32-extensions.patch \
 "
 
 # Runtime fix for Chromecast crash
