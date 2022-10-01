@@ -1,0 +1,30 @@
+From de22fbab898ca2f36812a93830e1cedcce5803c4 Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Fri, 30 Sep 2022 12:22:52 +0200
+Subject: GCC: do not pass -mmark-bti-property in GCC ARM64 control flow
+ integrity
+
+The ASM argument -mmark-bti-property is not supported in GNU toolchain
+assembler, so it breaks the build. Only pass it for Clang.
+
+Bug: chromium:819294
+---
+ BUILD.gn | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/BUILD.gn b/BUILD.gn
+index b25e58693e..2c228ee628 100644
+--- a/BUILD.gn
++++ b/BUILD.gn
+@@ -1096,7 +1096,7 @@ config("toolchain") {
+   }
+   if (v8_current_cpu == "arm64") {
+     defines += [ "V8_TARGET_ARCH_ARM64" ]
+-    if (current_cpu == "arm64" && v8_control_flow_integrity) {
++    if (current_cpu == "arm64" && v8_control_flow_integrity && is_clang) {
+       # Mark assembly code as BTI-compatible.
+       asmflags = [ "-mmark-bti-property" ]
+     }
+-- 
+2.34.1
+

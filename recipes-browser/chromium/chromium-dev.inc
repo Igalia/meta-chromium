@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "107.0.5304.18"
+PV = "108.0.5327.0"
 
-SRC_URI[sha256sum] = "9527f1ec7e8465a7d1f2af0ca33bad3fb21d035778a7396eae717f0006ea7734"
+SRC_URI[sha256sum] = "6dff4b38b2ad3c39f4c60f81da7bd12ecfa2413afec1b2002e1328062731e191"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -54,7 +54,7 @@ LIC_FILES_CHKSUM = "\
   file://${S}/third_party/abseil-cpp/LICENSE;md5=df52c6edb7adc22e533b2bacc3bd3915 \
   file://${S}/third_party/accessibility-audit/LICENSE;md5=3b83ef96387f14655fc854ddc3c6bd57 \
   file://${S}/third_party/afl/src/docs/COPYING;md5=3b83ef96387f14655fc854ddc3c6bd57 \
-  file://${S}/third_party/android_crazy_linker/LICENSE;md5=997351b5bb1c56ca5be66be8060bb383 \
+  file://${S}/third_party/android_crazy_linker/LICENSE;md5=6ac427101b06097fd70652bb9238ca23 \
   file://${S}/third_party/android_media/LICENSE;md5=3b83ef96387f14655fc854ddc3c6bd57 \
   file://${S}/third_party/android_opengl/LICENSE;md5=d10e92761a860d4113a7a525c78daf13 \
   file://${S}/third_party/android_swipe_refresh/LICENSE;md5=3b83ef96387f14655fc854ddc3c6bd57 \
@@ -156,12 +156,12 @@ LIC_FILES_CHKSUM = "\
 "
 
 # Upstream patches
-SRC_URI += " file://0001-zlib-Fix-GCC-build-of-CRC32-extensions.patch "
+SRC_URI += " file://0001-GCC-fix-ambiguous-references-in-AutomationInternalCu.patch "
 
 # Upstreamable patches
 SRC_URI += " \
   file://0001-Wayland-do-not-use-GN-wayland-includes-if-use_system.patch;patchdir=third_party/angle \
-  file://0001-GCC-do-not-break-compilation-enabling-BTI.patch;patchdir=v8 \
+  file://0001-GCC-do-not-pass-mmark-bti-property-in-GCC-ARM64-cont.patch;patchdir=v8 \
 "
 
 # Runtime fix for Chromecast crash

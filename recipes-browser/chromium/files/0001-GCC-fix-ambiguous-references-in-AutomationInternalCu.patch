@@ -1,0 +1,50 @@
+From a3f1d3b891af7f881e2d7ab4c313036b9faff77a Mon Sep 17 00:00:00 2001
+From: Stephan Hartmann <stha09@googlemail.com>
+Date: Thu, 29 Sep 2022 18:20:27 +0000
+Subject: GCC: fix ambiguous references in AutomationInternalCustomBindings
+
+Add namespace to avoid confusion.
+
+Bug: 819294
+Change-Id: Id58b1c9603009789f19840ce620c4e8a73749109
+Reviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/3925824
+Reviewed-by: Mark Schillaci <mschillaci@google.com>
+Commit-Queue: Stephan Hartmann <stha09@googlemail.com>
+Cr-Commit-Position: refs/heads/main@{#1053077}
+---
+ .../api/automation/automation_internal_custom_bindings.cc    | 2 +-
+ .../api/automation/automation_internal_custom_bindings.h     | 5 +++--
+ 2 files changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/extensions/renderer/api/automation/automation_internal_custom_bindings.cc b/extensions/renderer/api/automation/automation_internal_custom_bindings.cc
+index a982415f28b0e..7c2d3f29c3119 100644
+--- a/extensions/renderer/api/automation/automation_internal_custom_bindings.cc
++++ b/extensions/renderer/api/automation/automation_internal_custom_bindings.cc
+@@ -1012,7 +1012,7 @@ v8::Local<v8::Context> AutomationInternalCustomBindings::GetContext() const {
+ 
+ void AutomationInternalCustomBindings::RouteHandlerFunction(
+     const std::string& name,
+-    HandlerFunction handler_function) {
++    AutomationV8Router::HandlerFunction handler_function) {
+   ObjectBackedNativeHandler::RouteHandlerFunction(name, handler_function);
+ }
+ 
+diff --git a/extensions/renderer/api/automation/automation_internal_custom_bindings.h b/extensions/renderer/api/automation/automation_internal_custom_bindings.h
+index e94a6b2a8b6a9..49642d83155ad 100644
+--- a/extensions/renderer/api/automation/automation_internal_custom_bindings.h
++++ b/extensions/renderer/api/automation/automation_internal_custom_bindings.h
+@@ -82,8 +82,9 @@ class AutomationInternalCustomBindings : public ObjectBackedNativeHandler,
+   void ThrowInvalidArgumentsException(bool is_fatal = true) const override;
+   v8::Isolate* GetIsolate() const override;
+   v8::Local<v8::Context> GetContext() const override;
+-  void RouteHandlerFunction(const std::string& name,
+-                            HandlerFunction handler_function) override;
++  void RouteHandlerFunction(
++      const std::string& name,
++      AutomationV8Router::HandlerFunction handler_function) override;
+   std::tuple<ax::mojom::Event, ui::AXEventGenerator::Event> ParseEventType(
+       const std::string& event_type) const override;
+ 
+-- 
+2.34.1
+
