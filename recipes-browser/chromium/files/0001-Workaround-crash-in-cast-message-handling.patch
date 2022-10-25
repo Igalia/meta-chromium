@@ -1,4 +1,4 @@
-From 316e4210174021c99e64f17bf5d203cea2903a3a Mon Sep 17 00:00:00 2001
+From d88f5fb6f90d8e132cc76b347abf7c8d3ee935c6 Mon Sep 17 00:00:00 2001
 From: Stephan Hartmann <stha09@googlemail.com>
 Date: Tue, 20 Jul 2021 20:40:12 +0200
 Subject: Workaround crash in cast message handling.
@@ -8,13 +8,13 @@ https://gitweb.gentoo.org/repo/gentoo.git/commit/?id=c580af0345725e2d81819433a0d
 
 Change-Id: Ib824303724c2b266c85da46610b62ae5d4efd553
 ---
- components/cast_channel/enum_table.h | 17 +++++++----------
- 1 file changed, 7 insertions(+), 10 deletions(-)
+ .../providers/cast/channel/enum_table.h       | 21 ++++++++-----------
+ 1 file changed, 9 insertions(+), 12 deletions(-)
 
-diff --git a/components/cast_channel/enum_table.h b/components/cast_channel/enum_table.h
-index aad9e0886447c..2f3fcad805edc 100644
---- a/components/cast_channel/enum_table.h
-+++ b/components/cast_channel/enum_table.h
+diff --git a/components/media_router/common/providers/cast/channel/enum_table.h b/components/media_router/common/providers/cast/channel/enum_table.h
+index 1be874b08cd22..437ecbf38d221 100644
+--- a/components/media_router/common/providers/cast/channel/enum_table.h
++++ b/components/media_router/common/providers/cast/channel/enum_table.h
 @@ -8,6 +8,7 @@
  #include <cstdint>
  #include <cstring>
@@ -22,8 +22,8 @@ index aad9e0886447c..2f3fcad805edc 100644
 +#include <vector>
  
  #include "base/check_op.h"
- #include "base/macros.h"
-@@ -188,7 +189,6 @@ class
+ #include "base/notreached.h"
+@@ -187,7 +188,6 @@ class
    inline constexpr GenericEnumTableEntry(int32_t value);
    inline constexpr GenericEnumTableEntry(int32_t value, base::StringPiece str);
  
@@ -31,7 +31,7 @@ index aad9e0886447c..2f3fcad805edc 100644
    GenericEnumTableEntry& operator=(const GenericEnumTableEntry&) = delete;
  
   private:
-@@ -254,7 +254,6 @@ class EnumTable {
+@@ -253,7 +253,6 @@ class EnumTable {
      constexpr Entry(E value, base::StringPiece str)
          : GenericEnumTableEntry(static_cast<int32_t>(value), str) {}
  
@@ -39,7 +39,7 @@ index aad9e0886447c..2f3fcad805edc 100644
      Entry& operator=(const Entry&) = delete;
    };
  
-@@ -313,15 +312,14 @@ class EnumTable {
+@@ -312,15 +311,14 @@ class EnumTable {
      if (is_sorted_) {
        const std::size_t index = static_cast<std::size_t>(value);
        if (ANALYZER_ASSUME_TRUE(index < data_.size())) {
@@ -50,24 +50,27 @@ index aad9e0886447c..2f3fcad805edc 100644
        }
        return absl::nullopt;
      }
-     return GenericEnumTableEntry::FindByValue(
+-    return GenericEnumTableEntry::FindByValue(
 -        reinterpret_cast<const GenericEnumTableEntry*>(data_.begin()),
 -        data_.size(), static_cast<int32_t>(value));
-+        &data_[0], data_.size(), static_cast<int32_t>(value));
++    return GenericEnumTableEntry::FindByValue(&data_[0], data_.size(),
++                                              static_cast<int32_t>(value));
    }
  
    // This overload of GetString is designed for cases where the argument is a
-@@ -349,8 +347,7 @@ class EnumTable {
+@@ -347,9 +345,8 @@ class EnumTable {
+   // never be called with a literal string; it's simpler to just refer to the
    // enum value directly.
    absl::optional<E> GetEnum(base::StringPiece str) const {
-     auto* entry = GenericEnumTableEntry::FindByString(
+-    auto* entry = GenericEnumTableEntry::FindByString(
 -        reinterpret_cast<const GenericEnumTableEntry*>(data_.begin()),
 -        data_.size(), str);
-+        &data_[0], data_.size(), str);
++    auto* entry =
++        GenericEnumTableEntry::FindByString(&data_[0], data_.size(), str);
      return entry ? static_cast<E>(entry->value) : absl::optional<E>();
    }
  
-@@ -365,7 +362,7 @@ class EnumTable {
+@@ -364,7 +361,7 @@ class EnumTable {
    // Align the data on a cache line boundary.
    alignas(64)
  #endif
@@ -76,7 +79,7 @@ index aad9e0886447c..2f3fcad805edc 100644
    bool is_sorted_;
  
    constexpr EnumTable(std::initializer_list<Entry> data, bool is_sorted)
-@@ -377,8 +374,8 @@ class EnumTable {
+@@ -376,8 +373,8 @@ class EnumTable {
  
      for (std::size_t i = 0; i < data.size(); i++) {
        for (std::size_t j = i + 1; j < data.size(); j++) {
@@ -88,5 +91,5 @@ index aad9e0886447c..2f3fcad805edc 100644
              << "Found duplicate enum values at indices " << i << " and " << j;
          DCHECK(!(ei.has_str() && ej.has_str() && ei.str() == ej.str()))
 -- 
-2.30.2
+2.34.1
 

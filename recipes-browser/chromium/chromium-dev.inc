@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "108.0.5327.0"
+PV = "108.0.5359.10"
 
-SRC_URI[sha256sum] = "6dff4b38b2ad3c39f4c60f81da7bd12ecfa2413afec1b2002e1328062731e191"
+SRC_URI[sha256sum] = "f2a26acc17cedfd570ef5a04b4330a4224efb4138b23680c19d288d03a1eabf2"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -66,7 +66,7 @@ LIC_FILES_CHKSUM = "\
   file://${S}/third_party/breakpad/LICENSE;md5=828152b41153892a725f0e7f56faff73 \
   file://${S}/third_party/brotli/LICENSE;md5=941ee9cd1609382f946352712a319b4b \
   file://${S}/third_party/bspatch/LICENSE;md5=3e837ede9697ce4c789c3ca32aabe003 \
-  file://${S}/third_party/ced/LICENSE;md5=3947f60c9d4b1ba51d193af511855a55 \
+  file://${S}/third_party/ced/LICENSE;md5=f63cd7e51ca7b7aac748e20dc60e083f \
   file://${S}/third_party/chromevox/LICENSE;md5=45739090b454125d851ac7bb1bbd23a2 \
   file://${S}/third_party/cld_3/LICENSE;md5=d8b32ba83f8b11e4badd979f4319e706 \
   file://${S}/third_party/closure_compiler/LICENSE;md5=3b83ef96387f14655fc854ddc3c6bd57 \
@@ -83,7 +83,7 @@ LIC_FILES_CHKSUM = "\
   file://${S}/third_party/gif_player/LICENSE;md5=86d3f3a95c324c9479bd8986968f4327 \
   file://${S}/third_party/google_input_tools/LICENSE;md5=ff0b0f0202337c9d4ae2d869797049d3 \
   file://${S}/third_party/google_toolbox_for_mac/LICENSE;md5=3b83ef96387f14655fc854ddc3c6bd57 \
-  file://${S}/third_party/gvr-android-sdk/LICENSE;md5=50b9d1f02b2ee0d8a568ccf4d35216e2 \
+  file://${S}/third_party/gvr-android-sdk/LICENSE;md5=634fdf826e0846931133dca5785f59b8 \
   file://${S}/third_party/harfbuzz-ng/src/COPYING;md5=6ee0f16281694fb6aa689cca1e0fb3da \
   file://${S}/third_party/hunspell/COPYING.MPL;md5=bfe1f75d606912a4111c90743d6c7325 \
   file://${S}/third_party/iaccessible2/LICENSE;md5=43bbd0bfb581347ec10def720000a645 \
@@ -156,16 +156,14 @@ LIC_FILES_CHKSUM = "\
 "
 
 # Upstream patches
-SRC_URI += " file://0001-GCC-fix-ambiguous-references-in-AutomationInternalCu.patch "
+SRC_URI += " file://0001-GCC-declare-DocumentLoader-DecodedBodyData-as-public.patch "
 
 # Upstreamable patches
 SRC_URI += " \
+  file://0001-snapshot-remove-redundant-template-parameter.patch;patchdir=third_party/crashpad/crashpad \
   file://0001-Wayland-do-not-use-GN-wayland-includes-if-use_system.patch;patchdir=third_party/angle \
-  file://0001-GCC-do-not-pass-mmark-bti-property-in-GCC-ARM64-cont.patch;patchdir=v8 \
+  file://0001-Workaround-crash-in-cast-message-handling.patch \
 "
-
-# Runtime fix for Chromecast crash
-SRC_URI += " file://0001-Workaround-crash-in-cast-message-handling.patch "
 
 do_install:append() {
         install -m 0755 chrome_crashpad_handler ${D}${libdir}/chromium/chrome_crashpad_handler
