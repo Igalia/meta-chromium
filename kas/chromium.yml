@@ -22,8 +22,6 @@ repos:
     path: layers/meta-openembedded
     layers:
       meta-oe:
-      meta-python:
-      meta-multimedia:
 
   meta-raspberrypi:
     url: https://github.com/agherzan/meta-raspberrypi.git
