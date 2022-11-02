@@ -1,0 +1,52 @@
+From 8ce21f7dfc4ba1a175b23ebc5994645d0a1f2373 Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Tue, 25 Oct 2022 11:24:30 +0200
+Subject: GCC: do not declare template specialization inside
+ FencedFrameInnerConfig class
+
+GCC does not allow non-namespace template specialization declaration.
+
+Bug: 819294
+Change-Id: I93ee09549b31a042bbbd17aeb532da273528b3e0
+---
+ .../fenced_frame/fenced_frame_inner_config.h    | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
+
+diff --git a/third_party/blink/renderer/core/html/fenced_frame/fenced_frame_inner_config.h b/third_party/blink/renderer/core/html/fenced_frame/fenced_frame_inner_config.h
+index fa27aa42df215..25fe777603b76 100644
+--- a/third_party/blink/renderer/core/html/fenced_frame/fenced_frame_inner_config.h
++++ b/third_party/blink/renderer/core/html/fenced_frame/fenced_frame_inner_config.h
+@@ -62,14 +62,6 @@ class CORE_EXPORT FencedFrameInnerConfig final : public ScriptWrappable {
+   // Attribute's union type based on its value type.
+   template <typename T>
+   struct AttributeUnion;
+-  template <>
+-  struct AttributeUnion<String> {
+-    using Type = V8UnionOpaquePropertyOrUSVString;
+-  };
+-  template <>
+-  struct AttributeUnion<uint32_t> {
+-    using Type = V8UnionOpaquePropertyOrUnsignedLong;
+-  };
+ 
+   // Get attribute's visibility.
+   template <Attribute attr>
+@@ -119,6 +111,15 @@ class CORE_EXPORT FencedFrameInnerConfig final : public ScriptWrappable {
+   }
+ };
+ 
++template <>
++struct FencedFrameInnerConfig::AttributeUnion<String> {
++  using Type = V8UnionOpaquePropertyOrUSVString;
++};
++template <>
++struct FencedFrameInnerConfig::AttributeUnion<uint32_t> {
++  using Type = V8UnionOpaquePropertyOrUnsignedLong;
++};
++
+ }  // namespace blink
+ 
+ #endif  // THIRD_PARTY_BLINK_RENDERER_CORE_HTML_FENCED_FRAME_FENCED_FRAME_INNER_CONFIG_H_
+-- 
+2.34.1
+
