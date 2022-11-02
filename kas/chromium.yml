@@ -26,7 +26,6 @@ repos:
   meta-raspberrypi:
     url: https://github.com/agherzan/meta-raspberrypi.git
     path: layers/meta-raspberrypi
-    refspec: master
 
 local_conf_header:
   chromium: |
