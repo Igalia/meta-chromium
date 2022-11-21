@@ -1,13 +1,20 @@
-From 8ce21f7dfc4ba1a175b23ebc5994645d0a1f2373 Mon Sep 17 00:00:00 2001
+From 067e1e38be34ac18ab990d997b0689e134748001 Mon Sep 17 00:00:00 2001
 From: Jose Dapena Paz <jdapena@igalia.com>
-Date: Tue, 25 Oct 2022 11:24:30 +0200
+Date: Wed, 2 Nov 2022 22:22:28 +0000
 Subject: GCC: do not declare template specialization inside
  FencedFrameInnerConfig class
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
 GCC does not allow non-namespace template specialization declaration.
 
 Bug: 819294
 Change-Id: I93ee09549b31a042bbbd17aeb532da273528b3e0
+Reviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/3993624
+Commit-Queue: José Dapena Paz <jdapena@igalia.com>
+Reviewed-by: Alison Maher <almaher@microsoft.com>
+Cr-Commit-Position: refs/heads/main@{#1066739}
 ---
  .../fenced_frame/fenced_frame_inner_config.h    | 17 +++++++++--------
  1 file changed, 9 insertions(+), 8 deletions(-)
@@ -48,5 +55,5 @@ index fa27aa42df215..25fe777603b76 100644
  
  #endif  // THIRD_PARTY_BLINK_RENDERER_CORE_HTML_FENCED_FRAME_FENCED_FRAME_INNER_CONFIG_H_
 -- 
-2.34.1
+2.37.2
 

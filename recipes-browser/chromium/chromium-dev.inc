@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "109.0.5384.0"
+PV = "109.0.5396.2"
 
-SRC_URI[sha256sum] = "d60895ceaac0cffee6193e25428ce79290ecc52450ed06bfdbcbb072e95cb4a4"
+SRC_URI[sha256sum] = "8d628d6690d38e3a8e219b831efa0d8984e02a11c6b464113092a358cc689728"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -124,7 +124,7 @@ LIC_FILES_CHKSUM = "\
   file://${S}/third_party/openh264/src/LICENSE;md5=bb6d3771da6a07d33fd50d4d9aa73bcf \
   file://${S}/third_party/opus/src/COPYING;md5=e304cdf74c2a1b0a33a5084c128a23a3 \
   file://${S}/third_party/ots/LICENSE;md5=e06eff2aa65b917034a81599bea73dc4 \
-  file://${S}/third_party/pdfium/LICENSE;md5=efe815679251504905d0f2c88a77c886 \
+  file://${S}/third_party/pdfium/LICENSE;md5=c93507531cc9bb8e24a05f2a1a4036c7 \
   file://${S}/third_party/ply/LICENSE;md5=f298aa3b0cfe0b0ea96acabf944529c0 \
   file://${S}/third_party/polymer/LICENSE.polymer;md5=324f45ce459ffd97e41d175a4e95a4be \
   file://${S}/third_party/protobuf/LICENSE;md5=37b5762e07f0af8c74ce80a8bda4266b \
@@ -155,13 +155,15 @@ LIC_FILES_CHKSUM = "\
   file://${S}/v8/LICENSE.strongtalk;md5=956a43818dd13f2e93088fc2c93589d2 \
 "
 
+# Upstream patches
+SRC_URI += " \
+  file://0001-GCC-do-not-declare-template-specialization-inside-Fe.patch \
+"
+
 # Upstreamable patches
 SRC_URI += " \
-  file://0001-snapshot-remove-redundant-template-parameter.patch;patchdir=third_party/crashpad/crashpad \
   file://0001-Wayland-do-not-use-GN-wayland-includes-if-use_system.patch;patchdir=third_party/angle \
-  file://0001-Workaround-crash-in-cast-message-handling.patch \
   file://0001-GCC-use-all-brace-initializers-for-GetDBusTypeInfo-N.patch \
-  file://0001-GCC-do-not-declare-template-specialization-inside-Fe.patch \
 "
 
 do_install:append() {
