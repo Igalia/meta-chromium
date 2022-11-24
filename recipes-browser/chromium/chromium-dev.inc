@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "109.0.5396.2"
+PV = "109.0.5414.10"
 
-SRC_URI[sha256sum] = "8d628d6690d38e3a8e219b831efa0d8984e02a11c6b464113092a358cc689728"
+SRC_URI[sha256sum] = "6e1192fd6a27090802adf8138654a76dcf22a7521f4a53738294daffca72d017"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -75,7 +75,7 @@ LIC_FILES_CHKSUM = "\
   file://${S}/third_party/decklink/LICENSE;md5=85b197f7b7b1ef270b01a1b6377be50e \
   file://${S}/third_party/dom_distiller_js/LICENSE;md5=6cd778870ce5c0c08c8e16fbdf378532 \
   file://${S}/third_party/expat/src/expat/COPYING;md5=9e2ce3b3c4c0f2670883a23bbd7c37a9 \
-  file://${S}/third_party/ffmpeg/CREDITS.chromium;md5=3554336ba19bba1f85e4bf7da9424f32 \
+  file://${S}/third_party/ffmpeg/CREDITS.chromium;md5=edd5404ebfcb158090789e3cb2cb494d \
   file://${S}/third_party/flac/COPYING.Xiph;md5=a2c4b71c0198682376d483eb5bcc9197 \
   file://${S}/third_party/flatbuffers/LICENSE;md5=a873c5645c184d51e0f9b34e1d7cf559 \
   file://${S}/third_party/fontconfig/src/COPYING;md5=7a0449e9bc5370402a94c00204beca3d \
@@ -155,16 +155,8 @@ LIC_FILES_CHKSUM = "\
   file://${S}/v8/LICENSE.strongtalk;md5=956a43818dd13f2e93088fc2c93589d2 \
 "
 
-# Upstream patches
-SRC_URI += " \
-  file://0001-GCC-do-not-declare-template-specialization-inside-Fe.patch \
-"
-
 # Upstreamable patches
-SRC_URI += " \
-  file://0001-Wayland-do-not-use-GN-wayland-includes-if-use_system.patch;patchdir=third_party/angle \
-  file://0001-GCC-use-all-brace-initializers-for-GetDBusTypeInfo-N.patch \
-"
+SRC_URI += " file://0001-Wayland-do-not-use-GN-wayland-includes-if-use_system.patch;patchdir=third_party/angle "
 
 do_install:append() {
         install -m 0755 chrome_crashpad_handler ${D}${libdir}/chromium/chrome_crashpad_handler
