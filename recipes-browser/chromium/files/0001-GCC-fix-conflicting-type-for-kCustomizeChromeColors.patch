@@ -1,0 +1,29 @@
+From 618a58a5e492fc9d9ea339193cd2a97428f849e7 Mon Sep 17 00:00:00 2001
+From: Stephan Hartmann <stha09@googlemail.com>
+Date: Sun, 18 Dec 2022 15:59:00 +0100
+Subject: GCC: fix conflicting type for kCustomizeChromeColors
+
+GCC cannot match auto with previous declaration.
+
+Bug: 819294
+Change-Id: Ie648daaf264fb2ea177ac46c8a510d481f6fa2f4
+---
+ .../side_panel/customize_chrome/customize_chrome_colors.cc   | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_colors.cc b/chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_colors.cc
+index 2fccadb2bed14..383c9e56946ba 100644
+--- a/chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_colors.cc
++++ b/chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_colors.cc
+@@ -31,5 +31,6 @@ constexpr auto MakeCustomizeChromeColors(std::index_sequence<I...>) {
+ 
+ }  // namespace
+ 
+-const auto kCustomizeChromeColors = MakeCustomizeChromeColors(
+-    std::make_index_sequence<std::size(kCustomizeChromeColorIds)>{});
++const decltype(kCustomizeChromeColors) kCustomizeChromeColors =
++    MakeCustomizeChromeColors(
++        std::make_index_sequence<std::size(kCustomizeChromeColorIds)>{});
+-- 
+2.37.2
+

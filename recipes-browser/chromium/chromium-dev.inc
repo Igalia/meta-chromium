@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "109.0.5414.10"
+PV = "110.0.5478.4"
 
-SRC_URI[sha256sum] = "6e1192fd6a27090802adf8138654a76dcf22a7521f4a53738294daffca72d017"
+SRC_URI[sha256sum] = "90a43e1ba3aa386c06d7b0e6340daf505c4a1cef5906bc2aeb86d551e63bc06a"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -54,7 +54,6 @@ LIC_FILES_CHKSUM = "\
   file://${S}/third_party/abseil-cpp/LICENSE;md5=df52c6edb7adc22e533b2bacc3bd3915 \
   file://${S}/third_party/accessibility-audit/LICENSE;md5=3b83ef96387f14655fc854ddc3c6bd57 \
   file://${S}/third_party/afl/src/docs/COPYING;md5=3b83ef96387f14655fc854ddc3c6bd57 \
-  file://${S}/third_party/android_crazy_linker/LICENSE;md5=6ac427101b06097fd70652bb9238ca23 \
   file://${S}/third_party/android_media/LICENSE;md5=3b83ef96387f14655fc854ddc3c6bd57 \
   file://${S}/third_party/android_opengl/LICENSE;md5=d10e92761a860d4113a7a525c78daf13 \
   file://${S}/third_party/android_swipe_refresh/LICENSE;md5=3b83ef96387f14655fc854ddc3c6bd57 \
@@ -74,8 +73,8 @@ LIC_FILES_CHKSUM = "\
   file://${S}/third_party/d3/src/LICENSE;md5=0679931d76eb2f1dd1915249da84a722 \
   file://${S}/third_party/decklink/LICENSE;md5=85b197f7b7b1ef270b01a1b6377be50e \
   file://${S}/third_party/dom_distiller_js/LICENSE;md5=6cd778870ce5c0c08c8e16fbdf378532 \
-  file://${S}/third_party/expat/src/expat/COPYING;md5=9e2ce3b3c4c0f2670883a23bbd7c37a9 \
-  file://${S}/third_party/ffmpeg/CREDITS.chromium;md5=edd5404ebfcb158090789e3cb2cb494d \
+  file://${S}/third_party/expat/src/expat/COPYING;md5=7b3b078238d0901d3b339289117cb7fb \
+  file://${S}/third_party/ffmpeg/CREDITS.chromium;md5=5cdcfe11c9cfd8fe691f8feb32ff12a9 \
   file://${S}/third_party/flac/COPYING.Xiph;md5=a2c4b71c0198682376d483eb5bcc9197 \
   file://${S}/third_party/flatbuffers/LICENSE;md5=a873c5645c184d51e0f9b34e1d7cf559 \
   file://${S}/third_party/fontconfig/src/COPYING;md5=7a0449e9bc5370402a94c00204beca3d \
@@ -117,10 +116,10 @@ LIC_FILES_CHKSUM = "\
   file://${S}/third_party/libxslt/src/Copyright;md5=0cd9a07afbeb24026c9b03aecfeba458 \
   file://${S}/third_party/libyuv/LICENSE;md5=464282cfb405b005b9637f11103a7325 \
   file://${S}/third_party/logilab/logilab/common/LICENSE.txt;md5=751419260aa954499f7abaabaa882bbe \
-  file://${S}/third_party/lzma_sdk/LICENSE;md5=a8d1f5a28cfd35e6dfea09b82672fae7 \
+  file://${S}/third_party/lzma_sdk/LICENSE;md5=eceed1d308734c8051664bc3d1ca175e \
   file://${S}/third_party/minigbm/LICENSE;md5=fcd558ab2fd7f53408826e80eb0c11eb \
   file://${S}/third_party/modp_b64/LICENSE;md5=eb7e2e0af1d4971360553aedadee8d86 \
-  file://${S}/third_party/mozilla/LICENSE;md5=822502c0e010ccdbb6a3e681dd47888e \
+  file://${S}/third_party/mozilla/LICENSE;md5=282100e70d38d39ebdcc47070327aec0 \
   file://${S}/third_party/openh264/src/LICENSE;md5=bb6d3771da6a07d33fd50d4d9aa73bcf \
   file://${S}/third_party/opus/src/COPYING;md5=e304cdf74c2a1b0a33a5084c128a23a3 \
   file://${S}/third_party/ots/LICENSE;md5=e06eff2aa65b917034a81599bea73dc4 \
@@ -155,8 +154,24 @@ LIC_FILES_CHKSUM = "\
   file://${S}/v8/LICENSE.strongtalk;md5=956a43818dd13f2e93088fc2c93589d2 \
 "
 
+# Upstream patches
+SRC_URI += " \
+  file://0001-libstdc-Use-pow-from-std-in-XYZD50ToLab.patch \
+  file://0001-IWYU-Add-cstring-for-memcmp-usage-in-general_names.c.patch \
+  file://0001-GCC-use-fabsf-in-ui-NativeThemeBase-OutlineColor.patch \
+  file://0001-GCC-make-raw_ptr-operator-bool-constexpr.patch \
+  file://0001-GCC-fix-selection-of-IMMEDIATE_CRASH.patch;patchdir=v8 \
+  file://0001-libstdc-Don-t-use-const-members-in-std-vector-in-pas.patch \
+  file://0001-libstdc-fix-incomplete-type-of-download-InProgressDo.patch \
+  file://0001-GCC-remove-redundant-template-parameter-from-SyncIte.patch \
+  file://0001-GCC-move-pragmas-in-blink-CanvasResourceProvider.patch \
+"
+
 # Upstreamable patches
-SRC_URI += " file://0001-Wayland-do-not-use-GN-wayland-includes-if-use_system.patch;patchdir=third_party/angle "
+SRC_URI += " \
+  file://0001-GCC-add-cast-for-vector-types-in-url-url_canon_inter.patch \
+  file://0001-GCC-fix-conflicting-type-for-kCustomizeChromeColors.patch \
+"
 
 do_install:append() {
         install -m 0755 chrome_crashpad_handler ${D}${libdir}/chromium/chrome_crashpad_handler

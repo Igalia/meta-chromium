@@ -78,7 +78,6 @@ GN_ARGS = "\
         use_gnome_keyring=false \
         use_kerberos=false \
         use_system_libjpeg=false \
-        use_system_libwayland=true \
         use_system_minigbm=true \
         use_system_libdrm=true \
         use_xkbcommon=true \
