@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "110.0.5478.4"
+PV = "110.0.5481.24"
 
-SRC_URI[sha256sum] = "90a43e1ba3aa386c06d7b0e6340daf505c4a1cef5906bc2aeb86d551e63bc06a"
+SRC_URI[sha256sum] = "51992ec7531454fa3e40478c6e4f4ea83e5d86d91170da7a3747ec9c97c4a698"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -156,8 +156,6 @@ LIC_FILES_CHKSUM = "\
 
 # Upstream patches
 SRC_URI += " \
-  file://0001-libstdc-Use-pow-from-std-in-XYZD50ToLab.patch \
-  file://0001-IWYU-Add-cstring-for-memcmp-usage-in-general_names.c.patch \
   file://0001-GCC-use-fabsf-in-ui-NativeThemeBase-OutlineColor.patch \
   file://0001-GCC-make-raw_ptr-operator-bool-constexpr.patch \
   file://0001-GCC-fix-selection-of-IMMEDIATE_CRASH.patch;patchdir=v8 \
@@ -165,13 +163,13 @@ SRC_URI += " \
   file://0001-libstdc-fix-incomplete-type-of-download-InProgressDo.patch \
   file://0001-GCC-remove-redundant-template-parameter-from-SyncIte.patch \
   file://0001-GCC-move-pragmas-in-blink-CanvasResourceProvider.patch \
+  file://0001-GCC-add-cast-for-vector-types-in-url-url_canon_inter.patch \
+  file://0001-GCC-fix-incomplete-type-of-gl-Presenter.patch \
+  file://0001-GCC-fix-conflicting-type-for-kCustomizeChromeColors.patch \
 "
 
 # Upstreamable patches
-SRC_URI += " \
-  file://0001-GCC-add-cast-for-vector-types-in-url-url_canon_inter.patch \
-  file://0001-GCC-fix-conflicting-type-for-kCustomizeChromeColors.patch \
-"
+SRC_URI += " file://0001-GCC-fix-distributed-point-functions-build-in-ARM64-w.patch "
 
 do_install:append() {
         install -m 0755 chrome_crashpad_handler ${D}${libdir}/chromium/chrome_crashpad_handler

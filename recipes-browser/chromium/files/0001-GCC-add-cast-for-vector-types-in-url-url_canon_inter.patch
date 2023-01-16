@@ -1,6 +1,6 @@
-From 6d3a478d8f52811385dff7edfead75cdfcb1b859 Mon Sep 17 00:00:00 2001
+From 740d1102e3fdaaed5441b5656205df9d7e422c3a Mon Sep 17 00:00:00 2001
 From: Stephan Hartmann <stha09@googlemail.com>
-Date: Sun, 18 Dec 2022 16:01:39 +0100
+Date: Tue, 20 Dec 2022 20:41:12 +0000
 Subject: GCC: add cast for vector types in url/url_canon_internal.cc
 
 GCC requires lax vector conversion for converting __vector(16) to
@@ -8,6 +8,10 @@ SIMD types. Add explicit cast instead.
 
 Bug: 819294
 Change-Id: Icfc9d3586350af469bfd9d83b355d94806430c43
+Reviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/4110786
+Commit-Queue: Stephan Hartmann <stha09@googlemail.com>
+Reviewed-by: Daniel Cheng <dcheng@chromium.org>
+Cr-Commit-Position: refs/heads/main@{#1085617}
 ---
  url/url_canon_internal.cc | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
