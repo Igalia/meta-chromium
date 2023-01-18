@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "110.0.5481.30"
+PV = "111.0.5532.2"
 
-SRC_URI[sha256sum] = "7d0119ada19f011780a356689854918f6592daa5c938a92842e1269eedad220f"
+SRC_URI[sha256sum] = "012520fbd3ba2ab7c6bc48192f7b419e2b8256d5f559e8bf634123e448745d29"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -119,7 +119,6 @@ LIC_FILES_CHKSUM = "\
   file://${S}/third_party/lzma_sdk/LICENSE;md5=eceed1d308734c8051664bc3d1ca175e \
   file://${S}/third_party/minigbm/LICENSE;md5=fcd558ab2fd7f53408826e80eb0c11eb \
   file://${S}/third_party/modp_b64/LICENSE;md5=eb7e2e0af1d4971360553aedadee8d86 \
-  file://${S}/third_party/mozilla/LICENSE;md5=282100e70d38d39ebdcc47070327aec0 \
   file://${S}/third_party/openh264/src/LICENSE;md5=bb6d3771da6a07d33fd50d4d9aa73bcf \
   file://${S}/third_party/opus/src/COPYING;md5=e304cdf74c2a1b0a33a5084c128a23a3 \
   file://${S}/third_party/ots/LICENSE;md5=e06eff2aa65b917034a81599bea73dc4 \
@@ -155,18 +154,7 @@ LIC_FILES_CHKSUM = "\
 "
 
 # Upstream patches
-SRC_URI += " \
-  file://0001-GCC-use-fabsf-in-ui-NativeThemeBase-OutlineColor.patch \
-  file://0001-GCC-make-raw_ptr-operator-bool-constexpr.patch \
-  file://0001-GCC-fix-selection-of-IMMEDIATE_CRASH.patch;patchdir=v8 \
-  file://0001-libstdc-Don-t-use-const-members-in-std-vector-in-pas.patch \
-  file://0001-libstdc-fix-incomplete-type-of-download-InProgressDo.patch \
-  file://0001-GCC-remove-redundant-template-parameter-from-SyncIte.patch \
-  file://0001-GCC-move-pragmas-in-blink-CanvasResourceProvider.patch \
-  file://0001-GCC-add-cast-for-vector-types-in-url-url_canon_inter.patch \
-  file://0001-GCC-fix-incomplete-type-of-gl-Presenter.patch \
-  file://0001-GCC-fix-conflicting-type-for-kCustomizeChromeColors.patch \
-"
+SRC_URI += " file://0001-libstdc-fix-incomplete-type-of-class-Group.patch "
 
 # Upstreamable patches
 SRC_URI += " file://0001-GCC-fix-distributed-point-functions-build-in-ARM64-w.patch "
