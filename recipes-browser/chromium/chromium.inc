@@ -162,6 +162,10 @@ GN_ARGS += "\
 # TODO(jdapena): make this a PACKAGECONFIG
 GN_ARGS += "use_qt=false"
 
+# Disable updater build as a Yocto basic build does not require it and provides
+# other means for updating
+GN_ARGS += "enable_updater=false"
+
 # API keys for accessing Google services. By default, we use an invalid key
 # only to prevent the "you are missing an API key" infobar from being shown on
 # startup.

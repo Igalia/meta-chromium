@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "111.0.5532.2"
+PV = "111.0.5562.0"
 
-SRC_URI[sha256sum] = "012520fbd3ba2ab7c6bc48192f7b419e2b8256d5f559e8bf634123e448745d29"
+SRC_URI[sha256sum] = "7298e018e6caede78b01e8ae35ec6f71b4822cf61c58308af214802a59f8712b"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -61,7 +61,7 @@ LIC_FILES_CHKSUM = "\
   file://${S}/third_party/apple_apsl/LICENSE;md5=c8c14a9f985552dba8d3edbd76660088 \
   file://${S}/third_party/ashmem/LICENSE;md5=3b83ef96387f14655fc854ddc3c6bd57 \
   file://${S}/third_party/blink/LICENSE_FOR_ABOUT_CREDITS;md5=11e90d553b211de885f245900c4ccf89 \
-  file://${S}/third_party/boringssl/src/LICENSE;md5=9b082148f9953258347788edb83e401b \
+  file://${S}/third_party/boringssl/src/LICENSE;md5=2ca501bc96ce9ed0814e2c592c3f9593 \
   file://${S}/third_party/breakpad/LICENSE;md5=828152b41153892a725f0e7f56faff73 \
   file://${S}/third_party/brotli/LICENSE;md5=941ee9cd1609382f946352712a319b4b \
   file://${S}/third_party/bspatch/LICENSE;md5=3e837ede9697ce4c789c3ca32aabe003 \
@@ -75,7 +75,7 @@ LIC_FILES_CHKSUM = "\
   file://${S}/third_party/dom_distiller_js/LICENSE;md5=6cd778870ce5c0c08c8e16fbdf378532 \
   file://${S}/third_party/expat/src/expat/COPYING;md5=7b3b078238d0901d3b339289117cb7fb \
   file://${S}/third_party/ffmpeg/CREDITS.chromium;md5=5cdcfe11c9cfd8fe691f8feb32ff12a9 \
-  file://${S}/third_party/flac/COPYING.Xiph;md5=a2c4b71c0198682376d483eb5bcc9197 \
+  file://${S}/third_party/flac/COPYING.Xiph;md5=3d6da238b5b57a0965d6730291119f65 \
   file://${S}/third_party/flatbuffers/LICENSE;md5=a873c5645c184d51e0f9b34e1d7cf559 \
   file://${S}/third_party/fontconfig/src/COPYING;md5=7a0449e9bc5370402a94c00204beca3d \
   file://${S}/third_party/freetype/src/docs/FTL.TXT;md5=9f37b4e6afa3fef9dba8932b16bd3f97 \
@@ -152,12 +152,6 @@ LIC_FILES_CHKSUM = "\
   file://${S}/v8/LICENSE.fdlibm;md5=b17367d6c97e638599071d99a3049dfe \
   file://${S}/v8/LICENSE.strongtalk;md5=956a43818dd13f2e93088fc2c93589d2 \
 "
-
-# Upstream patches
-SRC_URI += " file://0001-libstdc-fix-incomplete-type-of-class-Group.patch "
-
-# Upstreamable patches
-SRC_URI += " file://0001-GCC-fix-distributed-point-functions-build-in-ARM64-w.patch "
 
 do_install:append() {
         install -m 0755 chrome_crashpad_handler ${D}${libdir}/chromium/chrome_crashpad_handler
