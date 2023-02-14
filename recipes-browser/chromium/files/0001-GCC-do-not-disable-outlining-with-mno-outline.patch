@@ -1,0 +1,30 @@
+From 3f4b956b54c88e022545f00676b633853cba415b Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Mon, 13 Feb 2023 20:08:07 +0100
+Subject: GCC: do not disable outlining with -mno-outline
+
+GCC build fails in arm64 because -mno-outline is passed. This build
+option is only supported in Clang.
+
+Bug: 819294
+Change-Id: Ied5cf194c26fd284aa66477cf0cd381b8cd26607
+---
+ build/config/compiler/BUILD.gn | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/build/config/compiler/BUILD.gn b/build/config/compiler/BUILD.gn
+index fc668a6a25293..fc13ad77d3bbb 100644
+--- a/build/config/compiler/BUILD.gn
++++ b/build/config/compiler/BUILD.gn
+@@ -1305,7 +1305,7 @@ config("compiler_codegen") {
+     configs += [ "//build/config/nacl:compiler_codegen" ]
+   }
+ 
+-  if (current_cpu == "arm64" && !is_win) {
++  if (current_cpu == "arm64" && !is_win && is_clang) {
+     # Disable outlining everywhere on arm64 except Win. For more information see
+     # crbug.com/931297 for Android and crbug.com/1410297 for iOS.
+     # TODO(crbug.com/1411363): Enable this on Windows if possible.
+-- 
+2.37.2
+

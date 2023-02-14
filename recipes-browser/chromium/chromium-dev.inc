@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "111.0.5563.8"
+PV = "112.0.5582.0"
 
-SRC_URI[sha256sum] = "9e5fae0f87d75b431f5da9f49b88ec3e3f42c0384b75c87dde253713cbccd43d"
+SRC_URI[sha256sum] = "d3e98279c3f74154bd6614b94142cf3ca7335a251aabd1855b06ee8e2f2b2f8d"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -151,6 +151,12 @@ LIC_FILES_CHKSUM = "\
   file://${S}/v8/LICENSE;md5=f38a2942edcfe4abb45e9a83a1ad2f82 \
   file://${S}/v8/LICENSE.fdlibm;md5=b17367d6c97e638599071d99a3049dfe \
   file://${S}/v8/LICENSE.strongtalk;md5=956a43818dd13f2e93088fc2c93589d2 \
+"
+
+# Upstreamable patches
+SRC_URI += " \
+  file://0001-GCC-do-not-realias-RawPtrTraits.patch \
+  file://0001-GCC-do-not-disable-outlining-with-mno-outline.patch \
 "
 
 do_install:append() {
