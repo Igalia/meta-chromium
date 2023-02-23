@@ -1,6 +1,6 @@
-From e83896c8b566a4f1d200b0e9ea8faee2c959b9f4 Mon Sep 17 00:00:00 2001
+From 2df30a0eff48c3d493f61c56766a573d98d51e6e Mon Sep 17 00:00:00 2001
 From: Jose Dapena Paz <jdapena@igalia.com>
-Date: Mon, 13 Feb 2023 09:55:48 +0100
+Date: Thu, 16 Feb 2023 10:15:33 +0000
 Subject: GCC: do not realias RawPtrTraits
 
 Recent change to raw_ptr introducing RawPtrTraits ended up adding
@@ -9,15 +9,20 @@ RawPtrTraits.
 
 Bug: 819294
 Change-Id: Ia03ff7d44b6887c17ed61da4ff0dd6b8b5d7e22f
+Reviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/4239981
+Owners-Override: Arthur Sonzogni <arthursonzogni@chromium.org>
+Reviewed-by: Arthur Sonzogni <arthursonzogni@chromium.org>
+Commit-Queue: Arthur Sonzogni <arthursonzogni@chromium.org>
+Cr-Commit-Position: refs/heads/main@{#1106123}
 ---
  base/allocator/partition_allocator/pointers/raw_ptr.h | 1 -
  1 file changed, 1 deletion(-)
 
 diff --git a/base/allocator/partition_allocator/pointers/raw_ptr.h b/base/allocator/partition_allocator/pointers/raw_ptr.h
-index 86c042caf2556..f587c92e03a5d 100644
+index 231d7d303314f..01048178b59ce 100644
 --- a/base/allocator/partition_allocator/pointers/raw_ptr.h
 +++ b/base/allocator/partition_allocator/pointers/raw_ptr.h
-@@ -715,7 +715,6 @@ struct TraitsToImpl {
+@@ -749,7 +749,6 @@ struct TraitsToImpl {
  // compiler. We have not managed to construct such an example in Chromium yet.
  template <typename T, RawPtrTraits Traits = RawPtrTraits::kEmpty>
  class PA_TRIVIAL_ABI PA_GSL_POINTER raw_ptr {

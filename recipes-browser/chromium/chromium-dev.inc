@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "112.0.5582.0"
+PV = "112.0.5596.2"
 
-SRC_URI[sha256sum] = "d3e98279c3f74154bd6614b94142cf3ca7335a251aabd1855b06ee8e2f2b2f8d"
+SRC_URI[sha256sum] = "8ff9fd354b2ec3ca68a5fd6167966310b177ed9ed7a61767db468d8d33bc460f"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -153,10 +153,17 @@ LIC_FILES_CHKSUM = "\
   file://${S}/v8/LICENSE.strongtalk;md5=956a43818dd13f2e93088fc2c93589d2 \
 "
 
+# Upstream patches
+SRC_URI += " \
+  file://0001-IWYU-missing-PlatformKeyboardHook-include-in-ozone_p.patch \
+  file://0001-GCC-do-not-realias-RawPtrTraits.patch \
+  file://0001-Remove-Web-from-names-of-WebURLLoader-classes.patch \
+"
+
 # Upstreamable patches
 SRC_URI += " \
-  file://0001-GCC-do-not-realias-RawPtrTraits.patch \
   file://0001-GCC-do-not-disable-outlining-with-mno-outline.patch \
+  file://0001-IWYU-include-blink-URLLoader-for-unique_ptr-usage-in.patch \
 "
 
 do_install:append() {
