@@ -1,6 +1,6 @@
-From 0de3a9551e4d279dfcab037a190b56143232f609 Mon Sep 17 00:00:00 2001
+From f2ea90d9cf667612b2913a6f30636a4773bad026 Mon Sep 17 00:00:00 2001
 From: Jose Dapena Paz <jdapena@igalia.com>
-Date: Tue, 21 Feb 2023 13:38:41 +0100
+Date: Tue, 28 Feb 2023 18:38:25 +0000
 Subject: IWYU: include blink::URLLoader for unique_ptr usage in
  WebLocalFrameClient
 MIME-Version: 1.0
@@ -22,6 +22,10 @@ Fixes build error with libstdc++:
 
 Bug: 957519
 Change-Id: I0db2f86603fba4fe8f10d6c4370ad1ff4c9ca70b
+Reviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/4276241
+Reviewed-by: Daniel Cheng <dcheng@chromium.org>
+Commit-Queue: José Dapena Paz <jdapena@igalia.com>
+Cr-Commit-Position: refs/heads/main@{#1111077}
 ---
  third_party/blink/public/web/web_local_frame_client.h       | 4 +---
  .../blink/renderer/core/frame/web_local_frame_client.cc     | 6 ++++++

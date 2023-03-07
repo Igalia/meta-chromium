@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "112.0.5596.2"
+PV = "112.0.5615.12"
 
-SRC_URI[sha256sum] = "8ff9fd354b2ec3ca68a5fd6167966310b177ed9ed7a61767db468d8d33bc460f"
+SRC_URI[sha256sum] = "910d0416fb4a8e1436964a0dc7ea00fc04bc217b880a3b8fa4fde791b17277ce"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -77,7 +77,7 @@ LIC_FILES_CHKSUM = "\
   file://${S}/third_party/ffmpeg/CREDITS.chromium;md5=5cdcfe11c9cfd8fe691f8feb32ff12a9 \
   file://${S}/third_party/flac/COPYING.Xiph;md5=3d6da238b5b57a0965d6730291119f65 \
   file://${S}/third_party/flatbuffers/LICENSE;md5=a873c5645c184d51e0f9b34e1d7cf559 \
-  file://${S}/third_party/fontconfig/src/COPYING;md5=7a0449e9bc5370402a94c00204beca3d \
+  file://${S}/third_party/fontconfig/src/COPYING;md5=00252fd272bf2e722925613ad74cb6c7 \
   file://${S}/third_party/freetype/src/docs/FTL.TXT;md5=9f37b4e6afa3fef9dba8932b16bd3f97 \
   file://${S}/third_party/gif_player/LICENSE;md5=86d3f3a95c324c9479bd8986968f4327 \
   file://${S}/third_party/google_input_tools/LICENSE;md5=ff0b0f0202337c9d4ae2d869797049d3 \
@@ -154,17 +154,23 @@ LIC_FILES_CHKSUM = "\
 "
 
 # Upstream patches
-SRC_URI += " \
-  file://0001-IWYU-missing-PlatformKeyboardHook-include-in-ozone_p.patch \
-  file://0001-GCC-do-not-realias-RawPtrTraits.patch \
-  file://0001-Remove-Web-from-names-of-WebURLLoader-classes.patch \
-"
+SRC_URI += " file://0001-IWYU-include-blink-URLLoader-for-unique_ptr-usage-in.patch "
 
 # Upstreamable patches
 SRC_URI += " \
   file://0001-GCC-do-not-disable-outlining-with-mno-outline.patch \
-  file://0001-IWYU-include-blink-URLLoader-for-unique_ptr-usage-in.patch \
+  file://0001-Another-C-20-fix-for-GCC.patch;patchdir=third_party/swiftshader \
+  file://0001-More-C-20-fixes.patch;patchdir=third_party/swiftshader \
 "
+
+# Maglev causes an ICE compiling for core2 architecture. This has been fixed upstream
+# after this v8 commit:
+# commit ab4e9d308f920df1cb14aa7d4fe21bdb4f4dbda6
+# Author: Victor Gomes <victorgomes@chromium.org>
+# Date:   Wed Mar 1 16:28:23 2023 +0100
+# [maglev] Move stack check from Prologue to FunctionEntryStackCheck
+
+GN_ARGS:append:qemux86-64 = " v8_enable_maglev=false "
 
 do_install:append() {
         install -m 0755 chrome_crashpad_handler ${D}${libdir}/chromium/chrome_crashpad_handler
