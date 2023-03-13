@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "112.0.5615.12"
+PV = "113.0.5638.0"
 
-SRC_URI[sha256sum] = "910d0416fb4a8e1436964a0dc7ea00fc04bc217b880a3b8fa4fde791b17277ce"
+SRC_URI[sha256sum] = "2bba0b1528ff47258b303ddd62d931ec9b990fc7e54d15c1e6ba98d36dac906c"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -99,7 +99,7 @@ LIC_FILES_CHKSUM = "\
   file://${S}/third_party/libFuzzer/LICENSE.TXT;md5=4c0bc17c954e99fd547528d938832bfa \
   file://${S}/third_party/libaddressinput/LICENSE;md5=3b83ef96387f14655fc854ddc3c6bd57 \
   file://${S}/third_party/libjingle_xmpp/LICENSE;md5=ad296492125bc71530d06234d9bfebe0 \
-  file://${S}/third_party/libjpeg_turbo/LICENSE.md;md5=a75feaa2de6d8942f50d412241fca1f1 \
+  file://${S}/third_party/libjpeg_turbo/LICENSE.md;md5=2a8e0d8226a102f07ab63ed7fd6ce155 \
   file://${S}/third_party/liblouis/LICENSE;md5=8ab69863de0d3a0e00c4f97a4d78dd4a \
   file://${S}/third_party/libphonenumber/LICENSE;md5=e23fadd6ceef8c618fc1c65191d846fa \
   file://${S}/third_party/libpng/LICENSE;md5=b0085051bf265bac2bfc38bc89f50000 \
@@ -153,24 +153,12 @@ LIC_FILES_CHKSUM = "\
   file://${S}/v8/LICENSE.strongtalk;md5=956a43818dd13f2e93088fc2c93589d2 \
 "
 
-# Upstream patches
-SRC_URI += " file://0001-IWYU-include-blink-URLLoader-for-unique_ptr-usage-in.patch "
-
 # Upstreamable patches
 SRC_URI += " \
-  file://0001-GCC-do-not-disable-outlining-with-mno-outline.patch \
   file://0001-Another-C-20-fix-for-GCC.patch;patchdir=third_party/swiftshader \
   file://0001-More-C-20-fixes.patch;patchdir=third_party/swiftshader \
+  file://0001-libstdc-std-vector-cannot-contain-const-members-in-p.patch \
 "
-
-# Maglev causes an ICE compiling for core2 architecture. This has been fixed upstream
-# after this v8 commit:
-# commit ab4e9d308f920df1cb14aa7d4fe21bdb4f4dbda6
-# Author: Victor Gomes <victorgomes@chromium.org>
-# Date:   Wed Mar 1 16:28:23 2023 +0100
-# [maglev] Move stack check from Prologue to FunctionEntryStackCheck
-
-GN_ARGS:append:qemux86-64 = " v8_enable_maglev=false "
 
 do_install:append() {
         install -m 0755 chrome_crashpad_handler ${D}${libdir}/chromium/chrome_crashpad_handler
