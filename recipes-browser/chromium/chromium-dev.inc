@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "113.0.5638.0"
+PV = "113.0.5653.0"
 
-SRC_URI[sha256sum] = "2bba0b1528ff47258b303ddd62d931ec9b990fc7e54d15c1e6ba98d36dac906c"
+SRC_URI[sha256sum] = "137ea7f090d0e9333d2a7be67274749c0e6019e9199cae34f9286e2503d02ae8"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -157,7 +157,6 @@ LIC_FILES_CHKSUM = "\
 SRC_URI += " \
   file://0001-Another-C-20-fix-for-GCC.patch;patchdir=third_party/swiftshader \
   file://0001-More-C-20-fixes.patch;patchdir=third_party/swiftshader \
-  file://0001-libstdc-std-vector-cannot-contain-const-members-in-p.patch \
 "
 
 do_install:append() {
