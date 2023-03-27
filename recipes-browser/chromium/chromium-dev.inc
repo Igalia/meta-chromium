@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "113.0.5653.0"
+PV = "113.0.5668.0"
 
-SRC_URI[sha256sum] = "137ea7f090d0e9333d2a7be67274749c0e6019e9199cae34f9286e2503d02ae8"
+SRC_URI[sha256sum] = "e362c0a674ab3b9178401d3e499235f1885e0c07792bed23143a1b61511de466"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -151,12 +151,6 @@ LIC_FILES_CHKSUM = "\
   file://${S}/v8/LICENSE;md5=f38a2942edcfe4abb45e9a83a1ad2f82 \
   file://${S}/v8/LICENSE.fdlibm;md5=b17367d6c97e638599071d99a3049dfe \
   file://${S}/v8/LICENSE.strongtalk;md5=956a43818dd13f2e93088fc2c93589d2 \
-"
-
-# Upstreamable patches
-SRC_URI += " \
-  file://0001-Another-C-20-fix-for-GCC.patch;patchdir=third_party/swiftshader \
-  file://0001-More-C-20-fixes.patch;patchdir=third_party/swiftshader \
 "
 
 do_install:append() {
