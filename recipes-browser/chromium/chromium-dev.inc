@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "113.0.5668.0"
+PV = "113.0.5672.12"
 
-SRC_URI[sha256sum] = "e362c0a674ab3b9178401d3e499235f1885e0c07792bed23143a1b61511de466"
+SRC_URI[sha256sum] = "3db04045a8251f678ea82c7a296dbc458af0ba621c42f2f0972601dc11a515c0"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -152,6 +152,9 @@ LIC_FILES_CHKSUM = "\
   file://${S}/v8/LICENSE.fdlibm;md5=b17367d6c97e638599071d99a3049dfe \
   file://${S}/v8/LICENSE.strongtalk;md5=956a43818dd13f2e93088fc2c93589d2 \
 "
+
+# Upstream backports
+SRC_URI += " file://0001-Do-not-use-std-monospace-for-absl-variant.patch "
 
 do_install:append() {
         install -m 0755 chrome_crashpad_handler ${D}${libdir}/chromium/chrome_crashpad_handler
