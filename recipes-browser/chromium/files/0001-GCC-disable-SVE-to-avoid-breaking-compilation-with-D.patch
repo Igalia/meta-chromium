@@ -1,0 +1,28 @@
+From f01fa4e11083876ebc42ac1fd1b1b97dc05a4bb9 Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Wed, 19 Apr 2023 13:27:42 +0200
+Subject: GCC: disable SVE to avoid breaking compilation with DPF
+
+---
+ hwy/detect_targets.h | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/hwy/detect_targets.h b/hwy/detect_targets.h
+index 847235d..84ba31f 100644
+--- a/hwy/detect_targets.h
++++ b/hwy/detect_targets.h
+@@ -193,8 +193,10 @@
+ #endif
+ 
+ // SVE[2] require recent clang or gcc versions.
++// SVE is broken  also in recent GCC for highway because of
++// https://gcc.gnu.org/bugzilla/show_bug.cgi?id=109505
+ #if (HWY_COMPILER_CLANG && HWY_COMPILER_CLANG < 1100) || \
+-    (HWY_COMPILER_GCC_ACTUAL && HWY_COMPILER_GCC_ACTUAL < 1000)
++    (HWY_COMPILER_GCC_ACTUAL)
+ #define HWY_BROKEN_SVE (HWY_SVE | HWY_SVE2 | HWY_SVE_256 | HWY_SVE2_128)
+ #else
+ #define HWY_BROKEN_SVE 0
+-- 
+2.37.2
+

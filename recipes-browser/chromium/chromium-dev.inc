@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "113.0.5672.12"
+PV = "114.0.5714.0"
 
-SRC_URI[sha256sum] = "3db04045a8251f678ea82c7a296dbc458af0ba621c42f2f0972601dc11a515c0"
+SRC_URI[sha256sum] = "9180a39325dbda8a2eea597a5767c7971f772b237c067b2704e8d4b1a1ece6bc"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -141,7 +141,6 @@ LIC_FILES_CHKSUM = "\
   file://${S}/third_party/v4l-utils/COPYING.libv4l;md5=d749e86a105281d7a44c2328acebc4b0 \
   file://${S}/third_party/wayland-protocols/src/COPYING;md5=c7b12b6702da38ca028ace54aae3d484 \
   file://${S}/third_party/wayland/src/COPYING;md5=b31d8f53b6aaf2b4985d7dd7810a70d1 \
-  file://${S}/third_party/web-animations-js/LICENSE;md5=3b83ef96387f14655fc854ddc3c6bd57 \
   file://${S}/third_party/webrtc/LICENSE;md5=ad296492125bc71530d06234d9bfebe0 \
   file://${S}/third_party/woff2/LICENSE;md5=027c71da9e4664fdf192e6ec615f4d18 \
   file://${S}/third_party/wtl/Ms-PL.txt;md5=1d2c3cdd7e748a6bc4213321d9157c5a \
@@ -154,7 +153,17 @@ LIC_FILES_CHKSUM = "\
 "
 
 # Upstream backports
-SRC_URI += " file://0001-Do-not-use-std-monospace-for-absl-variant.patch "
+SRC_URI += " \
+  file://0001-PATCH-pac_helper-test-for-__has_feature-macro.patch \
+  file://0001-GCC-fix-ambiguous-Observer-type-in-net.patch \
+  file://0001-GCC-use-all-brace-initializers-NoDestructor-in-autof.patch \
+  file://0001-GCC-use-all-brace-initializers-for-kCookieTheftExper.patch \
+  file://0001-GCC-fix-incomplete-type-in-autofill-AutofillClient.patch \
+"
+
+# Fix for GCC 11/12 to avoid breaking DPF compilation reported at
+# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=109505
+SRC_URI += " file://0001-GCC-disable-SVE-to-avoid-breaking-compilation-with-D.patch;patchdir=third_party/highway/src "
 
 do_install:append() {
         install -m 0755 chrome_crashpad_handler ${D}${libdir}/chromium/chrome_crashpad_handler

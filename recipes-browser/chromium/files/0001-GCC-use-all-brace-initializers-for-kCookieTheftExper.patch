@@ -1,0 +1,40 @@
+From dd93e8376f312d03f2a8bf35e61a4cb8f6b38b77 Mon Sep 17 00:00:00 2001
+From: Stephan Hartmann <stha09@googlemail.com>
+Date: Fri, 14 Apr 2023 17:38:59 +0000
+Subject: GCC: use all brace-initializers for kCookieTheftExperiments
+ NoDestructor
+
+GCC fails to resolve from constructor to initializer list.
+
+Bug: 819294
+Change-Id: I02b1835104f972a907f9ff9bc6c78c6e5a58d79e
+Reviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/4427971
+Commit-Queue: Stephan Hartmann <stha09@googlemail.com>
+Reviewed-by: Daniel Rubery <drubery@chromium.org>
+Cr-Commit-Position: refs/heads/main@{#1130547}
+---
+ .../browser/safe_browsing/chrome_user_population_helper.cc  | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/chrome/browser/safe_browsing/chrome_user_population_helper.cc b/chrome/browser/safe_browsing/chrome_user_population_helper.cc
+index b1af691925528..ac32f8628c104 100644
+--- a/chrome/browser/safe_browsing/chrome_user_population_helper.cc
++++ b/chrome/browser/safe_browsing/chrome_user_population_helper.cc
+@@ -123,11 +123,11 @@ ChromeUserPopulation GetUserPopulationForProfileWithCookieTheftExperiments(
+   if (population.user_population() ==
+       ChromeUserPopulation::ENHANCED_PROTECTION) {
+     static const base::NoDestructor<std::vector<const base::Feature*>>
+-        kCookieTheftExperiments({
++        kCookieTheftExperiments{{
+ #if BUILDFLAG(IS_WIN)
+-          &features::kLockProfileCookieDatabase
++            &features::kLockProfileCookieDatabase
+ #endif
+-        });
++        }};
+ 
+     GetExperimentStatus(*kCookieTheftExperiments, &population);
+   }
+-- 
+2.37.2
+

@@ -1,0 +1,56 @@
+From 0634445bee973ba3553ef9da2ff9466d3815259d Mon Sep 17 00:00:00 2001
+From: Stephan Hartmann <stha09@googlemail.com>
+Date: Fri, 14 Apr 2023 14:59:02 +0000
+Subject: GCC: fix incomplete type in autofill::AutofillClient
+
+GCC requires full definition of device_reauth::DeviceAuthRequester
+for releasing the scoped_refptr.
+
+Bug: 819294
+Change-Id: I470f046753cccf62b90ff8dcbadfc79719030a85
+Reviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/4428010
+Reviewed-by: Viktor Semeniuk <vsemeniuk@google.com>
+Reviewed-by: Florian Leimgruber <fleimgruber@google.com>
+Commit-Queue: Stephan Hartmann <stha09@googlemail.com>
+Cr-Commit-Position: refs/heads/main@{#1130450}
+---
+ components/autofill/core/browser/DEPS              | 1 +
+ components/autofill/core/browser/autofill_client.h | 5 +----
+ 2 files changed, 2 insertions(+), 4 deletions(-)
+
+diff --git a/components/autofill/core/browser/DEPS b/components/autofill/core/browser/DEPS
+index df94a81baecde..27598b2d4fbd2 100644
+--- a/components/autofill/core/browser/DEPS
++++ b/components/autofill/core/browser/DEPS
+@@ -1,4 +1,5 @@
+ include_rules = [
++  "+components/device_reauth/device_authenticator.h",
+   "+components/feature_engagement",
+   "+components/google/core/common/google_util.h",
+   "+components/grit/components_scaled_resources.h",
+diff --git a/components/autofill/core/browser/autofill_client.h b/components/autofill/core/browser/autofill_client.h
+index a11c66358f7cd..ed84b99ec3a81 100644
+--- a/components/autofill/core/browser/autofill_client.h
++++ b/components/autofill/core/browser/autofill_client.h
+@@ -27,6 +27,7 @@
+ #include "components/autofill/core/common/form_field_data.h"
+ #include "components/autofill/core/common/form_interactions_flow.h"
+ #include "components/autofill/core/common/unique_ids.h"
++#include "components/device_reauth/device_authenticator.h"
+ #include "components/profile_metrics/browser_profile_type.h"
+ #include "components/security_state/core/security_state.h"
+ #include "components/translate/core/browser/language_state.h"
+@@ -44,10 +45,6 @@
+ 
+ class PrefService;
+ 
+-namespace device_reauth {
+-class DeviceAuthenticator;
+-}
+-
+ namespace signin {
+ class IdentityManager;
+ }
+-- 
+2.37.2
+

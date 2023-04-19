@@ -1,0 +1,36 @@
+From 645c0abb0c92e067726d5038ed1f851729ec2b6a Mon Sep 17 00:00:00 2001
+From: Stephan Hartmann <stha09@googlemail.com>
+Date: Sat, 15 Apr 2023 04:14:19 +0000
+Subject: GCC: use all brace-initializers NoDestructor in autofill_private_api
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+GCC fails to resolve from constructor to initializer list.
+
+Bug: 819294
+Change-Id: I6a8de542b1322419d3efa8f571e1e75543200b30
+Reviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/4427792
+Commit-Queue: Stephan Hartmann <stha09@googlemail.com>
+Reviewed-by: Dominic Battré <battre@chromium.org>
+Cr-Commit-Position: refs/heads/main@{#1130792}
+---
+ .../extensions/api/autofill_private/autofill_private_api.cc     | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/chrome/browser/extensions/api/autofill_private/autofill_private_api.cc b/chrome/browser/extensions/api/autofill_private/autofill_private_api.cc
+index eeec58825795c..eb759afe6e2e1 100644
+--- a/chrome/browser/extensions/api/autofill_private/autofill_private_api.cc
++++ b/chrome/browser/extensions/api/autofill_private/autofill_private_api.cc
+@@ -159,7 +159,7 @@ autofill::AutofillProfile CreateNewAutofillProfile(
+     autofill::PersonalDataManager* personal_data,
+     const absl::optional<std::string>& country_code) {
+   static const base::NoDestructor<base::flat_set<std::string>>
+-      kSanctionedCountries({"CU", "IR", "KP", "SD", "SY"});
++      kSanctionedCountries{{"CU", "IR", "KP", "SD", "SY"}};
+   autofill::AutofillProfile::Source source =
+       personal_data->IsEligibleForAddressAccountStorage()
+           ? autofill::AutofillProfile::Source::kAccount
+-- 
+2.37.2
+
