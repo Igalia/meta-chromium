@@ -1,0 +1,6 @@
+header:
+  version: 10
+
+local_conf_header:
+  local_gcc_debug: |
+    BUILD_CFLAGS:append:pn-gcc-cross-aarch64 = " -g"
