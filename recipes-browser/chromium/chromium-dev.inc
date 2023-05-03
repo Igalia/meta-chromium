@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "114.0.5714.0"
+PV = "114.0.5735.6"
 
-SRC_URI[sha256sum] = "9180a39325dbda8a2eea597a5767c7971f772b237c067b2704e8d4b1a1ece6bc"
+SRC_URI[sha256sum] = "53168db3e268d15a3ca97c14052ba1cc67ad970b0b0250bf3f6772953b76b473"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -70,7 +70,7 @@ LIC_FILES_CHKSUM = "\
   file://${S}/third_party/cld_3/LICENSE;md5=d8b32ba83f8b11e4badd979f4319e706 \
   file://${S}/third_party/closure_compiler/LICENSE;md5=3b83ef96387f14655fc854ddc3c6bd57 \
   file://${S}/third_party/crashpad/crashpad/LICENSE;md5=3b83ef96387f14655fc854ddc3c6bd57 \
-  file://${S}/third_party/d3/src/LICENSE;md5=0679931d76eb2f1dd1915249da84a722 \
+  file://${S}/third_party/d3/src/LICENSE;md5=fcc83e5a00c3ea5885051b46163bd453 \
   file://${S}/third_party/decklink/LICENSE;md5=85b197f7b7b1ef270b01a1b6377be50e \
   file://${S}/third_party/dom_distiller_js/LICENSE;md5=6cd778870ce5c0c08c8e16fbdf378532 \
   file://${S}/third_party/expat/src/expat/COPYING;md5=7b3b078238d0901d3b339289117cb7fb \
@@ -83,7 +83,7 @@ LIC_FILES_CHKSUM = "\
   file://${S}/third_party/google_input_tools/LICENSE;md5=ff0b0f0202337c9d4ae2d869797049d3 \
   file://${S}/third_party/google_toolbox_for_mac/LICENSE;md5=3b83ef96387f14655fc854ddc3c6bd57 \
   file://${S}/third_party/gvr-android-sdk/LICENSE;md5=634fdf826e0846931133dca5785f59b8 \
-  file://${S}/third_party/harfbuzz-ng/src/COPYING;md5=6ee0f16281694fb6aa689cca1e0fb3da \
+  file://${S}/third_party/harfbuzz-ng/src/COPYING;md5=b98429b8e8e3c2a67cfef01e99e4893d \
   file://${S}/third_party/hunspell/COPYING.MPL;md5=bfe1f75d606912a4111c90743d6c7325 \
   file://${S}/third_party/iaccessible2/LICENSE;md5=43bbd0bfb581347ec10def720000a645 \
   file://${S}/third_party/iccjpeg/LICENSE;md5=26834d132689a03abf860f4572705494 \
@@ -150,15 +150,6 @@ LIC_FILES_CHKSUM = "\
   file://${S}/v8/LICENSE;md5=f38a2942edcfe4abb45e9a83a1ad2f82 \
   file://${S}/v8/LICENSE.fdlibm;md5=b17367d6c97e638599071d99a3049dfe \
   file://${S}/v8/LICENSE.strongtalk;md5=956a43818dd13f2e93088fc2c93589d2 \
-"
-
-# Upstream backports
-SRC_URI += " \
-  file://0001-PATCH-pac_helper-test-for-__has_feature-macro.patch \
-  file://0001-GCC-fix-ambiguous-Observer-type-in-net.patch \
-  file://0001-GCC-use-all-brace-initializers-NoDestructor-in-autof.patch \
-  file://0001-GCC-use-all-brace-initializers-for-kCookieTheftExper.patch \
-  file://0001-GCC-fix-incomplete-type-in-autofill-AutofillClient.patch \
 "
 
 # Fix for GCC 11/12 to avoid breaking DPF compilation reported at
