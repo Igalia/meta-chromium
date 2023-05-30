@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "115.0.5762.4"
+PV = "115.0.5790.3"
 
-SRC_URI[sha256sum] = "117bd8f52abb7b24182795597868a32a5386eed18f35f33b61a3aeca48b3984a"
+SRC_URI[sha256sum] = "49fc0e638432bda81f177637ad5dac3f1a4a341a218934cfa01cbea524884ac1"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -155,6 +155,12 @@ LIC_FILES_CHKSUM = "\
 # Fix for GCC 11/12 to avoid breaking DPF compilation reported at
 # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=109505
 SRC_URI += " file://0001-GCC-disable-SVE-to-avoid-breaking-compilation-with-D.patch;patchdir=third_party/highway/src "
+
+# Upstreamable patches
+SRC_URI += " \
+  file://0001-IWYU-add-cmath-for-various-math-functions-in-skia.patch \
+  file://0001-IWYU-std-vector-used-in-verify_name_match.h-without-.patch \
+"
 
 do_install:append() {
         install -m 0755 chrome_crashpad_handler ${D}${libdir}/chromium/chrome_crashpad_handler

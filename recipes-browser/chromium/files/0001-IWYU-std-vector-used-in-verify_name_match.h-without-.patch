@@ -1,0 +1,26 @@
+From 8a4fb38db3b806d7fc5ccc348d45bcb1a482bdb7 Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Mon, 15 May 2023 14:47:35 +0200
+Subject: IWYU: std::vector used in verify_name_match.h without include
+
+Bug: 957519
+Change-Id: Ie753fadae35adb293f854a0f8d4f675e67a2fc31
+---
+ net/cert/pki/verify_name_match.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/net/cert/pki/verify_name_match.h b/net/cert/pki/verify_name_match.h
+index d22cf7f25ed4a..e30b221b25d21 100644
+--- a/net/cert/pki/verify_name_match.h
++++ b/net/cert/pki/verify_name_match.h
+@@ -6,6 +6,7 @@
+ #define NET_CERT_PKI_VERIFY_NAME_MATCH_H_
+ 
+ #include <string>
++#include <vector>
+ 
+ #include "net/base/net_export.h"
+ 
+-- 
+2.39.2
+
