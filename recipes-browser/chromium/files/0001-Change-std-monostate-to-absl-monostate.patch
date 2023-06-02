@@ -1,0 +1,33 @@
+From eaa9a18840b0797e56ea9b52b6a70459fe00c82f Mon Sep 17 00:00:00 2001
+From: Ken Buchanan <kenrb@chromium.org>
+Date: Wed, 31 May 2023 19:03:12 +0000
+Subject: Change std::monostate to absl::monostate
+
+Bug: None
+Change-Id: I5af43f0d5f22f333bf65a567b2eb4bc419df2716
+Reviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/4577561
+Commit-Queue: Ken Buchanan <kenrb@chromium.org>
+Auto-Submit: Ken Buchanan <kenrb@chromium.org>
+Reviewed-by: Adam Langley <agl@chromium.org>
+Commit-Queue: Adam Langley <agl@chromium.org>
+Cr-Commit-Position: refs/heads/main@{#1151398}
+---
+ chrome/browser/webauthn/authenticator_request_dialog_model.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/chrome/browser/webauthn/authenticator_request_dialog_model.h b/chrome/browser/webauthn/authenticator_request_dialog_model.h
+index b0f036168df54..c9d13dfde04dd 100644
+--- a/chrome/browser/webauthn/authenticator_request_dialog_model.h
++++ b/chrome/browser/webauthn/authenticator_request_dialog_model.h
+@@ -186,7 +186,7 @@ class AuthenticatorRequestDialogModel {
+         base::StrongAlias<class TransportTag, AuthenticatorTransport>;
+     using WindowsAPI = base::StrongAlias<class WindowsAPITag, absl::monostate>;
+     using ICloudKeychain =
+-        base::StrongAlias<class iCloudKeychainTag, std::monostate>;
++        base::StrongAlias<class iCloudKeychainTag, absl::monostate>;
+     using Phone = base::StrongAlias<class PhoneTag, std::string>;
+     using AddPhone = base::StrongAlias<class AddPhoneTag, absl::monostate>;
+     using Type =
+-- 
+2.39.2
+

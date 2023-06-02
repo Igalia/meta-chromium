@@ -1,0 +1,63 @@
+From 6acfbb066e4948fe7e72c7a71d41b9772a30bbc9 Mon Sep 17 00:00:00 2001
+From: Per K <perkj@webrtc.org>
+Date: Tue, 30 May 2023 13:26:11 +0200
+Subject: Replace std::optional with absl::optional in RtpPacketHistory
+
+Bug: webrtc:15201
+Change-Id: I2c78b7215ef366e3aee0ad1c3c10ca0c96c8d0c8
+Reviewed-on: https://webrtc-review.googlesource.com/c/src/+/307023
+Reviewed-by: Danil Chapovalov <danilchap@webrtc.org>
+Auto-Submit: Per Kjellander <perkj@webrtc.org>
+Commit-Queue: Per Kjellander <perkj@webrtc.org>
+Commit-Queue: Danil Chapovalov <danilchap@webrtc.org>
+Cr-Commit-Position: refs/heads/main@{#40181}
+---
+ modules/rtp_rtcp/source/rtp_packet_history.cc | 3 +--
+ modules/rtp_rtcp/source/rtp_packet_history.h  | 3 ++-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/modules/rtp_rtcp/source/rtp_packet_history.cc b/modules/rtp_rtcp/source/rtp_packet_history.cc
+index b3d9b8fecd..1e75e4787e 100644
+--- a/modules/rtp_rtcp/source/rtp_packet_history.cc
++++ b/modules/rtp_rtcp/source/rtp_packet_history.cc
+@@ -14,7 +14,6 @@
+ #include <cstdint>
+ #include <limits>
+ #include <memory>
+-#include <optional>
+ #include <utility>
+ 
+ #include "modules/include/module_common_types_public.h"
+@@ -350,7 +349,7 @@ void RtpPacketHistory::Clear() {
+ void RtpPacketHistory::Reset() {
+   packet_history_.clear();
+   padding_priority_.clear();
+-  large_payload_packet_ = std::nullopt;
++  large_payload_packet_ = absl::nullopt;
+ }
+ 
+ void RtpPacketHistory::CullOldPackets() {
+diff --git a/modules/rtp_rtcp/source/rtp_packet_history.h b/modules/rtp_rtcp/source/rtp_packet_history.h
+index c278c15e92..18310a8bd3 100644
+--- a/modules/rtp_rtcp/source/rtp_packet_history.h
++++ b/modules/rtp_rtcp/source/rtp_packet_history.h
+@@ -18,6 +18,7 @@
+ #include <utility>
+ #include <vector>
+ 
++#include "absl/types/optional.h"
+ #include "api/function_view.h"
+ #include "api/units/time_delta.h"
+ #include "api/units/timestamp.h"
+@@ -208,7 +209,7 @@ class RtpPacketHistory {
+   // in GetPayloadPaddingPacket().
+   PacketPrioritySet padding_priority_ RTC_GUARDED_BY(lock_);
+ 
+-  std::optional<RtpPacketToSend> large_payload_packet_ RTC_GUARDED_BY(lock_);
++  absl::optional<RtpPacketToSend> large_payload_packet_ RTC_GUARDED_BY(lock_);
+ };
+ }  // namespace webrtc
+ #endif  // MODULES_RTP_RTCP_SOURCE_RTP_PACKET_HISTORY_H_
+-- 
+2.39.2
+

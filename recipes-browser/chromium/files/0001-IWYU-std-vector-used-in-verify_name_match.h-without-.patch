@@ -1,10 +1,17 @@
-From 8a4fb38db3b806d7fc5ccc348d45bcb1a482bdb7 Mon Sep 17 00:00:00 2001
+From 74c464ae56275f4de46b7d1f7e103fa758a637d2 Mon Sep 17 00:00:00 2001
 From: Jose Dapena Paz <jdapena@igalia.com>
-Date: Mon, 15 May 2023 14:47:35 +0200
+Date: Wed, 31 May 2023 17:03:02 +0000
 Subject: IWYU: std::vector used in verify_name_match.h without include
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
 Bug: 957519
 Change-Id: Ie753fadae35adb293f854a0f8d4f675e67a2fc31
+Reviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/4533815
+Reviewed-by: David Benjamin <davidben@chromium.org>
+Commit-Queue: José Dapena Paz <jdapena@igalia.com>
+Cr-Commit-Position: refs/heads/main@{#1151307}
 ---
  net/cert/pki/verify_name_match.h | 1 +
  1 file changed, 1 insertion(+)

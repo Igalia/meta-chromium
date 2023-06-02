@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "115.0.5790.3"
+PV = "116.0.5803.2"
 
-SRC_URI[sha256sum] = "49fc0e638432bda81f177637ad5dac3f1a4a341a218934cfa01cbea524884ac1"
+SRC_URI[sha256sum] = "12e044a54209f97720853c538fa4f381907017dd89ae1b3b671cf8bd36077468"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -156,10 +156,12 @@ LIC_FILES_CHKSUM = "\
 # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=109505
 SRC_URI += " file://0001-GCC-disable-SVE-to-avoid-breaking-compilation-with-D.patch;patchdir=third_party/highway/src "
 
-# Upstreamable patches
+# Upstream patches
 SRC_URI += " \
-  file://0001-IWYU-add-cmath-for-various-math-functions-in-skia.patch \
+  file://0001-Replace-std-optional-with-absl-optional-in-RtpPacket.patch;patchdir=third_party/webrtc \
   file://0001-IWYU-std-vector-used-in-verify_name_match.h-without-.patch \
+  file://0001-libstdc-std-vector-cannot-contain-consts-in-FamilyPr.patch \
+  file://0001-Change-std-monostate-to-absl-monostate.patch \
 "
 
 do_install:append() {

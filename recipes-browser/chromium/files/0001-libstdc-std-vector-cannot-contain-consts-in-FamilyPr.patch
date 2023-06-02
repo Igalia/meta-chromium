@@ -1,0 +1,50 @@
+From d829e8002276b5b07c99f121ae271834bce1233c Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Thu, 1 Jun 2023 08:39:50 +0000
+Subject: libstdc++: std::vector cannot contain consts in
+ FamilyPreferencesService
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Bug: 957519
+Change-Id: I901ef7d10c9338eef64f04ea3efa90921a2a5477
+Reviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/4573536
+Commit-Queue: José Dapena Paz <jdapena@igalia.com>
+Reviewed-by: Courtney Wong <courtneywong@chromium.org>
+Cr-Commit-Position: refs/heads/main@{#1151732}
+---
+ .../core/browser/family_preferences_service.cc            | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/components/supervised_user/core/browser/family_preferences_service.cc b/components/supervised_user/core/browser/family_preferences_service.cc
+index 60ce0a3e0f30b..6a5b6f88e905c 100644
+--- a/components/supervised_user/core/browser/family_preferences_service.cc
++++ b/components/supervised_user/core/browser/family_preferences_service.cc
+@@ -25,10 +25,10 @@ struct Family {
+     return head_of_household_;
+   }
+   const absl::optional<const Member>& GetParent() const { return parent_; }
+-  const std::vector<const Member>& GetRegularMembers() const {
++  const std::vector<Member>& GetRegularMembers() const {
+     return regular_members_;
+   }
+-  const std::vector<const Member>& GetChildren() const { return children_; }
++  const std::vector<Member>& GetChildren() const { return children_; }
+ 
+   Family() = delete;
+   explicit Family(
+@@ -58,8 +58,8 @@ struct Family {
+  private:
+   absl::optional<const Member> head_of_household_;
+   absl::optional<const Member> parent_;
+-  std::vector<const Member> regular_members_;
+-  std::vector<const Member> children_;
++  std::vector<Member> regular_members_;
++  std::vector<Member> children_;
+ };
+ 
+ }  // namespace
+-- 
+2.39.2
+
