@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "116.0.5829.0"
+PV = "116.0.5845.4"
 
-SRC_URI[sha256sum] = "c68b444a577fa389b0d907d9b406382a906c96be455847b23fd9167014e4e046"
+SRC_URI[sha256sum] = "fc4ede1e8a5ea7fec6b2992afe3209d53d8aba60333fa14fb22ec8ec7f237b5c"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -87,7 +87,7 @@ LIC_FILES_CHKSUM = "\
   file://${S}/third_party/hunspell/COPYING.MPL;md5=bfe1f75d606912a4111c90743d6c7325 \
   file://${S}/third_party/iaccessible2/LICENSE;md5=43bbd0bfb581347ec10def720000a645 \
   file://${S}/third_party/iccjpeg/LICENSE;md5=26834d132689a03abf860f4572705494 \
-  file://${S}/third_party/icu/LICENSE;md5=a89d03060ff9c46552434dbd1fe3ed1f \
+  file://${S}/third_party/icu/LICENSE;md5=80c2cf39ad8ae12b9b9482a1737c6650 \
   file://${S}/third_party/inspector_protocol/LICENSE;md5=db90dcb101891a7285d25f2fbceca752 \
   file://${S}/third_party/isimpledom/LICENSE;md5=822502c0e010ccdbb6a3e681dd47888e \
   file://${S}/third_party/jsoncpp/LICENSE;md5=c56ee55c03a55f8105b969d8270632ce \
@@ -152,12 +152,16 @@ LIC_FILES_CHKSUM = "\
   file://${S}/v8/LICENSE.strongtalk;md5=956a43818dd13f2e93088fc2c93589d2 \
 "
 
+# Backported upstream patches
+SRC_URI += " \
+  file://0001-IWYU-add-vector-for-std-vector-in-profile_view_utils.patch \
+  file://0001-IWYU-add-variant-for-std-variant-in-object_paint_pro.patch \
+  file://0001-Roll-abseil_revision-049aa40e7e.166d71d18f.patch \
+"
+
 # Fix for GCC 11/12 to avoid breaking DPF compilation reported at
 # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=109505
 SRC_URI += " file://0001-GCC-disable-SVE-to-avoid-breaking-compilation-with-D.patch;patchdir=third_party/highway/src "
-
-# Upstreamable
-SRC_URI += " file://0001-libstdc-explicit-cast-of-different-type-SSE2-intrins.patch "
 
 do_install:append() {
         install -m 0755 chrome_crashpad_handler ${D}${libdir}/chromium/chrome_crashpad_handler

@@ -1,0 +1,38 @@
+From 79a40941bd529d59b6d5611f4dfe4cd296bcb2c3 Mon Sep 17 00:00:00 2001
+From: Danil Chapovalov <danilchap@chromium.org>
+Date: Wed, 21 Jun 2023 18:35:30 +0000
+Subject: Roll abseil_revision 049aa40e7e..166d71d18f
+
+Change Log:
+https://chromium.googlesource.com/external/github.com/abseil/abseil-cpp/+log/049aa40e7e..166d71d18f
+Full diff:
+https://chromium.googlesource.com/external/github.com/abseil/abseil-cpp/+/049aa40e7e..166d71d18f
+
+No .def changes
+
+Bug: None
+Change-Id: Ic5c8c93ce285933bd4c2a0fac40e2e331ecc3565
+Reviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/4629756
+Auto-Submit: Danil Chapovalov <danilchap@chromium.org>
+Reviewed-by: Nico Weber <thakis@chromium.org>
+Commit-Queue: Nico Weber <thakis@chromium.org>
+Cr-Commit-Position: refs/heads/main@{#1160761}
+---
+ .../absl/debugging/internal/stacktrace_aarch64-inl.inc           | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/third_party/abseil-cpp/absl/debugging/internal/stacktrace_aarch64-inl.inc b/third_party/abseil-cpp/absl/debugging/internal/stacktrace_aarch64-inl.inc
+index c8b843979491d..3f08716202212 100644
+--- a/third_party/abseil-cpp/absl/debugging/internal/stacktrace_aarch64-inl.inc
++++ b/third_party/abseil-cpp/absl/debugging/internal/stacktrace_aarch64-inl.inc
+@@ -13,6 +13,7 @@
+ #include <cassert>
+ #include <cstdint>
+ #include <iostream>
++#include <limits>
+ 
+ #include "absl/base/attributes.h"
+ #include "absl/debugging/internal/address_is_readable.h"
+-- 
+2.39.2
+
