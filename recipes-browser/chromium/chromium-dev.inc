@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "116.0.5845.4"
+PV = "116.0.5845.14"
 
-SRC_URI[sha256sum] = "fc4ede1e8a5ea7fec6b2992afe3209d53d8aba60333fa14fb22ec8ec7f237b5c"
+SRC_URI[sha256sum] = "e518b0c00370c847796956f0f68e3b7289409b3be405c4a306bffaf33c980aad"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
