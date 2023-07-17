@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "116.0.5845.14"
+PV = "116.0.5845.32"
 
-SRC_URI[sha256sum] = "e518b0c00370c847796956f0f68e3b7289409b3be405c4a306bffaf33c980aad"
+SRC_URI[sha256sum] = "b10a596b8741eb7438d0d04063873f32a93b97e9676c26884a4a2fab43772f56"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -157,6 +157,7 @@ SRC_URI += " \
   file://0001-IWYU-add-vector-for-std-vector-in-profile_view_utils.patch \
   file://0001-IWYU-add-variant-for-std-variant-in-object_paint_pro.patch \
   file://0001-Roll-abseil_revision-049aa40e7e.166d71d18f.patch \
+  file://0001-IWYU-add-cstddef-for-size_t-in-bookmarks-UrlLoadStat.patch \
 "
 
 # Fix for GCC 11/12 to avoid breaking DPF compilation reported at
