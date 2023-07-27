@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "116.0.5845.32"
+PV = "117.0.5897.3"
 
-SRC_URI[sha256sum] = "b10a596b8741eb7438d0d04063873f32a93b97e9676c26884a4a2fab43772f56"
+SRC_URI[sha256sum] = "2a16567f60bffeb23a3b8111cabd5fcb48e5e1e61757b30d9bd4888aca1cce5f"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -152,13 +152,17 @@ LIC_FILES_CHKSUM = "\
   file://${S}/v8/LICENSE.strongtalk;md5=956a43818dd13f2e93088fc2c93589d2 \
 "
 
-# Backported upstream patches
+# Upstreamable patches
 SRC_URI += " \
-  file://0001-IWYU-add-vector-for-std-vector-in-profile_view_utils.patch \
-  file://0001-IWYU-add-variant-for-std-variant-in-object_paint_pro.patch \
-  file://0001-Roll-abseil_revision-049aa40e7e.166d71d18f.patch \
-  file://0001-IWYU-add-cstddef-for-size_t-in-bookmarks-UrlLoadStat.patch \
+  file://0001-GCC-workaround-for-GCC-failing-to-compile-using-decl.patch \
+  file://0001-GCC-do-not-asume-__has_feature-is-declared-in-openss.patch \
 "
+
+# Fix for material_color_utilities issue reported at
+# https://github.com/material-foundation/material-color-utilities/issues/108
+#
+# Not contributed upstream as that is not allowed in that repository
+SRC_URI += " file://0001-IWYU-missing-include-for-round-call-in-tones.cc.patch;patchdir=third_party/material_color_utilities/src "
 
 # Fix for GCC 11/12 to avoid breaking DPF compilation reported at
 # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=109505

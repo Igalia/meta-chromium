@@ -1,5 +1,5 @@
 require gn.inc
 
-PV = "102.0.5005.22"
+PV = "117.0.5897.3"
 
-SRCREV = "fd9f2036f26d83f9fcfe93042fb952e5a7fe2167"
+SRCREV = "fae280eabe5d31accc53100137459ece19a7a295"

@@ -1,0 +1,40 @@
+From c1abc5a8c8638bc60cf3e31bc5cf61cf15780a14 Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Mon, 24 Jul 2023 13:53:59 +0200
+Subject: GCC: workaround for GCC failing to compile using decltype to invoke
+ destructor
+
+Using decltype to access destructor as in:
+   name.~decltype(name);
+is failing in GCC, and reported in
+https://gcc.gnu.org/bugzilla/show_bug.cgi?id=77815
+
+Workaround this using a type alias.
+
+Bug: 819294
+Change-Id: I14587ed4ca3632ccf3937a478f81854b306fcc95
+---
+ .../renderer/core/layout/ng/physical_fragment_rare_data.cc | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/third_party/blink/renderer/core/layout/ng/physical_fragment_rare_data.cc b/third_party/blink/renderer/core/layout/ng/physical_fragment_rare_data.cc
+index 914d5a25f6154..00a8f3f04c2f7 100644
+--- a/third_party/blink/renderer/core/layout/ng/physical_fragment_rare_data.cc
++++ b/third_party/blink/renderer/core/layout/ng/physical_fragment_rare_data.cc
+@@ -158,9 +158,10 @@ PhysicalFragmentRareData::RareField::RareField(
+ #undef MOVE_UNION_MEMBER
+ 
+ #define DESTRUCT_UNION_MEMBER(id, name) \
+-  case FieldId::id:                     \
+-    name.~decltype(name)();             \
+-    break
++  case FieldId::id: {                   \
++    using NameType = decltype(name);    \
++    name.~NameType();                   \
++  } break
+ 
+ PhysicalFragmentRareData::RareField::~RareField() {
+   DISPATCH_BY_MEMBER_TYPE(DESTRUCT_UNION_MEMBER);
+-- 
+2.39.2
+
