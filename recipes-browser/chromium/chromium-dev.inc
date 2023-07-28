@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "117.0.5897.3"
+PV = "117.0.5911.2"
 
-SRC_URI[sha256sum] = "2a16567f60bffeb23a3b8111cabd5fcb48e5e1e61757b30d9bd4888aca1cce5f"
+SRC_URI[sha256sum] = "450e860df132cea1129db534bab7cd5d05ff1df999ee44309f3e1a3255dce2ff"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -152,11 +152,11 @@ LIC_FILES_CHKSUM = "\
   file://${S}/v8/LICENSE.strongtalk;md5=956a43818dd13f2e93088fc2c93589d2 \
 "
 
+# Upstream backports
+SRC_URI += " file://0001-IWYU-add-string.h-for-strncmp-in-CFX_GifContext.patch;patchdir=third_party/pdfium "
+
 # Upstreamable patches
-SRC_URI += " \
-  file://0001-GCC-workaround-for-GCC-failing-to-compile-using-decl.patch \
-  file://0001-GCC-do-not-asume-__has_feature-is-declared-in-openss.patch \
-"
+SRC_URI += " file://0001-GCC-do-not-asume-__has_feature-is-declared-in-openss.patch "
 
 # Fix for material_color_utilities issue reported at
 # https://github.com/material-foundation/material-color-utilities/issues/108
