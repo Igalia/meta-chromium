@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "117.0.5911.2"
+PV = "117.0.5938.0"
 
-SRC_URI[sha256sum] = "450e860df132cea1129db534bab7cd5d05ff1df999ee44309f3e1a3255dce2ff"
+SRC_URI[sha256sum] = "4e73baf06e8347abbe8e346c70dcab0fde1d498bfd981c9ca7bd76247afe2c89"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -29,8 +29,6 @@ LIC_FILES_CHKSUM = "\
   file://${S}/base/third_party/valgrind/LICENSE;md5=b95c9cb2560f157c60ea60ac1aa69469 \
   file://${S}/base/third_party/xdg_mime/LICENSE;md5=743a91118d40f173467c8ecfd8793c62 \
   file://${S}/base/third_party/xdg_user_dirs/LICENSE;md5=d998f250c491c329a8254dd1ca62c647 \
-  file://${S}/buildtools/third_party/libc++/trunk/LICENSE.TXT;md5=55d89dd7eec8d3b4204b680e27da3953 \
-  file://${S}/buildtools/third_party/libc++abi/trunk/LICENSE.TXT;md5=7b9334635b542c56868400a46b272b1e \
   file://${S}/chrome/installer/mac/third_party/bsdiff/LICENSE;md5=0dbe7a50f028269750631fcbded3846a \
   file://${S}/chrome/installer/mac/third_party/xz/LICENSE;md5=8bbde65ae0523dc878ed1ac1252d2d14 \
   file://${S}/chrome/third_party/mozilla_security_manager/LICENSE;md5=0c259b853bbf067b361100ce560adce7 \
@@ -95,6 +93,8 @@ LIC_FILES_CHKSUM = "\
   file://${S}/third_party/khronos/LICENSE;md5=1d2ef853a9ae7ace4e16fda0d48f597b \
   file://${S}/third_party/lcov/COPYING;md5=751419260aa954499f7abaabaa882bbe \
   file://${S}/third_party/leveldatabase/src/LICENSE;md5=92d1b128950b11ba8495b64938fc164d \
+  file://${S}/third_party/libc++/src/LICENSE.TXT;md5=55d89dd7eec8d3b4204b680e27da3953 \
+  file://${S}/third_party/libc++abi/src/LICENSE.TXT;md5=7b9334635b542c56868400a46b272b1e \
   file://${S}/third_party/libevent/LICENSE;md5=a2b0302a710150293fb85d2bfabd3de6 \
   file://${S}/third_party/libFuzzer/LICENSE.TXT;md5=4c0bc17c954e99fd547528d938832bfa \
   file://${S}/third_party/libaddressinput/LICENSE;md5=3b83ef96387f14655fc854ddc3c6bd57 \
@@ -153,10 +153,7 @@ LIC_FILES_CHKSUM = "\
 "
 
 # Upstream backports
-SRC_URI += " file://0001-IWYU-add-string.h-for-strncmp-in-CFX_GifContext.patch;patchdir=third_party/pdfium "
-
-# Upstreamable patches
-SRC_URI += " file://0001-GCC-do-not-asume-__has_feature-is-declared-in-openss.patch "
+SRC_URI += " file://0001-IWYU-add-memory-for-std-unique_ptr-in-third_party-ip.patch "
 
 # Fix for material_color_utilities issue reported at
 # https://github.com/material-foundation/material-color-utilities/issues/108
