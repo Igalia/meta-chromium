@@ -263,7 +263,7 @@ do_compile() {
         # We need to do this because curl by default will try to fetch ca-certificates.crt
         # from the native sysroot used to compile curl-native
         export CURL_CA_BUNDLE=${STAGING_DIR_NATIVE}/etc/ssl/certs/ca-certificates.crt
-	ninja "${PARALLEL_MAKE}" chrome chrome_sandbox
+	ninja "${PARALLEL_MAKE}" chrome chrome_sandbox d8
 }
 
 PRODUCT_LOGO_SIZES = "24 48 64 128 256"
@@ -315,10 +315,18 @@ do_install() {
 	install -m 0644 resources.pak ${D}${libdir}/chromium/resources.pak
 
 	install -m 0644 locales/*.pak ${D}${libdir}/chromium/locales/
+
+        install -m 0644 d8 ${D}${libdir}/chromium/d8
 }
 
 # Swiftshader libraries installed in chromium libdir do not have versioning
 INSANE_SKIP:${PN} = "dev-elf"
+
+PACKAGES =+ "${PN}-d8"
+
+FILES:${PN}-d8 = " \
+        ${libdir}/chromium/d8 \
+"
 
 FILES:${PN} = " \
         ${bindir}/chromium \
