@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "118.0.5951.0"
+PV = "118.0.5993.11"
 
-SRC_URI[sha256sum] = "089c86109794c35c57bfb67717a57359dee4c8f02cbce7b76660072654f4894a"
+SRC_URI[sha256sum] = "f3b1bceb24f94be8ae7aa9c324f146e5efd336debc19ebcf052aaa741b029c83"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -152,8 +152,13 @@ LIC_FILES_CHKSUM = "\
   file://${S}/v8/LICENSE.strongtalk;md5=956a43818dd13f2e93088fc2c93589d2 \
 "
 
-# Upstreamable patches
-SRC_URI += " file://0001-libstdc-fpclassify-exposed-by-cmath-is-in-std-namesp.patch "
+# Backports from upstream
+SRC_URI += " \
+  file://0001-GCC-Put-attributes-before-function-name-in-partition.patch \
+  file://0001-IWYU-Add-includes-for-size_t-and-int64_t-usage-into-.patch \
+  file://0001-IWYU-usage-of-std-atomic-requires-include-in-lightwe.patch \
+  file://0001-GCC-workaround-constexpr-and-raw_ptr-issues-in-autof.patch \
+"
 
 # Fix for material_color_utilities issue reported at
 # https://github.com/material-foundation/material-color-utilities/issues/108
