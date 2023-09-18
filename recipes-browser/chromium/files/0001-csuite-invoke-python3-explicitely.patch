@@ -1,0 +1,39 @@
+From 00755e5e4557bbd991df6bb204614dfb92fe9c2c Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Mon, 18 Sep 2023 16:49:14 +0200
+Subject: csuite: invoke python3 explicitely
+
+csuite.py was invoking python instances looking for a "python"
+executable in path. That broke csuite in case there was not a python
+binary.
+
+Change-Id: I77e6c09b10c62c12ac5cafe645580b877dfc9892
+---
+ test/benchmarks/csuite/csuite.py | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/test/benchmarks/csuite/csuite.py b/test/benchmarks/csuite/csuite.py
+index 24b46083608..4fe3a1d0836 100755
+--- a/test/benchmarks/csuite/csuite.py
++++ b/test/benchmarks/csuite/csuite.py
+@@ -146,7 +146,7 @@ if __name__ == '__main__':
+   if opts.verbose:
+     print("calling d8 like so: %s." % inner_command)
+ 
+-  cmdline_base = "python %s %s -fv -r %d -d %s" \
++  cmdline_base = "python3 %s %s -fv -r %d -d %s" \
+       % (benchmark_py_path, inner_command, runs, output_path_base)
+ 
+   if mode == "baseline":
+@@ -166,7 +166,7 @@ if __name__ == '__main__':
+     print("Run %s again with compare mode to see results." % suite)
+   else:
+     print("Wrote %s." % output_file_compare)
+-    cmdline = "python %s  %s -f %s" % (compare_baseline_py_path, output_file, output_file_compare)
++    cmdline = "python3 %s  %s -f %s" % (compare_baseline_py_path, output_file, output_file_compare)
+     if opts.verbose:
+       print("Spawning subprocess: %s." % cmdline)
+     return_code = subprocess.call(cmdline, shell=True, cwd=suite_path)
+-- 
+2.39.2
+

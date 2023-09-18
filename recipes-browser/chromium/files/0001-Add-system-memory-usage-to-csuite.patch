@@ -1,0 +1,123 @@
+From fb54d30c05cd4d396bbaa492e73ed82ca928cdde Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Tue, 5 Sep 2023 13:44:05 +0200
+Subject: Add system memory usage to csuite
+
+New command line option for csuite.py --memory, that will use the just
+introduced d8 command line switch --dump-system-memory-stats and add a
+row with the obtained value.
+
+This way we not only compute the CPU time of the test, but also the
+peak memory usage.
+
+Bug: v8:14298
+Change-Id: I6d34c03a3c2dbc77894c53a8ddf76a46eaa8ca63
+---
+ test/benchmarks/csuite/benchmark.py | 33 ++++++++++++++++++++++++++++-
+ test/benchmarks/csuite/csuite.py    |  8 +++++++
+ 2 files changed, 40 insertions(+), 1 deletion(-)
+
+diff --git a/test/benchmarks/csuite/benchmark.py b/test/benchmarks/csuite/benchmark.py
+index 531c14a4a12..c2a2acd0130 100755
+--- a/test/benchmarks/csuite/benchmark.py
++++ b/test/benchmarks/csuite/benchmark.py
+@@ -30,6 +30,8 @@ class BenchmarkSuite(object):
+     self.name = name
+     self.results = {}
+     self.tests = []
++    self.memoryresults = []
++    self.nummemory = 0
+     self.avgresult = {}
+     self.sigmaresult = {}
+     self.numresult = {}
+@@ -43,6 +45,9 @@ class BenchmarkSuite(object):
+       self.results[test] = []
+     self.results[test] += [int(result)]
+ 
++  def RecordMemory(self, result):
++    self.memoryresults += [int(result)]
++
+   def ThrowAwayWorstResult(self, results):
+     if len(results) <= 1: return
+     if self.name in self.kClassicScoreSuites:
+@@ -69,6 +74,20 @@ class BenchmarkSuite(object):
+               (test, self.avgresult[test],
+                self.sigmaresult[test], self.numresult[test]))
+ 
++  def ProcessMemory(self):
++    if (len(self.memoryresults)) == 0:
++      return
++    self.memoryresults.sort()
++    self.ThrowAwayWorstResult(self.memoryresults)
++    self.avgmemory = sum(self.memoryresults) * 1.0 / len(self.memoryresults)
++    sigma_divisor = len(self.memoryresults) - 1
++    if sigma_divisor == 0:
++      sigma_divisor = 1
++    self.sigmamemory = math.sqrt(
++        sum((x - self.avgmemory)**2 for x in self.memoryresults) /
++        sigma_divisor)
++    self.nummemory = len(self.memoryresults)
++
+   def ComputeScoreGeneric(self):
+     self.score = 0
+     self.sigma = 0
+@@ -153,6 +172,11 @@ class BenchmarkRunner(object):
+     if line == "----":
+       return (None, None)
+ 
++    # Retrieve peak memory usage if available
++    g = re.match("System peak.*: (?P<peak_memory>\d+)", line)
++    if g != None:
++      return ("memory", g.group('peak_memory'))
++
+     # Kraken or Sunspider?
+     g = re.match("(?P<test_name>\w+(-\w+)*)\(RunTime\): (?P<score>\d+) ms\.", \
+         line)
+@@ -178,10 +202,17 @@ class BenchmarkRunner(object):
+         for line in f:
+           (test, result) = self.ProcessLine(line)
+           if test is not None:
+-            suite.RecordResult(test, result)
++            if test == "memory":
++              suite.RecordMemory(result)
++            else:
++              suite.RecordResult(test, result)
+ 
+     suite.ProcessResults(self.opts)
++    suite.ProcessMemory()
+     suite.ComputeScore()
++    if suite.nummemory > 0:
++      print(("PeakMemory,%.1f,%.2f,%d " %
++             (suite.avgmemory, suite.sigmamemory, suite.nummemory)))
+     print(("%s,%.1f,%.2f,%d " %
+         (suite.name, suite.score, suite.sigma, suite.num)), end='')
+     if self.opts.verbose:
+diff --git a/test/benchmarks/csuite/csuite.py b/test/benchmarks/csuite/csuite.py
+index 70eb5736062..24b46083608 100755
+--- a/test/benchmarks/csuite/csuite.py
++++ b/test/benchmarks/csuite/csuite.py
+@@ -47,6 +47,12 @@ if __name__ == '__main__':
+       help="Pass these extra arguments to d8.")
+   parser.add_option("-v", "--verbose", action="store_true", dest="verbose",
+       help="See more output about what magic csuite is doing.")
++  parser.add_option(
++      "-m",
++      "--memory",
++      action="store_true",
++      dest="memory",
++      help="Measure system memory usage.")
+   (opts, args) = parser.parse_args()
+ 
+   if len(args) < 3:
+@@ -98,6 +104,8 @@ if __name__ == '__main__':
+   extra_args = ""
+   if opts.extra_args:
+     extra_args = opts.extra_args
++  if opts.memory:
++    extra_args += " --dump-system-memory-stats"
+ 
+   if suite == "octane":
+     runs = 10
+-- 
+2.39.2
+
