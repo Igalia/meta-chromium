@@ -29,6 +29,6 @@ repos:
 
 local_conf_header:
   chromium: |
-    CORE_IMAGE_EXTRA_INSTALL += " chromium-dev chromium-dev-d8"
+    CORE_IMAGE_EXTRA_INSTALL += " chromium-dev"
     PACKAGECONFIG:append:x86_pn-${CHROMIUM_PACKAGE} = " vaapi"
     PACKAGECONFIG:append:x86-64:pn-${CHROMIUM_PACKAGE} = " vaapi"
