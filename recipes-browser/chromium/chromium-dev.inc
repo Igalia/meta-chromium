@@ -158,6 +158,7 @@ SRC_URI += " \
   file://0001-IWYU-Add-includes-for-size_t-and-int64_t-usage-into-.patch \
   file://0001-IWYU-usage-of-std-atomic-requires-include-in-lightwe.patch \
   file://0001-GCC-workaround-constexpr-and-raw_ptr-issues-in-autof.patch \
+  file://0001-d8-New-command-line-switch-to-dump-system-memory-usa.patch;patchdir=v8 \
 "
 
 # Fix for material_color_utilities issue reported at
