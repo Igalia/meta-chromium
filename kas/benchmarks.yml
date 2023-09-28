@@ -1,6 +1,6 @@
 header:
   version: 10
 
-local_conf_headers:
+local_conf_header:
   benchmarks: |
     CORE_IMAGE_EXTRA_INSTALL += " v8-csuite"
