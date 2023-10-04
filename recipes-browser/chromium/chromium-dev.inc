@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "119.0.6020.3"
+PV = "119.0.6034.6"
 
-SRC_URI[sha256sum] = "be55d02c92603ee82e4bc1f01082f4048a08df988fe80830e4e507eb1eb139ad"
+SRC_URI[sha256sum] = "86264d0c5f462e77a173b2b26f37f13acbc1903105578a040a30e7b599af00cc"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -153,7 +153,10 @@ LIC_FILES_CHKSUM = "\
 "
 
 # Upstream backports
-SRC_URI += " file://0001-IWYU-add-math.h-for-sqrt-in-base-MovingWindow.patch "
+SRC_URI += " \
+  file://0001-libstdc-fix-incomplete-type-in-ui-GestureConsumer.patch \
+  file://0001-libstdc-std-vector-should-not-have-const-member-in-a.patch \
+"
 
 # Fix for material_color_utilities issue reported at
 # https://github.com/material-foundation/material-color-utilities/issues/108
