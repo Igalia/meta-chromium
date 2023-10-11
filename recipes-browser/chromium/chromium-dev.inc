@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "119.0.6034.6"
+PV = "119.0.6045.9"
 
-SRC_URI[sha256sum] = "86264d0c5f462e77a173b2b26f37f13acbc1903105578a040a30e7b599af00cc"
+SRC_URI[sha256sum] = "ce5e40fd8025964a3da54adf39c38effcdde369072f3ded05a5b08fccbc05628"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -153,10 +153,7 @@ LIC_FILES_CHKSUM = "\
 "
 
 # Upstream backports
-SRC_URI += " \
-  file://0001-libstdc-fix-incomplete-type-in-ui-GestureConsumer.patch \
-  file://0001-libstdc-std-vector-should-not-have-const-member-in-a.patch \
-"
+SRC_URI += " file://0001-GCC-use-all-brace-initializers-NoDestructor-in-floss.patch "
 
 # Fix for material_color_utilities issue reported at
 # https://github.com/material-foundation/material-color-utilities/issues/108
