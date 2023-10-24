@@ -1,0 +1,22 @@
+From 4d081d24df2d0dd7b134bd8c9b6c5f80a8703e9e Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Tue, 24 Oct 2023 14:23:07 +0200
+Subject: [PATCH] Only build C API client library
+
+---
+ src/Makefile.am | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/Makefile.am b/src/Makefile.am
+index 2a9659c0..8786def5 100644
+--- a/src/Makefile.am
++++ b/src/Makefile.am
+@@ -17,7 +17,7 @@
+ 
+ ## Process this file with automake to produce Makefile.in
+ 
+-SUBDIRS=common server audio modules api clients tests
++SUBDIRS=api
+ 
+ 
+ -include $(top_srcdir)/git.mk

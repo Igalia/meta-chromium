@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "119.0.6045.9"
+PV = "120.0.6073.0"
 
-SRC_URI[sha256sum] = "ce5e40fd8025964a3da54adf39c38effcdde369072f3ded05a5b08fccbc05628"
+SRC_URI[sha256sum] = "79df6fb57e953edf5423f1c81b64b02d2fd20aa704cf5a6a4b64be06df446016"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -133,7 +133,6 @@ LIC_FILES_CHKSUM = "\
   file://${S}/third_party/skia/LICENSE;md5=822f02cc7736281816581cd064afbb1c \
   file://${S}/third_party/smhasher/LICENSE;md5=0d948322ab524e2b74f55eb8ef57c74a \
   file://${S}/third_party/snappy/src/COPYING;md5=f62f3080324a97b3159a7a7e61812d0c \
-  file://${S}/third_party/speech-dispatcher/COPYING;md5=5828ebb4b7590269a994ed46b0a70df0 \
   file://${S}/third_party/sqlite/LICENSE;md5=7256769d4613c0af5a72be32ba20ccf7 \
   file://${S}/third_party/sudden_motion_sensor/LICENSE;md5=6f89397ba4dda73a940f27f76e9ad9d4 \
   file://${S}/third_party/swiftshader/LICENSE.txt;md5=d273d63619c9aeaf15cdaf76422c4f87 \
@@ -151,9 +150,6 @@ LIC_FILES_CHKSUM = "\
   file://${S}/v8/LICENSE.fdlibm;md5=b17367d6c97e638599071d99a3049dfe \
   file://${S}/v8/LICENSE.strongtalk;md5=956a43818dd13f2e93088fc2c93589d2 \
 "
-
-# Upstream backports
-SRC_URI += " file://0001-GCC-use-all-brace-initializers-NoDestructor-in-floss.patch "
 
 # Fix for material_color_utilities issue reported at
 # https://github.com/material-foundation/material-color-utilities/issues/108

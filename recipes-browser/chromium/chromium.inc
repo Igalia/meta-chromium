@@ -15,6 +15,7 @@ DEPENDS = "\
     nss-native \
     pciutils \
     pkgconfig-native \
+    speechd \
     virtual/libgl \
 "
 
