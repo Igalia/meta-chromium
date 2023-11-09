@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "120.0.6073.0"
+PV = "121.0.6103.3"
 
-SRC_URI[sha256sum] = "79df6fb57e953edf5423f1c81b64b02d2fd20aa704cf5a6a4b64be06df446016"
+SRC_URI[sha256sum] = "e18c01ae748347f9c36fd2f879590cf0f79fed6618b361e37ca2865e4ddbb4be"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -72,7 +72,7 @@ LIC_FILES_CHKSUM = "\
   file://${S}/third_party/decklink/LICENSE;md5=85b197f7b7b1ef270b01a1b6377be50e \
   file://${S}/third_party/dom_distiller_js/LICENSE;md5=6cd778870ce5c0c08c8e16fbdf378532 \
   file://${S}/third_party/expat/src/expat/COPYING;md5=7b3b078238d0901d3b339289117cb7fb \
-  file://${S}/third_party/ffmpeg/CREDITS.chromium;md5=5cdcfe11c9cfd8fe691f8feb32ff12a9 \
+  file://${S}/third_party/ffmpeg/CREDITS.chromium;md5=c1235892a92f75dfbc599772072869cd \
   file://${S}/third_party/flac/COPYING.Xiph;md5=3d6da238b5b57a0965d6730291119f65 \
   file://${S}/third_party/flatbuffers/LICENSE;md5=a873c5645c184d51e0f9b34e1d7cf559 \
   file://${S}/third_party/fontconfig/src/COPYING;md5=00252fd272bf2e722925613ad74cb6c7 \
@@ -151,6 +151,14 @@ LIC_FILES_CHKSUM = "\
   file://${S}/v8/LICENSE.strongtalk;md5=956a43818dd13f2e93088fc2c93589d2 \
 "
 
+# Upstream backports
+SRC_URI += " \
+  file://0001-GWP-ASan-LUD-Fix-the-GCC-build.patch \
+  file://0001-IWYU-add-functional-for-std-invoke-in-WTF-VectorType.patch \
+  file://0001-IWYU-returning-nullptr-of-WebBackgroundResourceFetch.patch \
+  file://0001-fix-crash-in-InkDropHost.patch \
+"
+
 # Fix for material_color_utilities issue reported at
 # https://github.com/material-foundation/material-color-utilities/issues/108
 #
@@ -160,6 +168,9 @@ SRC_URI += " file://0001-IWYU-missing-include-for-round-call-in-tones.cc.patch;p
 # Fix for GCC 11/12 to avoid breaking DPF compilation reported at
 # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=109505
 SRC_URI += " file://0001-GCC-disable-SVE-to-avoid-breaking-compilation-with-D.patch;patchdir=third_party/highway/src "
+
+# XNNPACK fails to build ARM64 intrinsics in our build. Disable meanwhile.
+GN_ARGS:append:raspberrypi4-64 = "build_tflite_with_xnnpack=false"
 
 do_install:append() {
         install -m 0755 chrome_crashpad_handler ${D}${libdir}/chromium/chrome_crashpad_handler
