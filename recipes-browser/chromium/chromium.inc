@@ -235,6 +235,8 @@ GN_ARGS += '\
 # rust toolchain is not included in official tarball
 GN_ARGS += " enable_rust=false "
 
+GN_ARGS += " chrome_pgo_phase=0 "
+
 CHROMIUM_EXTRA_ARGS ?= "\
   --enable-features=UseOzonePlatform \
 "

@@ -1,0 +1,31 @@
+From 557757a03f948b97b13b3411c7c69a51cf6c41c8 Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Tue, 14 Nov 2023 11:27:14 +0100
+Subject: libstdc++: avoid default nullptr value assign in
+ chrome_browser_policy_connector.h
+
+Assigning a nullptr to an std::unique_ptr requires access to
+declaration of destructor of the pointed type in libstdc++.
+
+Bug: 957519
+Change-Id: I3a95c910381484060e116fa98363747b4e054900
+---
+ chrome/browser/policy/chrome_browser_policy_connector.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/chrome/browser/policy/chrome_browser_policy_connector.h b/chrome/browser/policy/chrome_browser_policy_connector.h
+index 50ab8fca3e70f..daa1a4cf0820d 100644
+--- a/chrome/browser/policy/chrome_browser_policy_connector.h
++++ b/chrome/browser/policy/chrome_browser_policy_connector.h
+@@ -202,7 +202,7 @@ class ChromeBrowserPolicyConnector : public BrowserPolicyConnector {
+ 
+   raw_ptr<ConfigurationPolicyProvider> local_test_provider_for_testing_ =
+       nullptr;
+-  std::unique_ptr<LocalTestPolicyProvider> local_test_provider_ = nullptr;
++  std::unique_ptr<LocalTestPolicyProvider> local_test_provider_;
+ 
+ #if BUILDFLAG(IS_CHROMEOS_LACROS)
+   std::unique_ptr<DeviceSettingsLacros> device_settings_ = nullptr;
+-- 
+2.40.1
+

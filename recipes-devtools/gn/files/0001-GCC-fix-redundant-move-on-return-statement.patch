@@ -1,0 +1,35 @@
+From d24a0b8d2a4b458f1a3ebbc7aeea2d0ef33d573c Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Mon, 13 Nov 2023 13:36:26 +0100
+Subject: GCC: fix redundant move on return statement
+
+Bug: chromium:819294
+---
+ src/gn/desc_builder.cc | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/gn/desc_builder.cc b/src/gn/desc_builder.cc
+index 58bebef80..0497e9d20 100644
+--- a/src/gn/desc_builder.cc
++++ b/src/gn/desc_builder.cc
+@@ -168,7 +168,7 @@ class BaseDescBuilder {
+     base::ListValue res;
+     for (const auto& v : vector)
+       res.GetList().emplace_back(ToBaseValue(v));
+-    return std::move(res);
++    return res;
+   }
+ 
+   base::Value ToBaseValue(const Scope* scope) {
+@@ -177,7 +177,7 @@ class BaseDescBuilder {
+     scope->GetCurrentScopeValues(&map);
+     for (const auto& v : map)
+       res.SetKey(v.first, ToBaseValue(v.second));
+-    return std::move(res);
++    return res;
+   }
+ 
+   base::Value ToBaseValue(const Value& val) {
+-- 
+2.40.1
+

@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "121.0.6103.3"
+PV = "121.0.6115.2"
 
-SRC_URI[sha256sum] = "e18c01ae748347f9c36fd2f879590cf0f79fed6618b361e37ca2865e4ddbb4be"
+SRC_URI[sha256sum] = "8d938cf186dc1f86d4d086f572fb22f6d95621a40d8d17e62a406dcbd0499797"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -27,7 +27,6 @@ LIC_FILES_CHKSUM = "\
   file://${S}/base/third_party/superfasthash/LICENSE;md5=c66981f8ad23c9f279a5b9e07385128c \
   file://${S}/base/third_party/symbolize/LICENSE;md5=17ae3b22fe8fa438966625593e2eea85 \
   file://${S}/base/third_party/valgrind/LICENSE;md5=b95c9cb2560f157c60ea60ac1aa69469 \
-  file://${S}/base/third_party/xdg_mime/LICENSE;md5=743a91118d40f173467c8ecfd8793c62 \
   file://${S}/base/third_party/xdg_user_dirs/LICENSE;md5=d998f250c491c329a8254dd1ca62c647 \
   file://${S}/chrome/installer/mac/third_party/bsdiff/LICENSE;md5=0dbe7a50f028269750631fcbded3846a \
   file://${S}/chrome/installer/mac/third_party/xz/LICENSE;md5=8bbde65ae0523dc878ed1ac1252d2d14 \
@@ -112,7 +111,7 @@ LIC_FILES_CHKSUM = "\
   file://${S}/third_party/libvpx/source/libvpx/LICENSE;md5=d5b04755015be901744a78cc30d390d4 \
   file://${S}/third_party/libwebm/source/LICENSE.TXT;md5=6e8dee932c26f2dab503abf70c96d8bb \
   file://${S}/third_party/libwebp/LICENSE;md5=72dceabd78c6f435bb304047aff1745a \
-  file://${S}/third_party/libxml/src/Copyright;md5=2044417e2e5006b65a8b9067b683fcf1 \
+  file://${S}/third_party/libxml/src/Copyright;md5=fec7ecfe714722b2bb0aaff7d200c701 \
   file://${S}/third_party/libxslt/src/Copyright;md5=0cd9a07afbeb24026c9b03aecfeba458 \
   file://${S}/third_party/libyuv/LICENSE;md5=464282cfb405b005b9637f11103a7325 \
   file://${S}/third_party/logilab/logilab/common/LICENSE.txt;md5=751419260aa954499f7abaabaa882bbe \
@@ -151,13 +150,17 @@ LIC_FILES_CHKSUM = "\
   file://${S}/v8/LICENSE.strongtalk;md5=956a43818dd13f2e93088fc2c93589d2 \
 "
 
-# Upstream backports
+# Workaround for webRTC while breaking Voucher code is not replaced
+SRC_URI += " file://0001-GCC-workaround-to-Voucher-private-constructor-failin.patch;patchdir=third_party/webrtc "
+
+# Upstream patches
 SRC_URI += " \
-  file://0001-GWP-ASan-LUD-Fix-the-GCC-build.patch \
-  file://0001-IWYU-add-functional-for-std-invoke-in-WTF-VectorType.patch \
-  file://0001-IWYU-returning-nullptr-of-WebBackgroundResourceFetch.patch \
-  file://0001-fix-crash-in-InkDropHost.patch \
+  file://0001-IWYU-add-stdint.h-for-uint8_t-in-mime_util_xdg.patch \
+  file://0001-IWYU-missing-include-for-string-usage-in-translate_t.patch \
 "
+
+# Upstreamable patches
+SRC_URI += " file://0001-libstdc-avoid-default-nullptr-value-assign-in-chrome.patch "
 
 # Fix for material_color_utilities issue reported at
 # https://github.com/material-foundation/material-color-utilities/issues/108
@@ -170,7 +173,11 @@ SRC_URI += " file://0001-IWYU-missing-include-for-round-call-in-tones.cc.patch;p
 SRC_URI += " file://0001-GCC-disable-SVE-to-avoid-breaking-compilation-with-D.patch;patchdir=third_party/highway/src "
 
 # XNNPACK fails to build ARM64 intrinsics in our build. Disable meanwhile.
-GN_ARGS:append:raspberrypi4-64 = "build_tflite_with_xnnpack=false"
+GN_ARGS:append:raspberrypi4-64 = " build_tflite_with_xnnpack=false "
+
+# Building with static roots fails on GCC 13. As recent hosts can ship with
+# that version of, disable it.
+GN_ARGS:append = " v8_enable_static_roots=false "
 
 do_install:append() {
         install -m 0755 chrome_crashpad_handler ${D}${libdir}/chromium/chrome_crashpad_handler

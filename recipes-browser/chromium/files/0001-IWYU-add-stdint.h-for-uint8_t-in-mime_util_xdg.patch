@@ -1,0 +1,32 @@
+From 95f496cc7c594aec6febb66bd7a4ab9cfd97bdaf Mon Sep 17 00:00:00 2001
+From: Stephan Hartmann <stha09@googlemail.com>
+Date: Fri, 10 Nov 2023 18:07:17 +0000
+Subject: IWYU: add stdint.h for uint8_t in mime_util_xdg
+
+Bug: 957519
+Change-Id: Ie596ad86049374d6858c90767c1e7dc0afe2f424
+Reviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/5017942
+Reviewed-by: Thomas Anderson <thomasanderson@chromium.org>
+Commit-Queue: Thomas Anderson <thomasanderson@chromium.org>
+Reviewed-by: Mark Mentovai <mark@chromium.org>
+Cr-Commit-Position: refs/heads/main@{#1223021}
+---
+ base/nix/mime_util_xdg.h | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/base/nix/mime_util_xdg.h b/base/nix/mime_util_xdg.h
+index b3182fd3e9b6f..cbb03725edb45 100644
+--- a/base/nix/mime_util_xdg.h
++++ b/base/nix/mime_util_xdg.h
+@@ -5,6 +5,8 @@
+ #ifndef BASE_NIX_MIME_UTIL_XDG_H_
+ #define BASE_NIX_MIME_UTIL_XDG_H_
+ 
++#include <stdint.h>
++
+ #include <map>
+ #include <string>
+ 
+-- 
+2.40.1
+
