@@ -160,7 +160,10 @@ SRC_URI += " \
 "
 
 # Upstreamable patches
-SRC_URI += " file://0001-libstdc-avoid-default-nullptr-value-assign-in-chrome.patch "
+SRC_URI += " \
+  file://0001-libstdc-avoid-default-nullptr-value-assign-in-chrome.patch \
+  file://0001-IWYU-missing-include-for-std-string-use-in-instrumen.patch;patchdir=third_party/ruy/src \
+"
 
 # Fix for material_color_utilities issue reported at
 # https://github.com/material-foundation/material-color-utilities/issues/108
