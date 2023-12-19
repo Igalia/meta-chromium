@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "121.0.6115.2"
+PV = "122.0.6182.0"
 
-SRC_URI[sha256sum] = "8d938cf186dc1f86d4d086f572fb22f6d95621a40d8d17e62a406dcbd0499797"
+SRC_URI[sha256sum] = "57b9617a5d3f0db32a2987bb012fcd16db9aea7664a26dfaf5830bdca723f41f"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -43,7 +43,6 @@ LIC_FILES_CHKSUM = "\
   file://${S}/ios/third_party/motion_animator_objc/LICENSE;md5=3b83ef96387f14655fc854ddc3c6bd57 \
   file://${S}/ios/third_party/motion_interchange_objc/LICENSE;md5=3b83ef96387f14655fc854ddc3c6bd57 \
   file://${S}/ios/third_party/motion_transitioning_objc/LICENSE;md5=3b83ef96387f14655fc854ddc3c6bd57 \
-  file://${S}/native_client/LICENSE;md5=cbbd27594afd089daa160d3a16dd515a \
   file://${S}/native_client_sdk/src/libraries/third_party/newlib-extras/README;md5=e944d73ca3817b7ca8656eafb9497fed \
   file://${S}/net/third_party/nss/LICENSE;md5=3b1e88e1b9c0b5a4b2881d46cce06a18 \
   file://${S}/net/third_party/quiche/src/LICENSE;md5=0fca02217a5d49a14dfe2d11837bb34d \
@@ -150,18 +149,8 @@ LIC_FILES_CHKSUM = "\
   file://${S}/v8/LICENSE.strongtalk;md5=956a43818dd13f2e93088fc2c93589d2 \
 "
 
-# Workaround for webRTC while breaking Voucher code is not replaced
-SRC_URI += " file://0001-GCC-workaround-to-Voucher-private-constructor-failin.patch;patchdir=third_party/webrtc "
-
-# Upstream patches
-SRC_URI += " \
-  file://0001-IWYU-add-stdint.h-for-uint8_t-in-mime_util_xdg.patch \
-  file://0001-IWYU-missing-include-for-string-usage-in-translate_t.patch \
-"
-
 # Upstreamable patches
 SRC_URI += " \
-  file://0001-libstdc-avoid-default-nullptr-value-assign-in-chrome.patch \
   file://0001-IWYU-missing-include-for-std-string-use-in-instrumen.patch;patchdir=third_party/ruy/src \
 "
 
