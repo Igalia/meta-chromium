@@ -203,7 +203,7 @@ GN_ARGS += '\
   use_custom_libcxx_for_host=false \
   cros_host_ar="${BUILD_AR}" \
   cros_host_cc="${BUILD_CC}" \
-  cros_host_cxx="${BUILD_CXX}" \
+  cros_host_cxx="${@d.getVar('BUILD_CXX', True).strip()}" \
   cros_host_extra_ldflags="${BUILD_LDFLAGS}" \
   custom_toolchain="//build/toolchain/cros:target" \
   is_clang=false \
@@ -251,6 +251,16 @@ do_add_nodejs_symlink () {
 	ln -sf "${nodejs_native_path}" "${chromium_node_dir}/node"
 }
 addtask add_nodejs_symlink after do_configure before do_compile
+
+addtask do_fetch_rust after do_unpack before do_patch
+do_fetch_rust[network] = "1"
+do_fetch_rust[depends] += "ca-certificates-native:do_populate_sysroot"
+
+do_fetch_rust() {
+        export SSL_CERT_DIR="$OECORE_NATIVE_SYSROOT/etc/ssl/certs/"
+        cd ${S}
+        tools/rust/update_rust.py
+}
 
 do_configure() {
 	cd ${S}
