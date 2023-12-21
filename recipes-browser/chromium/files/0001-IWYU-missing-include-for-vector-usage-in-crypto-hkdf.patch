@@ -1,0 +1,26 @@
+From 04a1f81d9cfff9c3bd22e5d775b84036c48be5cf Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Mon, 18 Dec 2023 17:43:21 +0100
+Subject: IWYU: missing include for vector usage in crypto/hkdf.h
+
+Bug: 957519
+Change-Id: Ia96e2d0ee13b2f682aaae8c05381a7413815bd43
+---
+ crypto/hkdf.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/crypto/hkdf.h b/crypto/hkdf.h
+index c9aeabe2b6f8f..8fef8c6d257d5 100644
+--- a/crypto/hkdf.h
++++ b/crypto/hkdf.h
+@@ -9,6 +9,7 @@
+ 
+ #include <string>
+ #include <string_view>
++#include <vector>
+ 
+ #include "base/containers/span.h"
+ #include "crypto/crypto_export.h"
+-- 
+2.40.1
+

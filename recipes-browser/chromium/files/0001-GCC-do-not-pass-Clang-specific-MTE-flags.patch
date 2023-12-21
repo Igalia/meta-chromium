@@ -1,0 +1,43 @@
+From f7f2fe09ed775fdd6db709644861acc24f529b1f Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Wed, 20 Dec 2023 18:32:03 +0100
+Subject: GCC: do not pass Clang specific MTE flags
+
+-Xclang parameters break GCC build as they are not supported in GCC.
+
+Bug: 819294
+Change-Id: I421bd6bdbf0da57ed26ada6caa7b26831a49fc01
+---
+ base/BUILD.gn                                                   | 2 +-
+ base/allocator/partition_allocator/src/partition_alloc/BUILD.gn | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/base/BUILD.gn b/base/BUILD.gn
+index e4c0b361703fb..2a2e4d7c68951 100644
+--- a/base/BUILD.gn
++++ b/base/BUILD.gn
+@@ -3869,7 +3869,7 @@ test("base_unittests") {
+       ]
+     }
+ 
+-    if ((is_android || is_linux) && target_cpu == "arm64") {
++    if ((is_android || is_linux) && is_clang && target_cpu == "arm64") {
+       cflags = [
+         "-Xclang",
+         "-target-feature",
+diff --git a/base/allocator/partition_allocator/src/partition_alloc/BUILD.gn b/base/allocator/partition_allocator/src/partition_alloc/BUILD.gn
+index 253aacf139e57..b9cc0982c76b3 100644
+--- a/base/allocator/partition_allocator/src/partition_alloc/BUILD.gn
++++ b/base/allocator/partition_allocator/src/partition_alloc/BUILD.gn
+@@ -296,7 +296,7 @@ if (is_clang_or_gcc) {
+   }
+ 
+   config("memory_tagging") {
+-    if (current_cpu == "arm64" &&
++    if (current_cpu == "arm64" && is_clang &&
+         (is_linux || is_chromeos || is_android || is_fuchsia)) {
+       # base/ has access to the MTE intrinsics because it needs to use them,
+       # but they're not backwards compatible. Use base::CPU::has_mte()
+-- 
+2.40.1
+

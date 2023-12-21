@@ -152,6 +152,18 @@ LIC_FILES_CHKSUM = "\
 # Upstreamable patches
 SRC_URI += " \
   file://0001-IWYU-missing-include-for-std-string-use-in-instrumen.patch;patchdir=third_party/ruy/src \
+  file://0001-IWYU-missing-include-for-vector-usage-in-crypto-hkdf.patch \
+  file://0001-IWYU-missing-include-for-usage-of-string-in-display_.patch \
+  file://0001-IWYU-missing-include-for-usage-of-bitset-in-visual_m.patch \
+  file://0001-libstdc-add-an-SFINAE-version-of-std-to_address.patch \
+  file://0001-GCC-workaround-for-optional_ref-type-to-const-constr.patch \
+  file://0001-IWYU-missing-includes-for-int-types-in-probability-d.patch \
+  file://0001-IWYU-usage-of-unique_ptr-requires-include-in-extensi.patch \
+  file://0001-IWYU-usage-of-std-once_flag-requires-include-in-simp.patch \
+  file://0001-GCC-fix-clash-between-type-and-getter-in-graphics_co.patch \
+  file://0001-Revert-Use-C-20-features-to-simplify-blink-NativeVal.patch \
+  file://0001-GCC-do-not-pass-Clang-specific-MTE-flags.patch \
+  file://0001-GCC-explicitely-cast-NEON-intrinsics-type-conversion.patch;patchdir=v8 \
 "
 
 # Fix for material_color_utilities issue reported at
@@ -165,7 +177,7 @@ SRC_URI += " file://0001-IWYU-missing-include-for-round-call-in-tones.cc.patch;p
 SRC_URI += " file://0001-GCC-disable-SVE-to-avoid-breaking-compilation-with-D.patch;patchdir=third_party/highway/src "
 
 # XNNPACK fails to build ARM64 intrinsics in our build. Disable meanwhile.
-GN_ARGS:append:raspberrypi4-64 = " build_tflite_with_xnnpack=false "
+GN_ARGS:append:raspberrypi4-64 = " build_tflite_with_xnnpack=false build_webnn_with_xnnpack=false"
 
 # Building with static roots fails on GCC 13. As recent hosts can ship with
 # that version of, disable it.

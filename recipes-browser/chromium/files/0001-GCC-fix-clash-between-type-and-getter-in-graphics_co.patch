@@ -1,0 +1,29 @@
+From e0fff784b22450639bac9d8b1427d590fa7eb815 Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Mon, 18 Dec 2023 20:25:58 +0100
+Subject: GCC: fix clash between type and getter in graphics_context.h
+
+Add namespace to DynamicRangeLimit() return type
+
+Bug: 819294
+Change-Id: I42fb8372ea88baba991f2067ac330e5d913e6b8d
+---
+ third_party/blink/renderer/platform/graphics/graphics_context.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/third_party/blink/renderer/platform/graphics/graphics_context.h b/third_party/blink/renderer/platform/graphics/graphics_context.h
+index 8a33e1f501047..cd9610144a6b5 100644
+--- a/third_party/blink/renderer/platform/graphics/graphics_context.h
++++ b/third_party/blink/renderer/platform/graphics/graphics_context.h
+@@ -261,7 +261,7 @@ class PLATFORM_EXPORT GraphicsContext {
+   void SetDynamicRangeLimit(DynamicRangeLimit limit) {
+     MutableState()->SetDynamicRangeLimit(limit);
+   }
+-  DynamicRangeLimit DynamicRangeLimit() const {
++  blink::DynamicRangeLimit DynamicRangeLimit() const {
+     return ImmutableState()->GetDynamicRangeLimit();
+   }
+ 
+-- 
+2.40.1
+

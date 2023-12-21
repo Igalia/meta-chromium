@@ -1,0 +1,27 @@
+From 845403db4dca7ff480df4fcd49cdf53dc19181b0 Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Mon, 18 Dec 2023 19:03:05 +0100
+Subject: IWYU: missing include for usage of string in
+ display_color_management.h
+
+Bug: 957519
+Change-Id: I742ac2229e0cd62c5f3edac55f448454b8a9f644
+---
+ ui/display/types/display_color_management.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/ui/display/types/display_color_management.h b/ui/display/types/display_color_management.h
+index d9cbdffcc4c82..7133b7c59e0e2 100644
+--- a/ui/display/types/display_color_management.h
++++ b/ui/display/types/display_color_management.h
+@@ -5,6 +5,7 @@
+ #ifndef UI_DISPLAY_TYPES_DISPLAY_COLOR_MANAGEMENT_H_
+ #define UI_DISPLAY_TYPES_DISPLAY_COLOR_MANAGEMENT_H_
+ 
++#include <string>
+ #include <vector>
+ 
+ #include "third_party/skia/modules/skcms/skcms.h"
+-- 
+2.40.1
+

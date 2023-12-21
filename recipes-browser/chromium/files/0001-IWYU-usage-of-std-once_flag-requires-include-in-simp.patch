@@ -1,0 +1,26 @@
+From a85d223c80bec21a44316161108e41cbb0eab53f Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Mon, 18 Dec 2023 20:10:47 +0100
+Subject: IWYU: usage of std::once_flag requires include in simple_font_data.h
+
+Bug: 957519
+Change-Id: I28253abe5673beb786593a237cfcc7bdc44b1e89
+---
+ third_party/blink/renderer/platform/fonts/simple_font_data.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/third_party/blink/renderer/platform/fonts/simple_font_data.h b/third_party/blink/renderer/platform/fonts/simple_font_data.h
+index d661e6cd3e8ca..6b74a4eb8b9de 100644
+--- a/third_party/blink/renderer/platform/fonts/simple_font_data.h
++++ b/third_party/blink/renderer/platform/fonts/simple_font_data.h
+@@ -25,6 +25,7 @@
+ #define THIRD_PARTY_BLINK_RENDERER_PLATFORM_FONTS_SIMPLE_FONT_DATA_H_
+ 
+ #include <memory>
++#include <mutex>
+ #include <utility>
+ 
+ #include "build/build_config.h"
+-- 
+2.40.1
+
