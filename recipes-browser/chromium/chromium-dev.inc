@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "122.0.6182.0"
+PV = "122.0.6226.2"
 
-SRC_URI[sha256sum] = "57b9617a5d3f0db32a2987bb012fcd16db9aea7664a26dfaf5830bdca723f41f"
+SRC_URI[sha256sum] = "002a614e3c11a7f6d9e61690e27b79d5f6718573e77a3f8852f5658cba1c1276"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -78,7 +78,6 @@ LIC_FILES_CHKSUM = "\
   file://${S}/third_party/gif_player/LICENSE;md5=86d3f3a95c324c9479bd8986968f4327 \
   file://${S}/third_party/google_input_tools/LICENSE;md5=ff0b0f0202337c9d4ae2d869797049d3 \
   file://${S}/third_party/google_toolbox_for_mac/LICENSE;md5=3b83ef96387f14655fc854ddc3c6bd57 \
-  file://${S}/third_party/gvr-android-sdk/LICENSE;md5=634fdf826e0846931133dca5785f59b8 \
   file://${S}/third_party/harfbuzz-ng/src/COPYING;md5=b98429b8e8e3c2a67cfef01e99e4893d \
   file://${S}/third_party/hunspell/COPYING.MPL;md5=bfe1f75d606912a4111c90743d6c7325 \
   file://${S}/third_party/iaccessible2/LICENSE;md5=43bbd0bfb581347ec10def720000a645 \
@@ -110,7 +109,7 @@ LIC_FILES_CHKSUM = "\
   file://${S}/third_party/libvpx/source/libvpx/LICENSE;md5=d5b04755015be901744a78cc30d390d4 \
   file://${S}/third_party/libwebm/source/LICENSE.TXT;md5=6e8dee932c26f2dab503abf70c96d8bb \
   file://${S}/third_party/libwebp/LICENSE;md5=72dceabd78c6f435bb304047aff1745a \
-  file://${S}/third_party/libxml/src/Copyright;md5=fec7ecfe714722b2bb0aaff7d200c701 \
+  file://${S}/third_party/libxml/src/Copyright;md5=f437ed9058e8e5135e47c01e973376ba \
   file://${S}/third_party/libxslt/src/Copyright;md5=0cd9a07afbeb24026c9b03aecfeba458 \
   file://${S}/third_party/libyuv/LICENSE;md5=464282cfb405b005b9637f11103a7325 \
   file://${S}/third_party/logilab/logilab/common/LICENSE.txt;md5=751419260aa954499f7abaabaa882bbe \
@@ -152,16 +151,12 @@ LIC_FILES_CHKSUM = "\
 # Upstreamable patches
 SRC_URI += " \
   file://0001-IWYU-missing-include-for-std-string-use-in-instrumen.patch;patchdir=third_party/ruy/src \
-  file://0001-IWYU-missing-include-for-vector-usage-in-crypto-hkdf.patch \
+  file://0001-IWYU-missing-include-for-unique_ptr-use-on-push_noti.patch \
   file://0001-IWYU-missing-include-for-usage-of-string-in-display_.patch \
-  file://0001-IWYU-missing-include-for-usage-of-bitset-in-visual_m.patch \
-  file://0001-libstdc-add-an-SFINAE-version-of-std-to_address.patch \
   file://0001-GCC-workaround-for-optional_ref-type-to-const-constr.patch \
-  file://0001-IWYU-missing-includes-for-int-types-in-probability-d.patch \
-  file://0001-IWYU-usage-of-unique_ptr-requires-include-in-extensi.patch \
-  file://0001-IWYU-usage-of-std-once_flag-requires-include-in-simp.patch \
-  file://0001-GCC-fix-clash-between-type-and-getter-in-graphics_co.patch \
-  file://0001-Revert-Use-C-20-features-to-simplify-blink-NativeVal.patch \
+  file://0001-libstdc-add-an-SFINAE-version-of-std-to_address.patch \
+  file://0001-IWYU-missing-include-for-usage-of-std-bitset-in-reso.patch \
+  file://0001-GCC-bring-back-SFINAE-param-for-blink-NativeValueTra.patch \
   file://0001-GCC-do-not-pass-Clang-specific-MTE-flags.patch \
   file://0001-GCC-explicitely-cast-NEON-intrinsics-type-conversion.patch;patchdir=v8 \
 "

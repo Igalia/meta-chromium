@@ -1,0 +1,28 @@
+From 38537c0b35a68cd1cfd67e3c0d0602aad84d3dad Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Mon, 8 Jan 2024 19:59:59 +0100
+Subject: IWYU: missing include for usage of std::bitset in
+ resolution_monitor.cc
+
+Bug: 957519
+Change-Id: Ia538bbca63105397963632d2a145886e256efeb6
+---
+ media/filters/resolution_monitor.cc | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/media/filters/resolution_monitor.cc b/media/filters/resolution_monitor.cc
+index c2afde48120c6..eeb7c9a25de5a 100644
+--- a/media/filters/resolution_monitor.cc
++++ b/media/filters/resolution_monitor.cc
+@@ -4,6 +4,8 @@
+ 
+ #include "media/filters/resolution_monitor.h"
+ 
++#include <bitset>
++
+ #include "base/logging.h"
+ #include "base/memory/ptr_util.h"
+ #include "base/notreached.h"
+-- 
+2.40.1
+

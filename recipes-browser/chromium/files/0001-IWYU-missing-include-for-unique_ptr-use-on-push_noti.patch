@@ -1,0 +1,28 @@
+From 5948dd4570f4191433e894ce0ffba024c0a56314 Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Thu, 11 Jan 2024 13:39:26 +0100
+Subject: IWYU: missing include for unique_ptr use on
+ push_notification_service.h
+
+Bug: 957519
+Change-Id: Ib6a0fbc8a97df4b969d9ff37f62d4ba459710d91
+---
+ components/push_notification/push_notification_service.h | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/components/push_notification/push_notification_service.h b/components/push_notification/push_notification_service.h
+index a6e3d1f1202b2..d8a5cfd217a94 100644
+--- a/components/push_notification/push_notification_service.h
++++ b/components/push_notification/push_notification_service.h
+@@ -5,6 +5,8 @@
+ #ifndef COMPONENTS_PUSH_NOTIFICATION_PUSH_NOTIFICATION_SERVICE_H_
+ #define COMPONENTS_PUSH_NOTIFICATION_PUSH_NOTIFICATION_SERVICE_H_
+ 
++#include <memory>
++
+ #include "components/push_notification/push_notification_client_manager.h"
+ 
+ namespace push_notification {
+-- 
+2.40.1
+

@@ -1,4 +1,4 @@
-From a04dcf78f2d5ec8382bc607eaffd35d0fd85a6ca Mon Sep 17 00:00:00 2001
+From d871e25385e51c050c2df616a3b77efb6ba0a775 Mon Sep 17 00:00:00 2001
 From: Jose Dapena Paz <jdapena@igalia.com>
 Date: Mon, 18 Dec 2023 16:43:00 +0100
 Subject: GCC: workaround for optional_ref type-to-const constructor
@@ -12,24 +12,25 @@ Use template to avoid that problem.
 Bug: 819294
 Change-Id: I3e2b27cdba907a0d1863d3e69f0c2098a3acf3b2
 ---
- base/types/optional_ref.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ base/types/optional_ref.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/base/types/optional_ref.h b/base/types/optional_ref.h
-index 2beee4e7252e4..f9d0464142740 100644
+index 2beee4e7252e4..94cb1be056c41 100644
 --- a/base/types/optional_ref.h
 +++ b/base/types/optional_ref.h
-@@ -144,8 +144,9 @@ class optional_ref {
+@@ -144,9 +144,9 @@ class optional_ref {
    // Constructs a `optional_ref<const T>` from a `optional_ref<T>`. Conversions
    // in the reverse direction are disallowed.
    // NOLINTNEXTLINE(google-explicit-constructor)
 -  constexpr optional_ref(optional_ref<std::remove_const_t<T>> rhs)
-+  template<typename U=std::remove_const<T>>
++  template <typename U = std::remove_const<T>>
      requires(std::is_const_v<T>)
-+  constexpr optional_ref(optional_ref<U> rhs)
-       : ptr_(rhs.as_ptr()) {}
+-      : ptr_(rhs.as_ptr()) {}
++  constexpr optional_ref(optional_ref<U> rhs) : ptr_(rhs.as_ptr()) {}
  
    // Copy construction is allowed to make it possible to pass `optional_ref`s to
+   // another call. However, assignment is disallowed, as it makes it easy to
 -- 
 2.40.1
 

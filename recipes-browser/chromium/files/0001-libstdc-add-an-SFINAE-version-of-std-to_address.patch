@@ -1,4 +1,4 @@
-From 50a7c347b1e37dd2341d89487a2ff314af8a399a Mon Sep 17 00:00:00 2001
+From 710cfdc9f0409c4c70bacf287cf55585ece3a0e5 Mon Sep 17 00:00:00 2001
 From: Jose Dapena Paz <jdapena@igalia.com>
 Date: Tue, 19 Dec 2023 15:07:35 +0100
 Subject: libstdc++: add an SFINAE version of std::to_address
@@ -7,16 +7,16 @@ Bug: 957519
 Change-Id: I42ab30a9df8f99f350c17549e954f7a8c2f64d77
 ---
  base/BUILD.gn                             |  1 +
- base/types/to_address.h                   | 82 +++++++++++++++++++++++
- mojo/public/cpp/bindings/type_converter.h |  7 +-
- 3 files changed, 87 insertions(+), 3 deletions(-)
+ base/types/to_address.h                   | 87 +++++++++++++++++++++++
+ mojo/public/cpp/bindings/type_converter.h |  6 +-
+ 3 files changed, 92 insertions(+), 2 deletions(-)
  create mode 100644 base/types/to_address.h
 
 diff --git a/base/BUILD.gn b/base/BUILD.gn
-index e54d9ff43f3ab..e4c0b361703fb 100644
+index 76c58c48858a1..689b245404ee0 100644
 --- a/base/BUILD.gn
 +++ b/base/BUILD.gn
-@@ -924,6 +924,7 @@ component("base") {
+@@ -930,6 +930,7 @@ component("base") {
      "types/pass_key.h",
      "types/strong_alias.h",
      "types/supports_ostream_operator.h",
@@ -26,10 +26,10 @@ index e54d9ff43f3ab..e4c0b361703fb 100644
      "unguessable_token.cc",
 diff --git a/base/types/to_address.h b/base/types/to_address.h
 new file mode 100644
-index 0000000000000..916032a8b9ede
+index 0000000000000..97c79cf96e014
 --- /dev/null
 +++ b/base/types/to_address.h
-@@ -0,0 +1,82 @@
+@@ -0,0 +1,87 @@
 +// Copyright 2023 The Chromium Authors
 +// Use of this source code is governed by a BSD-style license that can be
 +// found in the LICENSE file.
@@ -66,32 +66,36 @@ index 0000000000000..916032a8b9ede
 +struct HasToAddress : std::false_type {};
 +
 +template <class P>
-+struct HasToAddress<P, decltype((void)std::pointer_traits<P>::to_address(std::declval<const P&>())) >
-+    : std::true_type {};
++struct HasToAddress<P,
++                    decltype((void)std::pointer_traits<P>::to_address(
++                        std::declval<const P&>()))> : std::true_type {};
 +
 +template <class P, class = void>
 +struct HasArrow : std::false_type {};
 +
 +template <class P>
-+struct HasArrow<P, decltype((void)std::declval<const P&>().operator->()) > : std::true_type {};
++struct HasArrow<P, decltype((void)std::declval<const P&>().operator->())>
++    : std::true_type {};
 +
 +template <class P>
 +struct IsFancyPointer {
 +  static const bool value = HasArrow<P>::value || HasToAddress<P>::value;
 +};
 +
-+// enable_if is needed here to avoid instantiating checks for fancy pointers on raw pointers
-+template <class P, class = std::enable_if_t<std::conjunction<std::is_class<P>, IsFancyPointer<P> >::value > >
-+constexpr
-+    std::decay_t<decltype(ToAddressHelper<P>::__call(std::declval<const P&>()))>
-+    ToAddress(const P& p) noexcept {
++// enable_if is needed here to avoid instantiating checks for fancy pointers on
++// raw pointers
++template <class P,
++          class = std::enable_if_t<
++              std::conjunction<std::is_class<P>, IsFancyPointer<P>>::value>>
++constexpr std::decay_t<
++    decltype(ToAddressHelper<P>::__call(std::declval<const P&>()))>
++ToAddress(const P& p) noexcept {
 +  return ToAddressHelper<P>::__call(p);
 +}
 +
 +template <class P, class>
 +struct ToAddressHelper {
-+  constexpr static decltype(ToAddress(
-+      std::declval<const P&>().operator->()))
++  constexpr static decltype(ToAddress(std::declval<const P&>().operator->()))
 +  __call(const P& p) noexcept {
 +    return ToAddress(p.operator->());
 +  }
@@ -99,7 +103,8 @@ index 0000000000000..916032a8b9ede
 +
 +template <class P>
 +struct ToAddressHelper<P,
-+                       decltype((void)std::pointer_traits<P>::to_address(std::declval<const P&>()))> {
++                       decltype((void)std::pointer_traits<P>::to_address(
++                           std::declval<const P&>()))> {
 +  constexpr static decltype(std::pointer_traits<P>::to_address(
 +      std::declval<const P&>()))
 +  __call(const P& p) noexcept {
@@ -113,7 +118,7 @@ index 0000000000000..916032a8b9ede
 +
 +#endif  // BASE_TYPES_CXX23_TO_UNDERLYING_H_
 diff --git a/mojo/public/cpp/bindings/type_converter.h b/mojo/public/cpp/bindings/type_converter.h
-index 2eddbb0460cd4..cbaa4e0f02295 100644
+index c2edc879afb86..692dae74e9875 100644
 --- a/mojo/public/cpp/bindings/type_converter.h
 +++ b/mojo/public/cpp/bindings/type_converter.h
 @@ -11,6 +11,8 @@
@@ -125,20 +130,19 @@ index 2eddbb0460cd4..cbaa4e0f02295 100644
  namespace mojo {
  
  // NOTE: When possible, please consider using StructTraits / UnionTraits /
-@@ -100,11 +102,10 @@ template <typename T, typename U>
- inline T ConvertTo(const U& obj) {
-   if constexpr (requires {
-                   {
--                    mojo::ConvertTo<T>(std::to_address(obj))
--
-+                    mojo::ConvertTo<T>(base::ToAddress(obj))
-                   } -> std::same_as<T>;
-                 }) {
--    return mojo::ConvertTo<T>(std::to_address(obj));
-+    return mojo::ConvertTo<T>(base::ToAddress(obj));
-   } else {
-     return TypeConverter<T, U>::Convert(obj);
+@@ -98,10 +100,10 @@ inline T ConvertTo(U* obj) {
+ template <typename T, typename U>
+   requires requires(const U& obj) {
+     not std::is_pointer_v<U>;
+-    { mojo::ConvertTo<T>(std::to_address(obj)) } -> std::same_as<T>;
++    { mojo::ConvertTo<T>(base::ToAddress(obj)) } -> std::same_as<T>;
    }
+ inline T ConvertTo(const U& obj) {
+-  return mojo::ConvertTo<T>(std::to_address(obj));
++  return mojo::ConvertTo<T>(base::ToAddress(obj));
+ }
+ 
+ template <typename T, typename U>
 -- 
 2.40.1
 

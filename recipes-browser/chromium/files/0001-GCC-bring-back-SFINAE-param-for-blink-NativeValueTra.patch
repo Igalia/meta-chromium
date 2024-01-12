@@ -1,0 +1,64 @@
+From c2108b0295b9487b9e38aed22ecc98e673bc58cd Mon Sep 17 00:00:00 2001
+From: Ivan Pavlotsky <ivan.pavlotsky@lge.com>
+Date: Thu, 21 Dec 2023 03:02:40 +0300
+Subject: GCC: bring back SFINAE param for blink::NativeValueTraits
+
+Brought back SFINAE param for blink::NativeValueTraits to fix GCC linker
+errors after rolling to 121.0.6135.0~1
+
+In the CL https://crrev.com/c/5030335 used C++20 constraints instead of
+using SFINAE (via type traits).
+
+It's not clear why, but this caused the following linker error with GCC:
+obj/third_party/blink/renderer/bindings/modules/v8/libv8.a(obj/third_party/blink/renderer/bindings/modules/v8/v8/v8_gpu_compute_pass_encoder.o):v8_gpu_compute_pass_encoder.cc:function blink::(anonymous namespace)::v8_gpu_compute_pass_encoder::SetBindGroupOperationCallback(v8::FunctionCallbackInfo<v8::Value> const&): error: undefined reference to 'blink::NativeValueTraits<blink::TypedFlexibleArrayBufferView<unsigned int, false> >::ArgumentValue(v8::Isolate*, int, v8::Local<v8::Value>, blink::ExceptionState&)'
+
+Brought back SFINAE param for blink::NativeValueTraits template and one
+of its specialization to fix the issue.
+
+Bug: 819294
+Change-Id: Ieadf93914b2d56c7cecbf432691f7a30d8f3d8c1
+---
+ .../blink/renderer/bindings/core/v8/native_value_traits.h  | 5 +++++
+ .../renderer/bindings/core/v8/native_value_traits_impl.h   | 7 +++++++
+ 2 files changed, 12 insertions(+)
+
+diff --git a/third_party/blink/renderer/bindings/core/v8/native_value_traits.h b/third_party/blink/renderer/bindings/core/v8/native_value_traits.h
+index a5c28b37e9454..c7bc581d96347 100644
+--- a/third_party/blink/renderer/bindings/core/v8/native_value_traits.h
++++ b/third_party/blink/renderer/bindings/core/v8/native_value_traits.h
+@@ -31,7 +31,12 @@ class ExceptionState;
+ //     return toInt32(isolate, value, exceptionState, NormalConversion);
+ //   }
+ // }
++// TODO(neva): SFINAE is needed to fix GCC compile error.
++#if defined(__GNUC__)
++template <typename T, typename SFINAEHelper = void>
++#else   // defined(__GNUC__)
+ template <typename T>
++#endif  // !defined(__GNUC__)
+ struct NativeValueTraits;
+ 
+ // This declaration serves only as a blueprint for specializations: the
+diff --git a/third_party/blink/renderer/bindings/core/v8/native_value_traits_impl.h b/third_party/blink/renderer/bindings/core/v8/native_value_traits_impl.h
+index f085b6e905161..96d66d1e652b2 100644
+--- a/third_party/blink/renderer/bindings/core/v8/native_value_traits_impl.h
++++ b/third_party/blink/renderer/bindings/core/v8/native_value_traits_impl.h
+@@ -718,8 +718,15 @@ struct CORE_EXPORT NativeValueTraits<
+ };
+ 
+ template <typename T>
++// TODO(neva): SFINAE (type traits) is needed to fix GCC compile error.
++#if defined(__GNUC__)
++struct NativeValueTraits<
++    T,
++    typename std::enable_if_t<std::is_base_of<DOMArrayBufferView, T>::value>> {
++#else   // defined(__GNUC__)
+   requires std::derived_from<T, DOMArrayBufferView>
+ struct NativeValueTraits<T> {
++#endif  // !defined(__GNUC__)
+   // NotShared<T> or MaybeShared<T> should be used instead.
+   static T* NativeValue(v8::Isolate* isolate,
+                         v8::Local<v8::Value> value,
+-- 
+2.40.1
+

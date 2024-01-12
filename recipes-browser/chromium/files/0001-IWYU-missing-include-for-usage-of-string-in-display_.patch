@@ -1,4 +1,4 @@
-From 845403db4dca7ff480df4fcd49cdf53dc19181b0 Mon Sep 17 00:00:00 2001
+From 7cae58f62ab2f74c3e97e4b676e85f236b2a5645 Mon Sep 17 00:00:00 2001
 From: Jose Dapena Paz <jdapena@igalia.com>
 Date: Mon, 18 Dec 2023 19:03:05 +0100
 Subject: IWYU: missing include for usage of string in
