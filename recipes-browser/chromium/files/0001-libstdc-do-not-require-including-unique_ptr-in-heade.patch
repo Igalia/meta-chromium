@@ -1,0 +1,44 @@
+From 30a1e4121332aebaddcd495d0579651fc02993c9 Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Mon, 22 Jan 2024 09:00:23 +0100
+Subject: libstdc++: do not require including unique_ptr in header
+
+Including std::unique_ptr declaration initial value requires
+declaration of contained type.
+
+Bug: 957519
+Change-Id: If9b0362b6cea48a395041faa82f83b6f48b98403
+---
+ chrome/browser/ui/views/toolbar/toolbar_view.h                  | 2 +-
+ .../web_apps/frame_toolbar/web_app_toolbar_button_container.h   | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/chrome/browser/ui/views/toolbar/toolbar_view.h b/chrome/browser/ui/views/toolbar/toolbar_view.h
+index ec3e34a86f4c5..cbd2611ce55d8 100644
+--- a/chrome/browser/ui/views/toolbar/toolbar_view.h
++++ b/chrome/browser/ui/views/toolbar/toolbar_view.h
+@@ -312,7 +312,7 @@ class ToolbarView : public views::AccessiblePaneView,
+ 
+   std::unique_ptr<ChromeLabsModel> chrome_labs_model_;
+   std::unique_ptr<ExtensionsToolbarCoordinator>
+-      extensions_toolbar_coordinator_ = nullptr;
++      extensions_toolbar_coordinator_;
+ 
+   // Controls whether or not a home button should be shown on the toolbar.
+   BooleanPrefMember show_home_button_;
+diff --git a/chrome/browser/ui/views/web_apps/frame_toolbar/web_app_toolbar_button_container.h b/chrome/browser/ui/views/web_apps/frame_toolbar/web_app_toolbar_button_container.h
+index 3046c543c7c8e..f34bfdc5a01a2 100644
+--- a/chrome/browser/ui/views/web_apps/frame_toolbar/web_app_toolbar_button_container.h
++++ b/chrome/browser/ui/views/web_apps/frame_toolbar/web_app_toolbar_button_container.h
+@@ -151,7 +151,7 @@ class WebAppToolbarButtonContainer : public views::View,
+   int page_action_insertion_point_ = 0;
+ 
+   std::unique_ptr<ExtensionsToolbarCoordinator>
+-      extensions_toolbar_coordinator_ = nullptr;
++      extensions_toolbar_coordinator_;
+ 
+   // All remaining members are owned by the views hierarchy.
+   raw_ptr<WebAppOriginText> web_app_origin_text_ = nullptr;
+-- 
+2.40.1
+

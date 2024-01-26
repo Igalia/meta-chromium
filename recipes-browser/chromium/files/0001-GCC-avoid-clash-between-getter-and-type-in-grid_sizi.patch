@@ -1,0 +1,29 @@
+From 92ced351b50e872da73e57a54e1b13cfe6a94418 Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Mon, 15 Jan 2024 16:17:16 +0100
+Subject: GCC: avoid clash between getter and type in grid_sizing_tree.h
+
+Fix GridSubsizingTree::GridItems getter and return type clash.
+
+Bug: 819294
+Change-Id: I4112929d9f85dc4573002b429cc982d50085d3c9
+---
+ third_party/blink/renderer/core/layout/grid/grid_sizing_tree.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/third_party/blink/renderer/core/layout/grid/grid_sizing_tree.h b/third_party/blink/renderer/core/layout/grid/grid_sizing_tree.h
+index b390ff28ad2d7..b6fde55f665d1 100644
+--- a/third_party/blink/renderer/core/layout/grid/grid_sizing_tree.h
++++ b/third_party/blink/renderer/core/layout/grid/grid_sizing_tree.h
+@@ -188,7 +188,7 @@ class GridSizingSubtree
+         /* subtree_root */ grid_tree_->LookupSubgridIndex(subgrid_data));
+   }
+ 
+-  GridItems& GridItems() const {
++  blink::GridItems& GridItems() const {
+     DCHECK(grid_tree_);
+     return grid_tree_->At(subtree_root_).grid_items;
+   }
+-- 
+2.40.1
+

@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "122.0.6226.2"
+PV = "122.0.6253.3"
 
-SRC_URI[sha256sum] = "002a614e3c11a7f6d9e61690e27b79d5f6718573e77a3f8852f5658cba1c1276"
+SRC_URI[sha256sum] = "6fbecedf1ab058880854a594b158eed97040e397ecda3fdfb88aace6cd08f319"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -151,14 +151,17 @@ LIC_FILES_CHKSUM = "\
 # Upstreamable patches
 SRC_URI += " \
   file://0001-IWYU-missing-include-for-std-string-use-in-instrumen.patch;patchdir=third_party/ruy/src \
-  file://0001-IWYU-missing-include-for-unique_ptr-use-on-push_noti.patch \
-  file://0001-IWYU-missing-include-for-usage-of-string-in-display_.patch \
-  file://0001-GCC-workaround-for-optional_ref-type-to-const-constr.patch \
+  file://0001-IWYU-missing-include-for-unique_ptr-usage-in-data_sh.patch \
+  file://0001-libstdc-fix-static-assertion-in-NodeUuidEquality.patch \
   file://0001-libstdc-add-an-SFINAE-version-of-std-to_address.patch \
+  file://0001-libstdc-do-not-require-including-unique_ptr-in-heade.patch \
+  file://0001-GCC-workaround-for-passing-local-frame-token.patch \
+  file://0001-IWYU-usage-of-std-optional-in-hit_test_request.h-req.patch \
+  file://0001-GCC-avoid-clash-between-getter-and-type-in-grid_sizi.patch \
   file://0001-IWYU-missing-include-for-usage-of-std-bitset-in-reso.patch \
-  file://0001-GCC-bring-back-SFINAE-param-for-blink-NativeValueTra.patch \
+  file://0001-Revert-Revert-2-Fontations-backend-Add-COLRv0-v1-sup.patch;patchdir=third_party/skia \
+  file://0001-GCC-Bring-back-SFINAE-for-blink-NativeValueTraits.patch \
   file://0001-GCC-do-not-pass-Clang-specific-MTE-flags.patch \
-  file://0001-GCC-explicitely-cast-NEON-intrinsics-type-conversion.patch;patchdir=v8 \
 "
 
 # Fix for material_color_utilities issue reported at

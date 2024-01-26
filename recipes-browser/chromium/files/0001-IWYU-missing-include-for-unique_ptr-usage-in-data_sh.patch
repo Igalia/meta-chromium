@@ -1,0 +1,27 @@
+From 829d899047af836956bdd7a6333567ba21c5bb45 Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Mon, 22 Jan 2024 22:32:07 +0100
+Subject: IWYU: missing include for unique_ptr usage in
+ data_sharing_network_loader.h
+
+Bug: 957519
+Change-Id: Ib324b2f66fbaa43b01046425fb480236df012dd2
+---
+ components/data_sharing/public/data_sharing_network_loader.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/components/data_sharing/public/data_sharing_network_loader.h b/components/data_sharing/public/data_sharing_network_loader.h
+index 374ce896bdf68..833dd12dbfed9 100644
+--- a/components/data_sharing/public/data_sharing_network_loader.h
++++ b/components/data_sharing/public/data_sharing_network_loader.h
+@@ -5,6 +5,7 @@
+ #ifndef COMPONENTS_DATA_SHARING_PUBLIC_DATA_SHARING_NETWORK_LOADER_H_
+ #define COMPONENTS_DATA_SHARING_PUBLIC_DATA_SHARING_NETWORK_LOADER_H_
+ 
++#include <memory>
+ #include <string>
+ #include <vector>
+ 
+-- 
+2.40.1
+
