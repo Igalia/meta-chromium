@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "122.0.6253.3"
+PV = "123.0.6262.5"
 
-SRC_URI[sha256sum] = "6fbecedf1ab058880854a594b158eed97040e397ecda3fdfb88aace6cd08f319"
+SRC_URI[sha256sum] = "27f43597766536be4302c8ca453903902c9d7968087efffa34b5a849a78c5c9a"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -148,21 +148,31 @@ LIC_FILES_CHKSUM = "\
   file://${S}/v8/LICENSE.strongtalk;md5=956a43818dd13f2e93088fc2c93589d2 \
 "
 
+# Upstream patches
+SRC_URI += " \
+  file://0001-IWYU-missing-include-for-std-optional-usage-in-race_.patch \
+"
+
 # Upstreamable patches
 SRC_URI += " \
-  file://0001-IWYU-missing-include-for-std-string-use-in-instrumen.patch;patchdir=third_party/ruy/src \
-  file://0001-IWYU-missing-include-for-unique_ptr-usage-in-data_sh.patch \
-  file://0001-libstdc-fix-static-assertion-in-NodeUuidEquality.patch \
-  file://0001-libstdc-add-an-SFINAE-version-of-std-to_address.patch \
-  file://0001-libstdc-do-not-require-including-unique_ptr-in-heade.patch \
-  file://0001-GCC-workaround-for-passing-local-frame-token.patch \
-  file://0001-IWYU-usage-of-std-optional-in-hit_test_request.h-req.patch \
-  file://0001-GCC-avoid-clash-between-getter-and-type-in-grid_sizi.patch \
-  file://0001-IWYU-missing-include-for-usage-of-std-bitset-in-reso.patch \
-  file://0001-Revert-Revert-2-Fontations-backend-Add-COLRv0-v1-sup.patch;patchdir=third_party/skia \
-  file://0001-GCC-Bring-back-SFINAE-for-blink-NativeValueTraits.patch \
-  file://0001-GCC-do-not-pass-Clang-specific-MTE-flags.patch \
+  file://0001-PA-Fix-InternalAllocator-for-GCC-builds.patch \
+  file://0002-IWYU-LogMessage-raw_ptr-requires-include.patch \
+  file://0003-libstdc-add-an-SFINAE-version-of-std-to_address.patch \
+  file://0004-IWYU-missing-include-for-std-map-and-std-variante-us.patch \
+  file://0005-IWYU-usage-of-std-optional-in-search_engine_choice_s.patch \
+  file://0006-IWYU-usage-of-std-optional-in-metrics_helper.h-requi.patch \
+  file://0007-IWYU-usage-of-std-optional-requires-include-in-spare.patch \
+  file://0008-GCC-workaround-for-passing-local-frame-token.patch \
+  file://0009-GCC-do-not-add-template-specialization-in-class-scop.patch \
+  file://0010-GCC-avoid-clash-between-getter-and-type-in-grid_sizi.patch \
+  file://0011-GCC-Bring-back-SFINAE-for-blink-NativeValueTraits.patch \
 "
+
+# ARM build should not use Clang MTE flags
+SRC_URI += " file://0001-GCC-do-not-pass-Clang-specific-MTE-flags.patch "
+
+# libruy fixes that are stalled in review process
+SRC_URI += " file://0001-IWYU-missing-include-for-std-string-use-in-instrumen.patch;patchdir=third_party/ruy/src "
 
 # Fix for material_color_utilities issue reported at
 # https://github.com/material-foundation/material-color-utilities/issues/108
@@ -180,6 +190,9 @@ GN_ARGS:append:raspberrypi4-64 = " build_tflite_with_xnnpack=false build_webnn_w
 # Building with static roots fails on GCC 13. As recent hosts can ship with
 # that version of, disable it.
 GN_ARGS:append = " v8_enable_static_roots=false "
+
+# Using Skia Fontations breaks Chromium linking because of missing Rust symbols
+GN_ARGS:append = " use_typeface_fontations=false "
 
 do_install:append() {
         install -m 0755 chrome_crashpad_handler ${D}${libdir}/chromium/chrome_crashpad_handler

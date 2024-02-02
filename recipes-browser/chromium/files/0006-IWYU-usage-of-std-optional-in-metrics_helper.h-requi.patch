@@ -1,0 +1,26 @@
+From 53ede15d8ffec5406640cf88a9a156435e259022 Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Mon, 29 Jan 2024 13:50:54 +0100
+Subject: IWYU: usage of std::optional in metrics_helper.h requires include
+
+Bug: 957519
+Change-Id: I66437c6708ab56002762470438157118ff440e18
+---
+ components/security_interstitials/core/metrics_helper.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/components/security_interstitials/core/metrics_helper.h b/components/security_interstitials/core/metrics_helper.h
+index 1f1c895f65e12..d5f11d0d98af2 100644
+--- a/components/security_interstitials/core/metrics_helper.h
++++ b/components/security_interstitials/core/metrics_helper.h
+@@ -5,6 +5,7 @@
+ #ifndef COMPONENTS_SECURITY_INTERSTITIALS_CORE_METRICS_HELPER_H_
+ #define COMPONENTS_SECURITY_INTERSTITIALS_CORE_METRICS_HELPER_H_
+ 
++#include <optional>
+ #include <string>
+ 
+ #include "base/task/cancelable_task_tracker.h"
+-- 
+2.40.1
+

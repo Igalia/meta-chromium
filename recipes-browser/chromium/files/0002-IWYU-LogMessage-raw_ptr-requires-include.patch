@@ -1,0 +1,31 @@
+From 01090d49971665687fca5a54a66481b447179af8 Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Mon, 22 Jan 2024 16:36:34 +0100
+Subject: IWYU: LogMessage raw_ptr requires include
+
+Include LogMessage declaration in raw_ref_unittest.cc as check.h
+declaration will require traits that are not defined. To avoid
+adding full logging.h include in check.h (which is expected to be
+lightweight), just include it in the test.
+
+Bug: 957519
+Change-Id: I513126a71edd669218ace8be7e56441c5a63be9f
+---
+ .../src/partition_alloc/pointers/raw_ref_unittest.cc             | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/base/allocator/partition_allocator/src/partition_alloc/pointers/raw_ref_unittest.cc b/base/allocator/partition_allocator/src/partition_alloc/pointers/raw_ref_unittest.cc
+index b1f80e14afb38..698e537566236 100644
+--- a/base/allocator/partition_allocator/src/partition_alloc/pointers/raw_ref_unittest.cc
++++ b/base/allocator/partition_allocator/src/partition_alloc/pointers/raw_ref_unittest.cc
+@@ -7,6 +7,7 @@
+ #include <functional>
+ #include <type_traits>
+ 
++#include "base/logging.h"
+ #include "base/memory/raw_ptr.h"
+ #include "base/test/gtest_util.h"
+ #include "partition_alloc/partition_alloc_base/debug/debugging_buildflags.h"
+-- 
+2.40.1
+

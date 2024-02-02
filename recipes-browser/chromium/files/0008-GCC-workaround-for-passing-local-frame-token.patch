@@ -1,19 +1,24 @@
-From 383719418da50f46b6c532eb76d9ef0c6ee58622 Mon Sep 17 00:00:00 2001
+From 14756f9db23366401c2cb0edb706485eebce88e7 Mon Sep 17 00:00:00 2001
 From: Jose Dapena Paz <jdapena@igalia.com>
 Date: Thu, 18 Jan 2024 17:55:36 +0100
 Subject: GCC: workaround for passing local frame token
 
+GCC seems to get confused in lambda functions if the name of a
+parameter of the lambda is the same of an external variable, even if
+it is not captured.
+
+Bug: 819294
 Change-Id: I2c287502fb11081558a86155f8c465f06abb687e
 ---
- chrome/renderer/url_loader_throttle_provider_impl.cc    | 6 +++---
- content/shell/renderer/shell_content_renderer_client.cc | 6 +++---
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ chrome/renderer/url_loader_throttle_provider_impl.cc    | 9 ++++-----
+ content/shell/renderer/shell_content_renderer_client.cc | 9 ++++-----
+ 2 files changed, 8 insertions(+), 10 deletions(-)
 
 diff --git a/chrome/renderer/url_loader_throttle_provider_impl.cc b/chrome/renderer/url_loader_throttle_provider_impl.cc
-index a41caaa77406a..07d431992289d 100644
+index a41caaa77406a..59d2c0d78e946 100644
 --- a/chrome/renderer/url_loader_throttle_provider_impl.cc
 +++ b/chrome/renderer/url_loader_throttle_provider_impl.cc
-@@ -251,20 +251,20 @@ URLLoaderThrottleProviderImpl::CreateThrottles(
+@@ -251,20 +251,19 @@ URLLoaderThrottleProviderImpl::CreateThrottles(
    if (local_frame_token.has_value()) {
      auto throttle =
          content::MaybeCreateIdentityUrlLoaderThrottle(base::BindRepeating(
@@ -30,18 +35,19 @@ index a41caaa77406a..07d431992289d 100644
                }
                if (main_thread_task_runner) {
                  main_thread_task_runner->PostTask(
-                     FROM_HERE,
-                     base::BindOnce(&blink::SetIdpSigninStatus,
+-                    FROM_HERE,
+-                    base::BindOnce(&blink::SetIdpSigninStatus,
 -                                   local_frame_token, origin, status));
-+                                   token, origin, status));
++                    FROM_HERE, base::BindOnce(&blink::SetIdpSigninStatus, token,
++                                              origin, status));
                }
              },
              local_frame_token.value(), main_thread_task_runner_));
 diff --git a/content/shell/renderer/shell_content_renderer_client.cc b/content/shell/renderer/shell_content_renderer_client.cc
-index 4c661522feaae..f804db8d6d946 100644
+index 4c661522feaae..412990b9328b7 100644
 --- a/content/shell/renderer/shell_content_renderer_client.cc
 +++ b/content/shell/renderer/shell_content_renderer_client.cc
-@@ -177,20 +177,20 @@ class ShellContentRendererUrlLoaderThrottleProvider
+@@ -177,20 +177,19 @@ class ShellContentRendererUrlLoaderThrottleProvider
      if (local_frame_token.has_value()) {
        auto throttle =
            content::MaybeCreateIdentityUrlLoaderThrottle(base::BindRepeating(
@@ -58,10 +64,11 @@ index 4c661522feaae..f804db8d6d946 100644
                  }
                  if (main_thread_task_runner) {
                    main_thread_task_runner->PostTask(
-                       FROM_HERE,
-                       base::BindOnce(&blink::SetIdpSigninStatus,
+-                      FROM_HERE,
+-                      base::BindOnce(&blink::SetIdpSigninStatus,
 -                                     local_frame_token, origin, status));
-+                                     token, origin, status));
++                      FROM_HERE, base::BindOnce(&blink::SetIdpSigninStatus,
++                                                token, origin, status));
                  }
                },
                local_frame_token.value(), main_thread_task_runner_));
