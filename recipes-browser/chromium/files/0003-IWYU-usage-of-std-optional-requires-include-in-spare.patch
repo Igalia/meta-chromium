@@ -1,4 +1,4 @@
-From 4f95ebc30c7bf7b85d1f06de6608656cba7314c4 Mon Sep 17 00:00:00 2001
+From fe88b6f28e6c09bede739d01378cccabed88c330 Mon Sep 17 00:00:00 2001
 From: Jose Dapena Paz <jdapena@igalia.com>
 Date: Mon, 29 Jan 2024 16:00:59 +0100
 Subject: IWYU: usage of std::optional requires include in
@@ -11,7 +11,7 @@ Change-Id: Ib492925af1f57ec10e42b567fead6c6a058efa00
  1 file changed, 2 insertions(+)
 
 diff --git a/content/browser/renderer_host/spare_render_process_host_manager.h b/content/browser/renderer_host/spare_render_process_host_manager.h
-index d6ceb08a82d85..a0dd169a09271 100644
+index 9d2ba05e6e1a1..b7ebfd3bf9816 100644
 --- a/content/browser/renderer_host/spare_render_process_host_manager.h
 +++ b/content/browser/renderer_host/spare_render_process_host_manager.h
 @@ -5,6 +5,8 @@

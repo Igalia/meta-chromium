@@ -1,4 +1,4 @@
-From e4cc9a66229ebe8323a0a1b4c92acc9255dadfa5 Mon Sep 17 00:00:00 2001
+From 1949ed0483f66c5e050cad71be693c15210e2f55 Mon Sep 17 00:00:00 2001
 From: Jose Dapena Paz <jdapena@igalia.com>
 Date: Tue, 19 Dec 2023 15:07:35 +0100
 Subject: libstdc++: add an SFINAE version of std::to_address
@@ -8,12 +8,12 @@ Change-Id: I42ab30a9df8f99f350c17549e954f7a8c2f64d77
 ---
  base/BUILD.gn                             |  1 +
  base/types/to_address.h                   | 88 +++++++++++++++++++++++
- mojo/public/cpp/bindings/type_converter.h |  5 +-
- 3 files changed, 92 insertions(+), 2 deletions(-)
+ mojo/public/cpp/bindings/type_converter.h |  6 +-
+ 3 files changed, 93 insertions(+), 2 deletions(-)
  create mode 100644 base/types/to_address.h
 
 diff --git a/base/BUILD.gn b/base/BUILD.gn
-index b111dc4c2433f..5cf42d7208d35 100644
+index 9002f101ee58f..d5ee9df5507ad 100644
 --- a/base/BUILD.gn
 +++ b/base/BUILD.gn
 @@ -937,6 +937,7 @@ component("base") {
@@ -119,18 +119,19 @@ index 0000000000000..9b6533c7d591b
 +
 +#endif  // BASE_TYPES_CXX23_TO_UNDERLYING_H_
 diff --git a/mojo/public/cpp/bindings/type_converter.h b/mojo/public/cpp/bindings/type_converter.h
-index c2edc879afb86..4af6f529de988 100644
+index c2edc879afb86..d7cfbc75a8ae7 100644
 --- a/mojo/public/cpp/bindings/type_converter.h
 +++ b/mojo/public/cpp/bindings/type_converter.h
-@@ -5,6 +5,7 @@
- #ifndef MOJO_PUBLIC_CPP_BINDINGS_TYPE_CONVERTER_H_
- #define MOJO_PUBLIC_CPP_BINDINGS_TYPE_CONVERTER_H_
+@@ -11,6 +11,8 @@
+ #include <memory>
+ #include <type_traits>
  
 +#include <base/types/to_address.h>
- #include <stdint.h>
++
+ namespace mojo {
  
- #include <concepts>
-@@ -98,10 +99,10 @@ inline T ConvertTo(U* obj) {
+ // NOTE: When possible, please consider using StructTraits / UnionTraits /
+@@ -98,10 +100,10 @@ inline T ConvertTo(U* obj) {
  template <typename T, typename U>
    requires requires(const U& obj) {
      not std::is_pointer_v<U>;

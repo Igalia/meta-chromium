@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "123.0.6262.5"
+PV = "123.0.6272.2"
 
-SRC_URI[sha256sum] = "27f43597766536be4302c8ca453903902c9d7968087efffa34b5a849a78c5c9a"
+SRC_URI[sha256sum] = "08e34aa79a9051106724cb834c3e3cf8f6f12793d025e92cfb97fb52ddb9aaed"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -150,22 +150,21 @@ LIC_FILES_CHKSUM = "\
 
 # Upstream patches
 SRC_URI += " \
-  file://0001-IWYU-missing-include-for-std-optional-usage-in-race_.patch \
+  file://0001-IWYU-missing-include-for-std-map-and-std-variant-usa.patch \
+  file://0002-IWYU-usage-of-std-optional-in-search_engine_choice_s.patch \
+  file://0003-IWYU-usage-of-std-optional-in-metrics_helper.h-requi.patch \
+  file://0004-GCC-avoid-clash-between-getter-and-type-in-grid_sizi.patch \
 "
 
 # Upstreamable patches
 SRC_URI += " \
-  file://0001-PA-Fix-InternalAllocator-for-GCC-builds.patch \
-  file://0002-IWYU-LogMessage-raw_ptr-requires-include.patch \
-  file://0003-libstdc-add-an-SFINAE-version-of-std-to_address.patch \
-  file://0004-IWYU-missing-include-for-std-map-and-std-variante-us.patch \
-  file://0005-IWYU-usage-of-std-optional-in-search_engine_choice_s.patch \
-  file://0006-IWYU-usage-of-std-optional-in-metrics_helper.h-requi.patch \
-  file://0007-IWYU-usage-of-std-optional-requires-include-in-spare.patch \
-  file://0008-GCC-workaround-for-passing-local-frame-token.patch \
-  file://0009-GCC-do-not-add-template-specialization-in-class-scop.patch \
-  file://0010-GCC-avoid-clash-between-getter-and-type-in-grid_sizi.patch \
-  file://0011-GCC-Bring-back-SFINAE-for-blink-NativeValueTraits.patch \
+  file://0001-IWYU-LogMessage-raw_ptr-requires-include.patch \
+  file://0002-libstdc-add-an-SFINAE-version-of-std-to_address.patch \
+  file://0003-IWYU-usage-of-std-optional-requires-include-in-spare.patch \
+  file://0004-Do-not-use-templates-for-ScriptPromiseResolver-ToV8-.patch \
+  file://0005-GCC-Bring-back-SFINAE-for-blink-NativeValueTraits.patch \
+  file://0006-libstdc-avoid-memory-include-by-assigning-nullptr-in.patch \
+  file://0007-GCC-fix-template-specialization-in-non-namespace-sco.patch \
 "
 
 # ARM build should not use Clang MTE flags

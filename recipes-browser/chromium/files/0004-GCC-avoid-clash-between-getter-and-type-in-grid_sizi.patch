@@ -1,41 +1,51 @@
-From 237903eb59b91727dabec80f5bebd04e238e18b7 Mon Sep 17 00:00:00 2001
+From 05a74771fed5491740588ec7b39ba64a7b710013 Mon Sep 17 00:00:00 2001
 From: Jose Dapena Paz <jdapena@igalia.com>
-Date: Mon, 15 Jan 2024 16:17:16 +0100
-Subject: GCC: avoid clash between getter and type in grid_sizing_tree.h
+Date: Thu, 1 Feb 2024 17:34:38 +0000
+Subject: [PATCH] GCC: avoid clash between getter and type in
+ grid_sizing_tree.h
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
 Rename GridSubsizingTree::GridItems getter to GetGridItems to avoid
 type clash.
 
 Bug: 819294
 Change-Id: I4112929d9f85dc4573002b429cc982d50085d3c9
+Reviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/5224147
+Reviewed-by: Xianzhu Wang <wangxianzhu@chromium.org>
+Commit-Queue: Xianzhu Wang <wangxianzhu@chromium.org>
+Commit-Queue: José Dapena Paz <jdapena@igalia.com>
+Cr-Commit-Position: refs/heads/main@{#1255116}
 ---
- .../core/layout/grid/grid_layout_algorithm.cc        | 12 ++++++------
- .../renderer/core/layout/grid/grid_sizing_tree.h     |  2 +-
- 2 files changed, 7 insertions(+), 7 deletions(-)
+ .../core/layout/grid/grid_layout_algorithm.cc       | 13 +++++++------
+ .../renderer/core/layout/grid/grid_sizing_tree.h    |  2 +-
+ 2 files changed, 8 insertions(+), 7 deletions(-)
 
 diff --git a/third_party/blink/renderer/core/layout/grid/grid_layout_algorithm.cc b/third_party/blink/renderer/core/layout/grid/grid_layout_algorithm.cc
-index 76872498f4e6f..037151a8b1d09 100644
+index 3560f0d71a4c5..e697a4794b973 100644
 --- a/third_party/blink/renderer/core/layout/grid/grid_layout_algorithm.cc
 +++ b/third_party/blink/renderer/core/layout/grid/grid_layout_algorithm.cc
-@@ -1549,7 +1549,7 @@ void GridLayoutAlgorithm::ComputeGridItemBaselines(
+@@ -1552,7 +1552,8 @@ void GridLayoutAlgorithm::ComputeGridItemBaselines(
    const auto writing_mode = GetConstraintSpace().GetWritingMode();
    track_collection.ResetBaselines();
  
 -  for (auto& grid_item : sizing_subtree.GridItems().IncludeSubgriddedItems()) {
-+  for (auto& grid_item : sizing_subtree.GetGridItems().IncludeSubgriddedItems()) {
++  for (auto& grid_item :
++       sizing_subtree.GetGridItems().IncludeSubgriddedItems()) {
      if (!grid_item.IsBaselineSpecified(track_direction) ||
          !grid_item.IsConsideredForSizing(track_direction)) {
        continue;
-@@ -1722,7 +1722,7 @@ void GridLayoutAlgorithm::InitializeTrackSizes(
+@@ -1720,7 +1721,7 @@ void GridLayoutAlgorithm::InitializeTrackSizes(
      const absl::optional<GridTrackSizingDirection>& opt_track_direction) const {
-   DCHECK(sizing_subtree);
+   DCHECK(sizing_subtree.HasValidRootFor(Node()));
  
 -  auto& grid_items = sizing_subtree.GridItems();
 +  auto& grid_items = sizing_subtree.GetGridItems();
    auto& layout_data = sizing_subtree.LayoutData();
  
    auto InitAndCacheTrackSizes = [&](GridTrackSizingDirection track_direction) {
-@@ -1930,7 +1930,7 @@ void GridLayoutAlgorithm::CompleteTrackSizingAlgorithm(
+@@ -1928,7 +1929,7 @@ void GridLayoutAlgorithm::CompleteTrackSizingAlgorithm(
  
        if (needs_to_check_block_size_dependent_grid_items) {
          block_size_dependent_grid_items = BlockSizeDependentGridItems(
@@ -44,7 +54,7 @@ index 76872498f4e6f..037151a8b1d09 100644
        }
  
        auto first_set_geometry = ComputeFirstSetGeometry(
-@@ -2051,7 +2051,7 @@ void GridLayoutAlgorithm::ForEachSubgrid(
+@@ -2049,7 +2050,7 @@ void GridLayoutAlgorithm::ForEachSubgrid(
  
    const auto& layout_data = sizing_subtree.LayoutData();
  
@@ -53,7 +63,7 @@ index 76872498f4e6f..037151a8b1d09 100644
      if (!grid_item.IsSubgrid()) {
        continue;
      }
-@@ -2683,7 +2683,7 @@ void GridLayoutAlgorithm::ResolveIntrinsicTrackSizes(
+@@ -2681,7 +2682,7 @@ void GridLayoutAlgorithm::ResolveIntrinsicTrackSizes(
      const GridSizingSubtree& sizing_subtree,
      GridTrackSizingDirection track_direction,
      SizingConstraint sizing_constraint) const {
@@ -62,7 +72,7 @@ index 76872498f4e6f..037151a8b1d09 100644
    auto& track_collection = sizing_subtree.SizingCollection(track_direction);
  
    GridItemDataPtrVector reordered_grid_items;
-@@ -3026,7 +3026,7 @@ void GridLayoutAlgorithm::ExpandFlexibleTracks(
+@@ -3024,7 +3025,7 @@ void GridLayoutAlgorithm::ExpandFlexibleTracks(
      //   finding the size of an fr using all the grid tracks that the item
      //   crosses and a space to fill of the item’s max-content contribution.
      for (auto& grid_item :
@@ -72,11 +82,11 @@ index 76872498f4e6f..037151a8b1d09 100644
            grid_item.IsSpanningFlexibleTrack(track_direction)) {
          float grid_item_fr_size =
 diff --git a/third_party/blink/renderer/core/layout/grid/grid_sizing_tree.h b/third_party/blink/renderer/core/layout/grid/grid_sizing_tree.h
-index b390ff28ad2d7..ecacbe96d8762 100644
+index 45d55e2b36da4..2148ea9ea0657 100644
 --- a/third_party/blink/renderer/core/layout/grid/grid_sizing_tree.h
 +++ b/third_party/blink/renderer/core/layout/grid/grid_sizing_tree.h
-@@ -188,7 +188,7 @@ class GridSizingSubtree
-         /* subtree_root */ grid_tree_->LookupSubgridIndex(subgrid_data));
+@@ -194,7 +194,7 @@ class GridSizingSubtree
+            grid_tree_->LookupSubgridIndex(grid_node) == subtree_root_;
    }
  
 -  GridItems& GridItems() const {

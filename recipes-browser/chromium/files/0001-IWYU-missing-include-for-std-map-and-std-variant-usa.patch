@@ -1,17 +1,24 @@
-From dfa3c4336d1168f98e8ca20c4060caeb392caadf Mon Sep 17 00:00:00 2001
+From f9c3adbc8cf7c75ec4e7091e18ba9a6808eae9a5 Mon Sep 17 00:00:00 2001
 From: Jose Dapena Paz <jdapena@igalia.com>
-Date: Mon, 29 Jan 2024 13:45:56 +0100
-Subject: IWYU: missing include for std::map and std::variante usage in
+Date: Thu, 1 Feb 2024 16:58:35 +0000
+Subject: IWYU: missing include for std::map and std::variant usage in
  semantic_tree.cc
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
 Bug: 957519
 Change-Id: I5fbe97053609c52a3a2577a69eddd9e6a863697b
+Reviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/5259277
+Commit-Queue: José Dapena Paz <jdapena@igalia.com>
+Reviewed-by: Colin Blundell <blundell@chromium.org>
+Cr-Commit-Position: refs/heads/main@{#1255102}
 ---
  components/browsing_topics/common/semantic_tree.cc | 2 ++
  1 file changed, 2 insertions(+)
 
 diff --git a/components/browsing_topics/common/semantic_tree.cc b/components/browsing_topics/common/semantic_tree.cc
-index bf0cbc2057972..daa10060bc814 100644
+index 47f9c8d1aaa2e..8ac4ab00106e9 100644
 --- a/components/browsing_topics/common/semantic_tree.cc
 +++ b/components/browsing_topics/common/semantic_tree.cc
 @@ -4,7 +4,9 @@
