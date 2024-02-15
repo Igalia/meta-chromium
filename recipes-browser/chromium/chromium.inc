@@ -199,7 +199,6 @@ def gn_arch_name(yocto_arch):
 # Chrome. They should allow to use GCC toolchains accordingly.
 GN_ARGS += '\
   host_toolchain="//build/toolchain/cros:host" \
-  cros_host_is_clang=false \
   use_custom_libcxx_for_host=false \
   cros_host_ar="${BUILD_AR}" \
   cros_host_cc="${BUILD_CC}" \
@@ -217,7 +216,6 @@ GN_ARGS += '\
   cros_target_extra_cppflags="${CPPFLAGS}" \
   cros_target_extra_ldflags="${LDFLAGS}" \
   v8_snapshot_toolchain="//build/toolchain/cros:v8_snapshot" \
-  cros_v8_snapshot_is_clang=false \
   cros_v8_snapshot_ar="${BUILD_AR}" \
   cros_v8_snapshot_cc="${BUILD_CC}" \
   cros_v8_snapshot_cxx="${BUILD_CXX}" \
