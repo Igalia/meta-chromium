@@ -1,0 +1,29 @@
+From 8fd5d60da271e4d28642a63316498d81659d8b39 Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Wed, 7 Feb 2024 18:44:10 +0100
+Subject: Remove std::vector of const in site_settings_handler.cc
+
+Bug: 323708866
+Change-Id: Ic64d145215c1b6179de16b2842fb7dd575abb7c1
+---
+ chrome/browser/ui/webui/settings/site_settings_handler.cc | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/chrome/browser/ui/webui/settings/site_settings_handler.cc b/chrome/browser/ui/webui/settings/site_settings_handler.cc
+index 88d3101c4a65f..09b3d0ae3ae7c 100644
+--- a/chrome/browser/ui/webui/settings/site_settings_handler.cc
++++ b/chrome/browser/ui/webui/settings/site_settings_handler.cc
+@@ -2612,8 +2612,8 @@ base::Value::List SiteSettingsHandler::PopulateFileSystemGrantData() {
+     base::Value::Dict origin_file_system_permission_grants;
+     base::Value::List view_grants;
+     base::Value::List edit_grants;
+-    std::vector<const std::string> directory_edit_grants_file_paths;
+-    std::vector<const std::string> file_edit_grants_file_paths;
++    std::vector<std::string> directory_edit_grants_file_paths;
++    std::vector<std::string> file_edit_grants_file_paths;
+ 
+     std::string origin_string = origin.GetURL().spec();
+     origin_file_system_permission_grants.Set(site_settings::kOrigin,
+-- 
+2.40.1
+

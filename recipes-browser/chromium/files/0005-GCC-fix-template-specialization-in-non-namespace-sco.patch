@@ -1,6 +1,6 @@
-From d74c5b354c652697a87fcdb28161e61f5eb48dd7 Mon Sep 17 00:00:00 2001
+From 84c3406ee2a88a4fad12487b22a24462f617b167 Mon Sep 17 00:00:00 2001
 From: Jose Dapena Paz <jdapena@igalia.com>
-Date: Mon, 29 Jan 2024 13:38:38 +0100
+Date: Wed, 7 Feb 2024 13:33:01 +0100
 Subject: GCC: fix template specialization in non-namespace scope in
  url_loader_factory_builder.h
 
@@ -15,11 +15,11 @@ Change-Id: Ia5e6e61801dfcd0c6b5269204fcd513d5064ffc3
  2 files changed, 26 insertions(+), 18 deletions(-)
 
 diff --git a/services/network/public/cpp/url_loader_factory_builder.cc b/services/network/public/cpp/url_loader_factory_builder.cc
-index 297bdbcf3eafe..25a29893b8596 100644
+index 26e81de43a5e5..78d7b4e3593b4 100644
 --- a/services/network/public/cpp/url_loader_factory_builder.cc
 +++ b/services/network/public/cpp/url_loader_factory_builder.cc
-@@ -69,4 +69,18 @@ void URLLoaderFactoryBuilder::ConnectTerminal(
-   terminal_factory->Clone(std::move(pending_receiver));
+@@ -77,4 +77,18 @@ void URLLoaderFactoryBuilder::ConnectTerminal(
+                                            std::move(factory_param));
  }
  
 +template <>
@@ -38,7 +38,7 @@ index 297bdbcf3eafe..25a29893b8596 100644
 +
  }  // namespace network
 diff --git a/services/network/public/cpp/url_loader_factory_builder.h b/services/network/public/cpp/url_loader_factory_builder.h
-index 1675b7b57aaac..4d0aff33abe9e 100644
+index 08aa10e2f03d4..893c27aab96ba 100644
 --- a/services/network/public/cpp/url_loader_factory_builder.h
 +++ b/services/network/public/cpp/url_loader_factory_builder.h
 @@ -120,24 +120,6 @@ class COMPONENT_EXPORT(NETWORK_CPP) URLLoaderFactoryBuilder final {
@@ -63,23 +63,23 @@ index 1675b7b57aaac..4d0aff33abe9e 100644
 -    return remote;
 -  }
 -
-   // `ContextType` is an object with a method:
-   // void ContextType::CreateURLLoaderFactory(
-   //   mojo::PendingReceiver<mojom::URLLoaderFactory> receiver,
-@@ -187,6 +169,18 @@ class COMPONENT_EXPORT(NETWORK_CPP) URLLoaderFactoryBuilder final {
+   template <typename OutType>
+   static OutType WrapAs(mojom::NetworkContext* context,
+                         mojom::URLLoaderFactoryParamsPtr factory_param) {
+@@ -172,6 +154,18 @@ class COMPONENT_EXPORT(NETWORK_CPP) URLLoaderFactoryBuilder final {
    mojo::PendingReceiver<mojom::URLLoaderFactory> tail_;
  };
  
 +// `PendingRemote` -> `SharedURLLoaderFactory`:
 +// Wraps by `WrapperSharedURLLoaderFactory`.
 +template <>
-+scoped_refptr<SharedURLLoaderFactory> URLLoaderFactoryBuilder::WrapAs(
++COMPONENT_EXPORT(NETWORK_CPP) scoped_refptr<SharedURLLoaderFactory> URLLoaderFactoryBuilder::WrapAs(
 +    mojo::PendingRemote<mojom::URLLoaderFactory> in);
 +
 +// `SharedURLLoaderFactory` -> `PendingRemote`:
 +// Creates a new pipe and cloning.
 +template <>
-+mojo::PendingRemote<mojom::URLLoaderFactory> URLLoaderFactoryBuilder::WrapAs(
++COMPONENT_EXPORT(NETWORK_CPP) mojo::PendingRemote<mojom::URLLoaderFactory> URLLoaderFactoryBuilder::WrapAs(
 +    scoped_refptr<SharedURLLoaderFactory> in);
 +
  }  // namespace network

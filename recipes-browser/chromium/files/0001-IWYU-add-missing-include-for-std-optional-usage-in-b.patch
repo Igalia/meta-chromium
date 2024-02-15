@@ -1,0 +1,26 @@
+From e46d89584981f152549b2a128e928f2c6a0fd7d9 Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Wed, 14 Feb 2024 09:18:03 +0100
+Subject: IWYU: add missing include for std::optional usage in big_endian.h
+
+Bug: 41455655
+Change-Id: I52806fa7e8a0c2d7b263a9090b64c34b53b11092
+---
+ base/big_endian.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/base/big_endian.h b/base/big_endian.h
+index 37e7947384555..c7bb7c6f11f94 100644
+--- a/base/big_endian.h
++++ b/base/big_endian.h
+@@ -8,6 +8,7 @@
+ #include <stddef.h>
+ #include <stdint.h>
+ #include <string.h>
++#include <optional>
+ #include <type_traits>
+ 
+ #include "base/base_export.h"
+-- 
+2.40.1
+

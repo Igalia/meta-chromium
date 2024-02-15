@@ -1,0 +1,272 @@
+From 5bf9d24975e23d374b2d89f4d22fc365d78fe0a4 Mon Sep 17 00:00:00 2001
+From: Nico Weber <thakis@chromium.org>
+Date: Wed, 7 Feb 2024 23:49:53 +0000
+Subject: Remove a few vector<const T> that are easy to remove
+
+A const vector<T> already doesn't allow any modifications, making the
+T const redundant.
+
+No behavior change.
+
+Bug: 323708866
+Change-Id: Ie27b3668cc265ba7c9dbb336290da3ce32a7b609
+Reviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/5273559
+Reviewed-by: James Cook <jamescook@chromium.org>
+Commit-Queue: James Cook <jamescook@chromium.org>
+Auto-Submit: Nico Weber <thakis@chromium.org>
+Cr-Commit-Position: refs/heads/main@{#1257669}
+---
+ .../send_tab_to_self/android_notification_handler.cc      | 4 ++--
+ .../send_tab_to_self/android_notification_handler.h       | 2 +-
+ chrome/browser/send_tab_to_self/receiving_ui_handler.h    | 2 +-
+ .../touch_to_fill_credit_card_controller_unittest.cc      | 4 ++--
+ .../ui/views/permissions/chip/multi_image_container.cc    | 2 +-
+ .../ui/views/permissions/chip/multi_image_container.h     | 2 +-
+ .../permissions/chip/multi_image_container_unittest.cc    | 2 +-
+ .../cellular_setup_localized_strings_provider.cc          | 7 +++----
+ chromeos/ash/components/drivefs/drivefs_host.h            | 2 +-
+ .../network/metrics/network_metrics_helper_unittest.cc    | 2 +-
+ .../client_certificates/core/ec_private_key_factory.cc    | 8 ++++----
+ .../core/unexportable_private_key_factory.cc              | 8 ++++----
+ .../fonts/shaping/shape_result_bloberizer_test.cc         | 4 ++--
+ .../platform/peerconnection/webrtc_connection_matchers.h  | 2 +-
+ 14 files changed, 25 insertions(+), 26 deletions(-)
+
+diff --git a/chrome/browser/android/send_tab_to_self/android_notification_handler.cc b/chrome/browser/android/send_tab_to_self/android_notification_handler.cc
+index 230eb9bc2708e..95df816235925 100644
+--- a/chrome/browser/android/send_tab_to_self/android_notification_handler.cc
++++ b/chrome/browser/android/send_tab_to_self/android_notification_handler.cc
+@@ -92,7 +92,7 @@ AndroidNotificationHandler::~AndroidNotificationHandler() {
+ 
+ void AndroidNotificationHandler::DisplayNewEntries(
+     const std::vector<const SendTabToSelfEntry*>& new_entries) {
+-  std::vector<const SendTabToSelfEntry> vector_copy;
++  std::vector<SendTabToSelfEntry> vector_copy;
+ 
+   for (const SendTabToSelfEntry* entry : new_entries) {
+     vector_copy.push_back(*entry);
+@@ -105,7 +105,7 @@ void AndroidNotificationHandler::DisplayNewEntries(
+ }
+ 
+ void AndroidNotificationHandler::DisplayNewEntriesOnUIThread(
+-    const std::vector<const SendTabToSelfEntry>& new_entries) {
++    const std::vector<SendTabToSelfEntry>& new_entries) {
+   for (const SendTabToSelfEntry& entry : new_entries) {
+     if (base::FeatureList::IsEnabled(send_tab_to_self::kSendTabToSelfV2)) {
+       if (profile_ != nullptr &&
+diff --git a/chrome/browser/android/send_tab_to_self/android_notification_handler.h b/chrome/browser/android/send_tab_to_self/android_notification_handler.h
+index 00ea3d944f16f..5020de5313005 100644
+--- a/chrome/browser/android/send_tab_to_self/android_notification_handler.h
++++ b/chrome/browser/android/send_tab_to_self/android_notification_handler.h
+@@ -38,7 +38,7 @@ class AndroidNotificationHandler : public ReceivingUiHandler {
+ 
+  private:
+   void DisplayNewEntriesOnUIThread(
+-      const std::vector<const SendTabToSelfEntry>& new_entries);
++      const std::vector<SendTabToSelfEntry>& new_entries);
+ 
+   // ReceivingUiHandler implementation.
+   void DisplayNewEntries(
+diff --git a/chrome/browser/send_tab_to_self/receiving_ui_handler.h b/chrome/browser/send_tab_to_self/receiving_ui_handler.h
+index a78c886fe7db7..b4811bb614206 100644
+--- a/chrome/browser/send_tab_to_self/receiving_ui_handler.h
++++ b/chrome/browser/send_tab_to_self/receiving_ui_handler.h
+@@ -15,7 +15,7 @@ namespace send_tab_to_self {
+ class SendTabToSelfEntry;
+ 
+ // Interface implemented by platforms to handle changes to the SendTabToSelf
+-// model. sImplementors of this interface should override all functions and
++// model. Implementors of this interface should override all functions and
+ // update the UI accordingly. They should also register themselves with the
+ // ReceivingUIRegistry.
+ class ReceivingUiHandler {
+diff --git a/chrome/browser/touch_to_fill/autofill/android/touch_to_fill_credit_card_controller_unittest.cc b/chrome/browser/touch_to_fill/autofill/android/touch_to_fill_credit_card_controller_unittest.cc
+index 3cf420b725d33..7ff5ebc2d90a8 100644
+--- a/chrome/browser/touch_to_fill/autofill/android/touch_to_fill_credit_card_controller_unittest.cc
++++ b/chrome/browser/touch_to_fill/autofill/android/touch_to_fill_credit_card_controller_unittest.cc
+@@ -132,8 +132,8 @@ class TouchToFillCreditCardControllerTest
+         autofill_manager().touch_to_fill_delegate());
+   }
+ 
+-  const std::vector<const CreditCard> credit_cards_ = {test::GetCreditCard(),
+-                                                       test::GetCreditCard2()};
++  const std::vector<CreditCard> credit_cards_ = {test::GetCreditCard(),
++                                                 test::GetCreditCard2()};
+   std::unique_ptr<MockTouchToFillCreditCardViewImpl> mock_view_;
+ 
+   void OnBeforeAskForValuesToFill() {
+diff --git a/chrome/browser/ui/views/permissions/chip/multi_image_container.cc b/chrome/browser/ui/views/permissions/chip/multi_image_container.cc
+index 2f24a153991c0..a65a55c3d44a2 100644
+--- a/chrome/browser/ui/views/permissions/chip/multi_image_container.cc
++++ b/chrome/browser/ui/views/permissions/chip/multi_image_container.cc
+@@ -28,7 +28,7 @@ std::unique_ptr<views::View> MultiImageContainer::CreateView() {
+ }
+ 
+ void MultiImageContainer::SetImages(
+-    const std::vector<const ui::ImageModel>& image_models) {
++    const std::vector<ui::ImageModel>& image_models) {
+   if (images_.size() < image_models.size()) {
+     AddExtraImages(image_models.size());
+   } else if (images_.size() > image_models.size()) {
+diff --git a/chrome/browser/ui/views/permissions/chip/multi_image_container.h b/chrome/browser/ui/views/permissions/chip/multi_image_container.h
+index 260d38b45e2e3..c7475e7558322 100644
+--- a/chrome/browser/ui/views/permissions/chip/multi_image_container.h
++++ b/chrome/browser/ui/views/permissions/chip/multi_image_container.h
+@@ -31,7 +31,7 @@ class MultiImageContainer final : public views::LabelButtonImageContainer {
+   MultiImageContainer& operator=(const MultiImageContainer&) = delete;
+   ~MultiImageContainer() override;
+ 
+-  void SetImages(const std::vector<const ui::ImageModel>& image_model);
++  void SetImages(const std::vector<ui::ImageModel>& image_model);
+   void SetImage(size_t index, const ui::ImageModel& image_model);
+   void SetImage(size_t index, const gfx::ImageSkia& image_skia);
+ 
+diff --git a/chrome/browser/ui/views/permissions/chip/multi_image_container_unittest.cc b/chrome/browser/ui/views/permissions/chip/multi_image_container_unittest.cc
+index d4041e47decb5..637def32121a5 100644
+--- a/chrome/browser/ui/views/permissions/chip/multi_image_container_unittest.cc
++++ b/chrome/browser/ui/views/permissions/chip/multi_image_container_unittest.cc
+@@ -14,7 +14,7 @@ TEST(MultiImageContainerTest, SetImages) {
+   EXPECT_EQ(images->children().size(), 1u);
+ 
+   size_t number_of_images = 5;  // some arbitrary number.
+-  std::vector<const ui::ImageModel> models(number_of_images);
++  std::vector<ui::ImageModel> models(number_of_images);
+   container.SetImages(models);
+   EXPECT_EQ(images->children().size(), number_of_images);
+ 
+diff --git a/chrome/browser/ui/webui/ash/cellular_setup/cellular_setup_localized_strings_provider.cc b/chrome/browser/ui/webui/ash/cellular_setup/cellular_setup_localized_strings_provider.cc
+index e15c30750565d..e9bc3d49bab58 100644
+--- a/chrome/browser/ui/webui/ash/cellular_setup/cellular_setup_localized_strings_provider.cc
++++ b/chrome/browser/ui/webui/ash/cellular_setup/cellular_setup_localized_strings_provider.cc
+@@ -124,12 +124,11 @@ struct NamedResourceId {
+   int value;
+ };
+ 
+-const std::vector<const NamedBoolean>& GetBooleanValues() {
+-  static const base::NoDestructor<std::vector<const NamedBoolean>> named_bools(
++const std::vector<NamedBoolean>& GetBooleanValues() {
++  static const base::NoDestructor<std::vector<NamedBoolean>> named_bools(
+       {{"useSecondEuicc",
+         base::FeatureList::IsEnabled(features::kCellularUseSecondEuicc)},
+-       {"isSmdsSupportEnabled",
+-        ash::features::IsSmdsSupportEnabled()}});
++       {"isSmdsSupportEnabled", ash::features::IsSmdsSupportEnabled()}});
+   return *named_bools;
+ }
+ 
+diff --git a/chromeos/ash/components/drivefs/drivefs_host.h b/chromeos/ash/components/drivefs/drivefs_host.h
+index 1b3fdab41ff15..a7d5a616c2564 100644
+--- a/chromeos/ash/components/drivefs/drivefs_host.h
++++ b/chromeos/ash/components/drivefs/drivefs_host.h
+@@ -131,7 +131,7 @@ class COMPONENT_EXPORT(CHROMEOS_ASH_COMPONENTS_DRIVEFS) DriveFsHost {
+     virtual void OnUnmounted() {}
+     virtual void OnSyncingStatusUpdate(const mojom::SyncingStatus& status) {}
+     virtual void OnIndividualSyncingStatusesDelta(
+-        const std::vector<const SyncState>& sync_states) {}
++        const std::vector<SyncState>& sync_states) {}
+     virtual void OnMirrorSyncingStatusUpdate(
+         const mojom::SyncingStatus& status) {}
+     virtual void OnFilesChanged(const std::vector<mojom::FileChange>& changes) {
+diff --git a/chromeos/ash/components/network/metrics/network_metrics_helper_unittest.cc b/chromeos/ash/components/network/metrics/network_metrics_helper_unittest.cc
+index 4f76f21b933e6..18203b9d31ad9 100644
+--- a/chromeos/ash/components/network/metrics/network_metrics_helper_unittest.cc
++++ b/chromeos/ash/components/network/metrics/network_metrics_helper_unittest.cc
+@@ -701,7 +701,7 @@ TEST_F(NetworkMetricsHelperTest, CellularPSim) {
+ }
+ 
+ TEST_F(NetworkMetricsHelperTest, VPN) {
+-  const std::vector<const std::string> kProviders{{
++  const std::vector<std::string> kProviders{{
+       shill::kProviderIKEv2,
+       shill::kProviderL2tpIpsec,
+       shill::kProviderArcVpn,
+diff --git a/components/enterprise/client_certificates/core/ec_private_key_factory.cc b/components/enterprise/client_certificates/core/ec_private_key_factory.cc
+index 4de11c3e002e9..9100cede3afea 100644
+--- a/components/enterprise/client_certificates/core/ec_private_key_factory.cc
++++ b/components/enterprise/client_certificates/core/ec_private_key_factory.cc
+@@ -30,7 +30,7 @@ scoped_refptr<ECPrivateKey> CreateKey() {
+ }
+ 
+ scoped_refptr<ECPrivateKey> LoadKeyFromWrapped(
+-    const std::vector<const uint8_t>& wrapped_key) {
++    const std::vector<uint8_t>& wrapped_key) {
+   auto key = crypto::ECPrivateKey::CreateFromPrivateKeyInfo(wrapped_key);
+   if (!key) {
+     return nullptr;
+@@ -61,9 +61,9 @@ void ECPrivateKeyFactory::LoadPrivateKey(
+   const auto& wrapped_key_str = serialized_private_key.wrapped_key();
+   base::ThreadPool::PostTaskAndReplyWithResult(
+       FROM_HERE, {base::MayBlock()},
+-      base::BindOnce(LoadKeyFromWrapped,
+-                     std::vector<const uint8_t>(wrapped_key_str.begin(),
+-                                                wrapped_key_str.end())),
++      base::BindOnce(
++          LoadKeyFromWrapped,
++          std::vector<uint8_t>(wrapped_key_str.begin(), wrapped_key_str.end())),
+       std::move(callback));
+ }
+ 
+diff --git a/components/enterprise/client_certificates/core/unexportable_private_key_factory.cc b/components/enterprise/client_certificates/core/unexportable_private_key_factory.cc
+index 5c39ba9152e93..e165de0bc9bfc 100644
+--- a/components/enterprise/client_certificates/core/unexportable_private_key_factory.cc
++++ b/components/enterprise/client_certificates/core/unexportable_private_key_factory.cc
+@@ -41,7 +41,7 @@ scoped_refptr<UnexportablePrivateKey> CreateKey() {
+ }
+ 
+ scoped_refptr<UnexportablePrivateKey> LoadKeyFromWrapped(
+-    const std::vector<const uint8_t>& wrapped_key) {
++    const std::vector<uint8_t>& wrapped_key) {
+   auto provider = crypto::GetUnexportableKeyProvider();
+   if (!provider) {
+     return nullptr;
+@@ -92,9 +92,9 @@ void UnexportablePrivateKeyFactory::LoadPrivateKey(
+   const auto& wrapped_key_str = serialized_private_key.wrapped_key();
+   base::ThreadPool::PostTaskAndReplyWithResult(
+       FROM_HERE, {base::MayBlock()},
+-      base::BindOnce(LoadKeyFromWrapped,
+-                     std::vector<const uint8_t>(wrapped_key_str.begin(),
+-                                                wrapped_key_str.end())),
++      base::BindOnce(
++          LoadKeyFromWrapped,
++          std::vector<uint8_t>(wrapped_key_str.begin(), wrapped_key_str.end())),
+       std::move(callback));
+ }
+ 
+diff --git a/third_party/blink/renderer/platform/fonts/shaping/shape_result_bloberizer_test.cc b/third_party/blink/renderer/platform/fonts/shaping/shape_result_bloberizer_test.cc
+index 8c5a4b2c9e896..380c85e82b04f 100644
+--- a/third_party/blink/renderer/platform/fonts/shaping/shape_result_bloberizer_test.cc
++++ b/third_party/blink/renderer/platform/fonts/shaping/shape_result_bloberizer_test.cc
+@@ -62,7 +62,7 @@ struct ExpectedRun {
+   // a requirement. This really just expects montonicity.
+   enum ClusterDirection { kAscending, kDescending } cluster_direction;
+ };
+-using ExpectedBlob = std::vector<const ExpectedRun>;
++using ExpectedBlob = std::vector<ExpectedRun>;
+ 
+ struct ExpectedRange {
+   unsigned from;
+@@ -71,7 +71,7 @@ struct ExpectedRange {
+ };
+ 
+ void CheckBlobBuffer(const ShapeResultBloberizer::BlobBuffer& blob_buffer,
+-                     const std::vector<const ExpectedBlob>& expected_blobs) {
++                     const std::vector<ExpectedBlob>& expected_blobs) {
+   EXPECT_EQ(blob_buffer.size(), expected_blobs.size());
+   const ShapeResultBloberizer::BlobInfo* blob_info_iter = blob_buffer.begin();
+   auto&& expected_blob_iter = expected_blobs.begin();
+diff --git a/third_party/blink/renderer/platform/peerconnection/webrtc_connection_matchers.h b/third_party/blink/renderer/platform/peerconnection/webrtc_connection_matchers.h
+index a8ced2acee068..53f7408e4dd4d 100644
+--- a/third_party/blink/renderer/platform/peerconnection/webrtc_connection_matchers.h
++++ b/third_party/blink/renderer/platform/peerconnection/webrtc_connection_matchers.h
+@@ -139,7 +139,7 @@ MATCHER(CricketBlinkConnectionTupleEq,
+ // cricket::Connection objects each, ignoring null cricket::Connections and
+ // ordering.
+ MATCHER_P(ConnectionSequenceEq,
+-          /* std::vector<const blink::IceConnection> arg, */
++          /* std::vector<blink::IceConnection> arg, */
+           /* std::vector<const cricket::Connection*> */ connections,
+           "") {
+   std::vector<const cricket::Connection*> non_null_connections;
+-- 
+2.40.1
+

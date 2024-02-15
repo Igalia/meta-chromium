@@ -1,4 +1,4 @@
-From 1949ed0483f66c5e050cad71be693c15210e2f55 Mon Sep 17 00:00:00 2001
+From 1fa9e0b7df166f1f176b2a85036886cb22d0d372 Mon Sep 17 00:00:00 2001
 From: Jose Dapena Paz <jdapena@igalia.com>
 Date: Tue, 19 Dec 2023 15:07:35 +0100
 Subject: libstdc++: add an SFINAE version of std::to_address
@@ -13,10 +13,10 @@ Change-Id: I42ab30a9df8f99f350c17549e954f7a8c2f64d77
  create mode 100644 base/types/to_address.h
 
 diff --git a/base/BUILD.gn b/base/BUILD.gn
-index 9002f101ee58f..d5ee9df5507ad 100644
+index e32fed3b4c416..9b6fad7904d37 100644
 --- a/base/BUILD.gn
 +++ b/base/BUILD.gn
-@@ -937,6 +937,7 @@ component("base") {
+@@ -934,6 +934,7 @@ component("base") {
      "types/pass_key.h",
      "types/strong_alias.h",
      "types/supports_ostream_operator.h",

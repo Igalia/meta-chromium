@@ -1,4 +1,4 @@
-From 4ef1a9ae33bcacaa3f6c37899dc55786d7e990ec Mon Sep 17 00:00:00 2001
+From 94f5feb90199427b59ddf524ccad74b2512ef68a Mon Sep 17 00:00:00 2001
 From: Jose Dapena Paz <jdapena@igalia.com>
 Date: Wed, 7 Feb 2024 18:32:27 +0100
 Subject: libstdc++: avoid <memory> include by assigning nullptr in

@@ -1,7 +1,10 @@
-From 56fa93ac58b35b8b7b19677e966d70126288e0af Mon Sep 17 00:00:00 2001
+From e134521ed1c35e4138cbf152362fdb71825637c9 Mon Sep 17 00:00:00 2001
 From: Jose Dapena Paz <jdapena@igalia.com>
-Date: Mon, 22 Jan 2024 18:52:49 +0100
+Date: Thu, 8 Feb 2024 09:32:57 +0000
 Subject: Do not use templates for ScriptPromiseResolver::ToV8 implementation
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
 The usage of templates for reusing the internal implementation of ToV8
 is not making the code simpler. So, inline the implementations.
@@ -12,15 +15,19 @@ hitting the GCC bug https://gcc.gnu.org/bugzilla/show_bug.cgi?id=85282
 
 Bug: 819294
 Change-Id: I51f5a9e0a6e80ac707b630f270179c29fd84b059
+Reviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/5223626
+Commit-Queue: José Dapena Paz <jdapena@igalia.com>
+Reviewed-by: Yuki Shiino <yukishiino@chromium.org>
+Cr-Commit-Position: refs/heads/main@{#1257835}
 ---
  .../core/v8/script_promise_resolver.h         | 60 +++++--------------
  1 file changed, 14 insertions(+), 46 deletions(-)
 
 diff --git a/third_party/blink/renderer/bindings/core/v8/script_promise_resolver.h b/third_party/blink/renderer/bindings/core/v8/script_promise_resolver.h
-index 303a71c836a3b..8900c0fa324b1 100644
+index 93cecd06c2814..ae0081b735a67 100644
 --- a/third_party/blink/renderer/bindings/core/v8/script_promise_resolver.h
 +++ b/third_party/blink/renderer/bindings/core/v8/script_promise_resolver.h
-@@ -312,70 +312,38 @@ class CORE_EXPORT ScriptPromiseResolver
+@@ -316,70 +316,38 @@ class CORE_EXPORT ScriptPromiseResolver
      return V8String(isolate, value);
    }
  

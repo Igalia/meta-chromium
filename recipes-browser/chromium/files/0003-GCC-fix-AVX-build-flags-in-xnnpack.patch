@@ -1,0 +1,27 @@
+From cd36543e62c744e16e344b0d6c04c2c744bd0155 Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Wed, 14 Feb 2024 10:05:03 +0100
+Subject: GCC: fix AVX build flags in xnnpack
+
+Bug: 40565911
+Change-Id: If8729e125e3100074b577ac6c90f53506b3b34a0
+---
+ third_party/xnnpack/BUILD.gn | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/third_party/xnnpack/BUILD.gn b/third_party/xnnpack/BUILD.gn
+index 85d9c10519196..b4ef74174411f 100644
+--- a/third_party/xnnpack/BUILD.gn
++++ b/third_party/xnnpack/BUILD.gn
+@@ -396,6 +396,8 @@ if (current_cpu == "x64" || current_cpu == "x86") {
+ 
+   source_set("amalgam_avx512f-avx512cd-avx512bw-avx512dq-avx512vl") {
+     cflags = [
++      "-mf16c",
++      "-mfma",
+       "-mavx512bw",
+       "-mavx512cd",
+       "-mavx512dq",
+-- 
+2.40.1
+

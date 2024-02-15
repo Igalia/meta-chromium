@@ -1,4 +1,4 @@
-From 6502406f1b94dd482cddcbad542e0fe1da24c4fc Mon Sep 17 00:00:00 2001
+From 0ecf5b9b1ae648caa0239e87fd3e46433163278d Mon Sep 17 00:00:00 2001
 From: Jose Dapena Paz <jdapena@igalia.com>
 Date: Mon, 22 Jan 2024 16:36:34 +0100
 Subject: IWYU: LogMessage raw_ptr requires include
