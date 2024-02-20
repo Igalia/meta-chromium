@@ -72,7 +72,6 @@ PACKAGECONFIG[x11] = "\
 GN_ARGS = "\
         ${PACKAGECONFIG_CONFARGS} \
         use_cups=false \
-        use_gnome_keyring=false \
         use_kerberos=false \
         use_system_libjpeg=false \
         use_system_minigbm=true \
