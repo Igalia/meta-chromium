@@ -42,8 +42,6 @@ PACKAGECONFIG ??= "\
   ${@bb.utils.filter('DISTRO_FEATURES', 'pulseaudio wayland x11', d)} \
 "
 
-# ftp: Whether to build Chromium with support for the FTP protocol.
-PACKAGECONFIG[ftp] = "disable_ftp_support=false,disable_ftp_support=true"
 # proprietary-codecs: If enabled, this option will build Chromium with support
 # for additional codecs in FFMPEG (such as the MPEG-LA ones). It is your
 # responsibility to ensure you are complying with all required licenses.
