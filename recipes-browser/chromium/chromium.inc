@@ -147,9 +147,6 @@ GN_ARGS += "treat_warnings_as_errors=false"
 # See https://groups.google.com/a/chromium.org/d/msg/chromium-packagers/ECWC57W7E0k/9Kc5UAmyDAAJ
 GN_ARGS += "fieldtrial_testing_like_official_build=true"
 
-# Disable compiling closures, as they require java runtime
-GN_ARGS += "enable_js_type_check=false"
-
 # Ozone and X11 backends
 GN_ARGS += "\
     ozone_auto_platforms=false \
