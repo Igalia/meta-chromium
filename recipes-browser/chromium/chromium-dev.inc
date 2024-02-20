@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "123.0.6286.0"
+PV = "123.0.6300.3"
 
-SRC_URI[sha256sum] = "745839acf893fca5968ce4455ddff44c3b684c36acc307019cdf70e2a462fede"
+SRC_URI[sha256sum] = "f0f5291fa1e8f9f880ced40fae527e05e7a9e015526c026bd3c66c281e317bdc"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -148,32 +148,26 @@ LIC_FILES_CHKSUM = "\
   file://${S}/v8/LICENSE.strongtalk;md5=956a43818dd13f2e93088fc2c93589d2 \
 "
 
-# Upstream patches
-SRC_URI += " \
-  file://0001-Remove-a-few-vector-const-T-that-are-easy-to-remove.patch \
-  file://0002-IWYU-usage-of-std-optional-requires-include-in-spare.patch \
-  file://0003-Do-not-use-templates-for-ScriptPromiseResolver-ToV8-.patch \
-"
-
 # Upstreamable patches
 SRC_URI += " \
-  file://0001-IWYU-add-missing-include-for-std-optional-usage-in-b.patch \
-  file://0002-IWYU-LogMessage-raw_ptr-requires-include.patch \
-  file://0003-GCC-fix-AVX-build-flags-in-xnnpack.patch \
-  file://0004-libstdc-add-an-SFINAE-version-of-std-to_address.patch \
-  file://0005-GCC-fix-template-specialization-in-non-namespace-sco.patch \
-  file://0006-IWYU-returning-nullptr-of-an-AbstractTexture-unique_.patch \
-  file://0007-GCC-template-specialization-out-of-namespace-in-Body.patch \
-  file://0008-GCC-Bring-back-SFINAE-for-blink-NativeValueTraits.patch \
+  file://0001-libstdc-add-an-SFINAE-version-of-std-to_address.patch \
+  file://0002-IWYU-returning-nullptr-of-an-AbstractTexture-unique_.patch \
+  file://0003-GCC-move-template-specialization-out-of-class-namesp.patch \
+  file://0004-GCC-Bring-back-SFINAE-for-blink-NativeValueTraits.patch \
+"
+
+# Upstream patches
+SRC_URI += " \
+  file://0005-IWYU-usage-of-std-optional-in-plus_address_types.h-r.patch \
+  file://0006-IWYU-add-missing-include-for-std-optional-usage-in-b.patch \
+  file://0007-GCC-fix-AVX-build-flags-in-xnnpack.patch \
+  file://0008-GCC-fix-template-specialization-in-non-namespace-sco.patch \
   file://0009-libstdc-avoid-memory-include-by-assigning-nullptr-in.patch \
   file://0010-Remove-std-vector-of-const-in-site_settings_handler..patch \
 "
 
 # ARM build should not use Clang MTE flags
 SRC_URI += " file://0001-GCC-do-not-pass-Clang-specific-MTE-flags.patch "
-
-# libruy fixes that are stalled in review process
-SRC_URI += " file://0001-IWYU-missing-include-for-std-string-use-in-instrumen.patch;patchdir=third_party/ruy/src "
 
 # Fix for material_color_utilities issue reported at
 # https://github.com/material-foundation/material-color-utilities/issues/108

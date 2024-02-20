@@ -1,8 +1,11 @@
-From 94f5feb90199427b59ddf524ccad74b2512ef68a Mon Sep 17 00:00:00 2001
+From a1ca8689047e570a064031de7b90f2d0de88f35c Mon Sep 17 00:00:00 2001
 From: Jose Dapena Paz <jdapena@igalia.com>
-Date: Wed, 7 Feb 2024 18:32:27 +0100
+Date: Thu, 15 Feb 2024 11:12:21 +0000
 Subject: libstdc++: avoid <memory> include by assigning nullptr in
  token_managed_profile_creation_delegate.h
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
 In libstdc++ implementation of std::unique_ptr, it requires
 definition to assign to nullptr. As the initial unique_ptr value is
@@ -10,6 +13,10 @@ already nullptr, just remove the assignation.
 
 Bug: 41455655
 Change-Id: I7f5e4b7a527f1f8be42500a21108c1c78c41bcc6
+Reviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/5273990
+Reviewed-by: Nicolas Ouellet-Payeur <nicolaso@chromium.org>
+Commit-Queue: José Dapena Paz <jdapena@igalia.com>
+Cr-Commit-Position: refs/heads/main@{#1260974}
 ---
  .../enterprise/signin/token_managed_profile_creation_delegate.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)

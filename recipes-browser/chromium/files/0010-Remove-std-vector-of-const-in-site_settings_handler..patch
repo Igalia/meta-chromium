@@ -1,10 +1,17 @@
-From 8fd5d60da271e4d28642a63316498d81659d8b39 Mon Sep 17 00:00:00 2001
+From 7b8c9b29b382db1738e18075644af641d4b35230 Mon Sep 17 00:00:00 2001
 From: Jose Dapena Paz <jdapena@igalia.com>
-Date: Wed, 7 Feb 2024 18:44:10 +0100
+Date: Thu, 15 Feb 2024 18:59:20 +0000
 Subject: Remove std::vector of const in site_settings_handler.cc
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
 Bug: 323708866
-Change-Id: Ic64d145215c1b6179de16b2842fb7dd575abb7c1
+Change-Id: I5c7b0fd0b2431b71aa5e2a9d82a37b45f090073f
+Reviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/5296559
+Reviewed-by: Demetrios Papadopoulos <dpapad@chromium.org>
+Commit-Queue: José Dapena Paz <jdapena@igalia.com>
+Cr-Commit-Position: refs/heads/main@{#1261219}
 ---
  chrome/browser/ui/webui/settings/site_settings_handler.cc | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)

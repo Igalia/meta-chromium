@@ -1,4 +1,4 @@
-From de7f5cc592782fa5ea930ff19af98639352110c2 Mon Sep 17 00:00:00 2001
+From 931613a39ac90b3a67d451766348b51a1e695fcc Mon Sep 17 00:00:00 2001
 From: Jose Dapena Paz <jdapena@igalia.com>
 Date: Wed, 14 Feb 2024 10:29:59 +0100
 Subject: IWYU: returning nullptr of an AbstractTexture unique_ptr requires
@@ -13,7 +13,7 @@ Change-Id: If2cc942ad8ea1ba7a9f7837bf07bdb04147df220
  3 files changed, 12 insertions(+)
 
 diff --git a/gpu/command_buffer/service/gles2_cmd_decoder.cc b/gpu/command_buffer/service/gles2_cmd_decoder.cc
-index f75ae9f381207..16d634a8f801c 100644
+index 7416f6d4b3cff..59688aab8c3b2 100644
 --- a/gpu/command_buffer/service/gles2_cmd_decoder.cc
 +++ b/gpu/command_buffer/service/gles2_cmd_decoder.cc
 @@ -117,6 +117,10 @@
