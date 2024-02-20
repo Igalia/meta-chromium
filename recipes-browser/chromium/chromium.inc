@@ -216,12 +216,6 @@ GN_ARGS += '\
   use_v8_context_snapshot=false \
 '
 
-# As we use GCC, disable cfi and thin LTO
-GN_ARGS += '\
-  is_cfi=false \
-  use_thin_lto=false \
-'
-
 GN_ARGS += " chrome_pgo_phase=0 "
 
 CHROMIUM_EXTRA_ARGS ?= "\
