@@ -145,7 +145,7 @@ GN_ARGS += "treat_warnings_as_errors=false"
 # Disable activation of field trial tests that can cause problems in
 # production.
 # See https://groups.google.com/a/chromium.org/d/msg/chromium-packagers/ECWC57W7E0k/9Kc5UAmyDAAJ
-GN_ARGS += "fieldtrial_testing_like_official_build=true"
+GN_ARGS += "disable_fieldtrial_testing_config=true"
 
 # Ozone and X11 backends
 GN_ARGS += "\
