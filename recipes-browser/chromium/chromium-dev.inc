@@ -169,6 +169,9 @@ SRC_URI += " \
 # ARM build should not use Clang MTE flags
 SRC_URI += " file://0001-GCC-do-not-pass-Clang-specific-MTE-flags.patch "
 
+# Disable SVE extensions in libvpx, as they require GCC 14+
+SRC_URI += " file://0001-Drop-SVE-intrinsics-in-libvpx-for-GCC.patch "
+
 # Fix for material_color_utilities issue reported at
 # https://github.com/material-foundation/material-color-utilities/issues/108
 #
