@@ -1,0 +1,53 @@
+From d703beee27304b87635d9f6e126b77a3924fe53f Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Mon, 26 Feb 2024 12:39:07 +0100
+Subject: GCC: more AVX build flags in xnnpack
+
+Add more missing flags (that are present in xnnpack BUILD.bazel)
+required to build in GCC.
+
+Bug: 40565911
+Change-Id: I4e606ec18c48b7d7661689a080df4f979b8ffc87
+---
+ third_party/xnnpack/BUILD.gn | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/third_party/xnnpack/BUILD.gn b/third_party/xnnpack/BUILD.gn
+index 28c8dad8f0aaf..8a6764cea006a 100644
+--- a/third_party/xnnpack/BUILD.gn
++++ b/third_party/xnnpack/BUILD.gn
+@@ -520,6 +520,7 @@ if (current_cpu == "x64" || current_cpu == "x86") {
+       "-mavx512f",
+       "-mavx512vl",
+       "-mavx512vnni",
++      "-mf16c",
+       "-mfma",
+     ]
+ 
+@@ -549,6 +550,7 @@ if (current_cpu == "x64" || current_cpu == "x86") {
+       "-mavx512f",
+       "-mavx512vl",
+       "-mavx512vnni",
++      "-mf16c",
+       "-mfma",
+     ]
+ 
+@@ -581,6 +583,7 @@ if (current_cpu == "x64" || current_cpu == "x86") {
+       "-mavx512f",
+       "-mavx512vl",
+       "-mavx512vnni",
++      "-mf16c",
+       "-mfma",
+       "-mgfni",
+     ]
+@@ -611,6 +614,7 @@ if (current_cpu == "x64" || current_cpu == "x86") {
+       "-mavx512f",
+       "-mavx512vl",
+       "-mavx512vnni",
++      "-mf16c",
+       "-mfma",
+       "-mgfni",
+     ]
+-- 
+2.40.1
+

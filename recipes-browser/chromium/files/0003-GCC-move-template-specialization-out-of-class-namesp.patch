@@ -1,4 +1,4 @@
-From 0619c91166a58e6bf84fb5397708df8dca64b7c5 Mon Sep 17 00:00:00 2001
+From cd34e230a16118049ccf22b92c3290498f796f25 Mon Sep 17 00:00:00 2001
 From: Jose Dapena Paz <jdapena@igalia.com>
 Date: Wed, 14 Feb 2024 12:03:15 +0100
 Subject: GCC: move template specialization out of class namespace in
@@ -14,10 +14,10 @@ Change-Id: I34e7dbe2fc988d5580ee1fd8417039571c47d254
  1 file changed, 41 insertions(+), 38 deletions(-)
 
 diff --git a/third_party/blink/renderer/modules/mediastream/media_devices.cc b/third_party/blink/renderer/modules/mediastream/media_devices.cc
-index 21bd9da29c254..62ad0fda336e8 100644
+index 1e1eb23b07991..1e369fca469a5 100644
 --- a/third_party/blink/renderer/modules/mediastream/media_devices.cc
 +++ b/third_party/blink/renderer/modules/mediastream/media_devices.cc
-@@ -103,35 +103,6 @@ class PromiseResolverCallbacks final : public UserMediaRequest::Callbacks {
+@@ -104,35 +104,6 @@ class PromiseResolverCallbacks final : public UserMediaRequest::Callbacks {
    template <typename T>
    void OnSuccessImpl(const MediaStreamVector&, CaptureController*);
  
@@ -53,7 +53,7 @@ index 21bd9da29c254..62ad0fda336e8 100644
    void OnError(ScriptWrappable* callback_this_value,
                 const V8MediaStreamError* error,
                 CaptureController* capture_controller,
-@@ -147,15 +118,6 @@ class PromiseResolverCallbacks final : public UserMediaRequest::Callbacks {
+@@ -148,15 +119,6 @@ class PromiseResolverCallbacks final : public UserMediaRequest::Callbacks {
      UserMediaRequest::Callbacks::Trace(visitor);
    }
  
@@ -69,7 +69,7 @@ index 21bd9da29c254..62ad0fda336e8 100644
   private:
    const UserMediaRequestType media_type_;
  
-@@ -166,6 +128,47 @@ class PromiseResolverCallbacks final : public UserMediaRequest::Callbacks {
+@@ -167,6 +129,47 @@ class PromiseResolverCallbacks final : public UserMediaRequest::Callbacks {
        on_success_follow_up_;
  };
  

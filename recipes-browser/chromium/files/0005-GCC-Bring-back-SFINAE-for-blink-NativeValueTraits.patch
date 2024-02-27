@@ -1,4 +1,4 @@
-From 999566715a2b868ee810fb356cd9c11a4dc9ff6f Mon Sep 17 00:00:00 2001
+From 149a95fb54eee86c2ebf868672929c220ce569fb Mon Sep 17 00:00:00 2001
 From: Ivan Pavlotsky <ivan.pavlotsky@lge.com>
 Date: Fri, 12 Jan 2024 14:34:49 +0300
 Subject: GCC: Bring back SFINAE for blink::NativeValueTraits

@@ -1,0 +1,168 @@
+From f09d16e7675e326e63aabbc7a8cf7c9f44a29673 Mon Sep 17 00:00:00 2001
+From: Nick Diego Yamane <nickdiego@igalia.com>
+Date: Thu, 22 Feb 2024 21:27:56 +0000
+Subject: base: add a SFINAE-friendly std::to_address wrapper
+
+While maintaining gcc/libstdc++ builds, it's been found out that
+chromium code requires/assumes std::to_address to be SFINAE-compatible,
+which is not true for GNU's libstdc++.
+
+This CL adds a pretty thin wrapper base::to_address, which addresses the
+aforementioned issue and precedes the following changes:
+
+1. Migrate chromium code currently using std::to_address (~14 source
+   files as of the time of writing this) over to base::to_address;
+2. Formally ban std::to_address and add corresponding presubmit checks;
+
+This is based on jdapena@'s original proposal to fix this at [1] and the
+pkasting@'s suggestion there to simplify the proposed approach and ban
+the std version all over the code base.
+
+[1] https://crrev.com/c/5140926
+
+R=pkasting
+
+Bug: 325123742
+Test: base/types/to_address_unittest.cc
+Change-Id: I752c4e512b9a8626de21ea2d45fb97628d45eecf
+Reviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/5306902
+Reviewed-by: Peter Kasting <pkasting@chromium.org>
+Reviewed-by: Mark Mentovai <mark@chromium.org>
+Commit-Queue: Nick Yamane <nickdiego@igalia.com>
+Cr-Commit-Position: refs/heads/main@{#1264215}
+---
+ base/BUILD.gn                     |  2 ++
+ base/types/to_address.h           | 40 +++++++++++++++++++++++
+ base/types/to_address_unittest.cc | 53 +++++++++++++++++++++++++++++++
+ 3 files changed, 95 insertions(+)
+ create mode 100644 base/types/to_address.h
+ create mode 100644 base/types/to_address_unittest.cc
+
+diff --git a/base/BUILD.gn b/base/BUILD.gn
+index bc12e68773222..6c65f9f1dee32 100644
+--- a/base/BUILD.gn
++++ b/base/BUILD.gn
+@@ -940,6 +940,7 @@ component("base") {
+     "types/pass_key.h",
+     "types/strong_alias.h",
+     "types/supports_ostream_operator.h",
++    "types/to_address.h",
+     "types/token_type.h",
+     "types/variant_util.h",
+     "unguessable_token.cc",
+@@ -3499,6 +3500,7 @@ test("base_unittests") {
+     "types/pass_key_unittest.cc",
+     "types/strong_alias_unittest.cc",
+     "types/supports_ostream_operator_unittest.cc",
++    "types/to_address_unittest.cc",
+     "types/token_type_unittest.cc",
+     "types/variant_util_unittest.cc",
+     "unguessable_token_unittest.cc",
+diff --git a/base/types/to_address.h b/base/types/to_address.h
+new file mode 100644
+index 0000000000000..ac71b0103dcbe
+--- /dev/null
++++ b/base/types/to_address.h
+@@ -0,0 +1,40 @@
++// Copyright 2024 The Chromium Authors
++// Use of this source code is governed by a BSD-style license that can be
++// found in the LICENSE file.
++
++#ifndef BASE_TYPES_TO_ADDRESS_H_
++#define BASE_TYPES_TO_ADDRESS_H_
++
++#include <memory>
++#include <type_traits>
++
++// SFINAE-compatible wrapper for `std::to_address()`.
++//
++// The standard does not require `std::to_address()` to be SFINAE-compatible
++// when code attempts instantiation with non-pointer-like types, and libstdc++'s
++// implementation hard errors. For the sake of templated code that wants simple,
++// unified handling, Chromium instead uses this wrapper, which provides that
++// guarantee. This allows code to use "`to_address()` would be valid here" as a
++// constraint to detect pointer-like types.
++namespace base {
++
++// Note that calling `std::to_address()` with a function pointer renders the
++// program ill-formed.
++template <typename T>
++  requires(!std::is_function_v<T>)
++constexpr T* to_address(T* p) noexcept {
++  return p;
++}
++
++// These constraints cover the cases where `std::to_address()`'s fancy pointer
++// overload is well-specified.
++template <typename P>
++  requires requires(const P& p) { std::pointer_traits<P>::to_address(p); } ||
++           requires(const P& p) { p.operator->(); }
++constexpr auto to_address(const P& p) noexcept {
++  return std::to_address(p);
++}
++
++}  // namespace base
++
++#endif  // BASE_TYPES_TO_ADDRESS_H_
+diff --git a/base/types/to_address_unittest.cc b/base/types/to_address_unittest.cc
+new file mode 100644
+index 0000000000000..9e7895779b0c1
+--- /dev/null
++++ b/base/types/to_address_unittest.cc
+@@ -0,0 +1,53 @@
++// Copyright 2024 The Chromium Authors
++// Use of this source code is governed by a BSD-style license that can be
++// found in the LICENSE file.
++
++#include "base/types/to_address.h"
++
++#include <array>
++#include <memory>
++#include <type_traits>
++
++namespace base {
++namespace {
++
++// A constant whose definition will fail to compile if `to_address()` is not
++// SFINAE-compatible.
++template <typename T>
++inline constexpr bool kIsPtr = false;
++
++template <typename T>
++  requires requires(const T& t) { to_address(t); }
++inline constexpr bool kIsPtr<T> =
++    std::is_pointer_v<decltype(to_address(std::declval<T>()))>;
++
++struct FancyPointer {
++  void* operator->() const { return nullptr; }
++};
++
++struct NotPointer {};
++
++enum class EnumClass { kZero, kOne };
++
++// Like `std::to_address()`, `to_address()` should correctly handle things
++// that can act like pointers:
++// * Raw pointers
++static_assert(kIsPtr<int*>);
++// * Iterators
++static_assert(kIsPtr<decltype(std::declval<std::array<int, 3>>().begin())>);
++// * STL-provided smart pointers
++static_assert(kIsPtr<std::unique_ptr<int>>);
++// * User-defined smart pointers, as long as they have `operator->()`
++static_assert(kIsPtr<FancyPointer>);
++
++// Unlike `std::to_address()`, `to_address()` is guaranteed to be
++// SFINAE-compatible with things that don't act like pointers:
++// * Basic types
++static_assert(!kIsPtr<int>);
++// * Enum classes
++static_assert(!kIsPtr<EnumClass>);
++// * Structs without an `operator->()`
++static_assert(!kIsPtr<NotPointer>);
++
++}  // namespace
++}  // namespace base
+-- 
+2.40.1
+

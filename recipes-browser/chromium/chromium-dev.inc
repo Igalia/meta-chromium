@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "123.0.6300.3"
+PV = "124.0.6315.2"
 
-SRC_URI[sha256sum] = "f0f5291fa1e8f9f880ced40fae527e05e7a9e015526c026bd3c66c281e317bdc"
+SRC_URI[sha256sum] = "7991b789d556cb9afdd8f8ed61d294ce2d9f8c6bca2d450171fef4c2549b8f7e"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -29,7 +29,7 @@ LIC_FILES_CHKSUM = "\
   file://${S}/base/third_party/valgrind/LICENSE;md5=b95c9cb2560f157c60ea60ac1aa69469 \
   file://${S}/base/third_party/xdg_user_dirs/LICENSE;md5=d998f250c491c329a8254dd1ca62c647 \
   file://${S}/chrome/installer/mac/third_party/bsdiff/LICENSE;md5=0dbe7a50f028269750631fcbded3846a \
-  file://${S}/chrome/installer/mac/third_party/xz/LICENSE;md5=8bbde65ae0523dc878ed1ac1252d2d14 \
+  file://${S}/chrome/installer/mac/third_party/xz/LICENSE;md5=3afc9a82601f26d2f6c3bae01aad57fa \
   file://${S}/chrome/third_party/mozilla_security_manager/LICENSE;md5=0c259b853bbf067b361100ce560adce7 \
   file://${S}/courgette/third_party/bsdiff/LICENCE;md5=7c2ad392281bc3d9b04a31102ee7abdd \
   file://${S}/courgette/third_party/divsufsort/LICENSE;md5=e261f081e52882dad3ff0225497ce451 \
@@ -148,22 +148,21 @@ LIC_FILES_CHKSUM = "\
   file://${S}/v8/LICENSE.strongtalk;md5=956a43818dd13f2e93088fc2c93589d2 \
 "
 
+
 # Upstreamable patches
 SRC_URI += " \
-  file://0001-libstdc-add-an-SFINAE-version-of-std-to_address.patch \
-  file://0002-IWYU-returning-nullptr-of-an-AbstractTexture-unique_.patch \
+  file://0001-Enable-lightweight-libstdc-assertions.patch \
+  file://0002-switch-away-from-std-to_address.patch \
   file://0003-GCC-move-template-specialization-out-of-class-namesp.patch \
-  file://0004-GCC-Bring-back-SFINAE-for-blink-NativeValueTraits.patch \
+  file://0004-GCC-more-AVX-build-flags-in-xnnpack.patch \
+  file://0005-GCC-Bring-back-SFINAE-for-blink-NativeValueTraits.patch \
+  file://0006-IWYU-std-optional-usage-in-aggregate_frame_data.h-re.patch \
+  file://0007-IWYU-std-optional-usage-in-content_verifier_io_data..patch \
 "
 
 # Upstream patches
 SRC_URI += " \
-  file://0005-IWYU-usage-of-std-optional-in-plus_address_types.h-r.patch \
-  file://0006-IWYU-add-missing-include-for-std-optional-usage-in-b.patch \
-  file://0007-GCC-fix-AVX-build-flags-in-xnnpack.patch \
-  file://0008-GCC-fix-template-specialization-in-non-namespace-sco.patch \
-  file://0009-libstdc-avoid-memory-include-by-assigning-nullptr-in.patch \
-  file://0010-Remove-std-vector-of-const-in-site_settings_handler..patch \
+  file://0008-base-add-a-SFINAE-friendly-std-to_address-wrapper.patch \
 "
 
 # ARM build should not use Clang MTE flags
@@ -171,12 +170,6 @@ SRC_URI += " file://0001-GCC-do-not-pass-Clang-specific-MTE-flags.patch "
 
 # Disable SVE extensions in libvpx, as they require GCC 14+
 SRC_URI += " file://0001-Drop-SVE-intrinsics-in-libvpx-for-GCC.patch "
-
-# Fix for material_color_utilities issue reported at
-# https://github.com/material-foundation/material-color-utilities/issues/108
-#
-# Not contributed upstream as that is not allowed in that repository
-SRC_URI += " file://0001-IWYU-missing-include-for-round-call-in-tones.cc.patch;patchdir=third_party/material_color_utilities/src "
 
 # Fix for GCC 11/12 to avoid breaking DPF compilation reported at
 # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=109505
