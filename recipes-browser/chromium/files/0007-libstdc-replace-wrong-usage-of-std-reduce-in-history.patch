@@ -1,0 +1,45 @@
+From 859f38b7412de711152b456af40f3c1be8f57076 Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Mon, 4 Mar 2024 20:17:58 +0100
+Subject: libstdc++: replace wrong usage of std::reduce in
+ history_embedding_service.cc
+
+std::reduce is expected to assume, in the reduce operation, to accept
+any combination of 2 parameters as accumulator + iterator, iterator +
+iterator, iterator + accumulator and accumulator + accumulator. This
+is because std::reduce can take any order to calculate the
+accumulation. libstdc++ enforces that requirement.
+
+Replace with std::accumulate, that expects to apply the operations in
+a specific order, and has the same result.
+
+Bug: 41455655
+Change-Id: I5ab13181c0a621016dbf400dfb58317a2e653228
+---
+ .../history_embeddings/history_embeddings_service.cc   | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/components/history_embeddings/history_embeddings_service.cc b/components/history_embeddings/history_embeddings_service.cc
+index 1ce6560e2b5fb..ae13fff55e7ee 100644
+--- a/components/history_embeddings/history_embeddings_service.cc
++++ b/components/history_embeddings/history_embeddings_service.cc
+@@ -44,11 +44,11 @@ void OnGotInnerText(mojo::Remote<blink::mojom::InnerTextAgent> remote,
+     base::UmaHistogramTimes("History.Embeddings.Passages.ExtractionTime",
+                             extraction_time);
+   }
+-  const size_t total_text_size =
+-      std::reduce(url_passages.passages.cbegin(), url_passages.passages.cend(),
+-                  0u, [](size_t acc, const std::string& passage) {
+-                    return acc + passage.size();
+-                  });
++  const size_t total_text_size = std::accumulate(
++      url_passages.passages.cbegin(), url_passages.passages.cend(), 0u,
++      [](size_t acc, const std::string& passage) {
++        return acc + passage.size();
++      });
+   base::UmaHistogramCounts1000("History.Embeddings.Passages.PassageCount",
+                                url_passages.passages.size());
+   base::UmaHistogramCounts10M("History.Embeddings.Passages.TotalTextSize",
+-- 
+2.40.1
+

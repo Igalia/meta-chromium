@@ -1,0 +1,58 @@
+From 8f3e8303d5a35c89d38e176e39368afeec6a1748 Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Mon, 4 Mar 2024 17:38:36 +0100
+Subject: ScriptPromiseResolver: moved PrepareToResolveOrReject to be protected
+
+PrepareToResolveOrReject is used from child class
+ScriptPromiseResolverTyped, but it is private, so GCC compiler fails
+as expected (though it is not clear why it does not fail in Clang?).
+
+Bug: 40565911
+Change-Id: I0f6411c18c4aaf61ffa7ed8d2227e88e42da8ae9
+---
+ .../core/v8/script_promise_resolver.h         | 22 ++++++++++---------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
+
+diff --git a/third_party/blink/renderer/bindings/core/v8/script_promise_resolver.h b/third_party/blink/renderer/bindings/core/v8/script_promise_resolver.h
+index f62ecc5f8c0e3..cd1b8d65224ab 100644
+--- a/third_party/blink/renderer/bindings/core/v8/script_promise_resolver.h
++++ b/third_party/blink/renderer/bindings/core/v8/script_promise_resolver.h
+@@ -233,6 +233,18 @@ class CORE_EXPORT ScriptPromiseResolver
+     NotifyResolveOrReject();
+   }
+ 
++ protected:
++  template <ResolutionState new_state>
++  bool PrepareToResolveOrReject() {
++    if (state_ != kPending || !GetScriptState()->ContextIsValid() ||
++        !GetExecutionContext() || GetExecutionContext()->IsContextDestroyed()) {
++      return false;
++    }
++    static_assert(new_state == kResolving || new_state == kRejecting);
++    state_ = new_state;
++    return true;
++  }
++
+  private:
+   template <typename T>
+   void ResolveOrReject(T value) {
+@@ -255,16 +267,6 @@ class CORE_EXPORT ScriptPromiseResolver
+     NotifyResolveOrReject();
+   }
+ 
+-  template <ResolutionState new_state>
+-  bool PrepareToResolveOrReject() {
+-    if (state_ != kPending || !GetScriptState()->ContextIsValid() ||
+-        !GetExecutionContext() || GetExecutionContext()->IsContextDestroyed()) {
+-      return false;
+-    }
+-    static_assert(new_state == kResolving || new_state == kRejecting);
+-    state_ = new_state;
+-    return true;
+-  }
+   void NotifyResolveOrReject();
+   void ResolveOrRejectImmediately();
+   void ScheduleResolveOrReject();
+-- 
+2.40.1
+

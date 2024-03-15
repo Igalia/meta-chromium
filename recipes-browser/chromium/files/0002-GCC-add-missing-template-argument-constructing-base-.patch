@@ -1,0 +1,36 @@
+From 7674ef0ed33aad95f5e1309413de08690d76b32c Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Wed, 6 Mar 2024 11:00:15 +0000
+Subject: GCC: add missing template argument constructing base::span in
+ webrtc_rtp_dump_writer.cc
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Bug: 40565911
+Change-Id: Idb693070f1cb4eda7d848caca181e3268db57137
+Reviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/5345112
+Reviewed-by: Elad Alon <eladalon@chromium.org>
+Commit-Queue: José Dapena Paz <jdapena@igalia.com>
+Cr-Commit-Position: refs/heads/main@{#1268954}
+---
+ chrome/browser/media/webrtc/webrtc_rtp_dump_writer.cc | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/chrome/browser/media/webrtc/webrtc_rtp_dump_writer.cc b/chrome/browser/media/webrtc/webrtc_rtp_dump_writer.cc
+index 5c68dfa40c6da..e2990a501402f 100644
+--- a/chrome/browser/media/webrtc/webrtc_rtp_dump_writer.cc
++++ b/chrome/browser/media/webrtc/webrtc_rtp_dump_writer.cc
+@@ -29,7 +29,8 @@ void WriteRtpDumpFileHeaderBigEndian(base::TimeTicks start,
+   size_t buffer_start_pos = output->size();
+   output->resize(output->size() + kRtpDumpFileHeaderSize);
+ 
+-  base::BigEndianWriter writer(base::span(*output).subspan(buffer_start_pos));
++  base::BigEndianWriter writer(
++      base::span<uint8_t>(*output).subspan(buffer_start_pos));
+ 
+   base::TimeDelta delta = start - base::TimeTicks();
+   uint32_t start_sec = delta.InSeconds();
+-- 
+2.40.1
+

@@ -1,0 +1,28 @@
+From 568b1841b85619f1a6a41ee657e8a2b312a7bdd8 Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Fri, 15 Mar 2024 12:22:00 +0100
+Subject: libstdc++: avoid requiring views::View declaration in
+ lens_overlay_controller.h
+
+Bug: 40939315
+Change-Id: I8ba41069fb96f763265d8c705540be1864d17c99
+---
+ chrome/browser/ui/lens/lens_overlay_controller.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/chrome/browser/ui/lens/lens_overlay_controller.h b/chrome/browser/ui/lens/lens_overlay_controller.h
+index 1ba11d0677b49..117043e59666a 100644
+--- a/chrome/browser/ui/lens/lens_overlay_controller.h
++++ b/chrome/browser/ui/lens/lens_overlay_controller.h
+@@ -89,7 +89,7 @@ class LensOverlayController : public TabStripModelObserver {
+   State state_ = State::kOff;
+ 
+   // Pointer to the overlay host view.
+-  std::unique_ptr<views::View> overlay_host_view_ = nullptr;
++  std::unique_ptr<views::View> overlay_host_view_;
+ 
+   // A raw ptr containing the web view within the overlay.
+   raw_ptr<views::WebView> overlay_web_view_ = nullptr;
+-- 
+2.40.1
+

@@ -1,8 +1,8 @@
 require chromium-upstream-tarball.inc
 
-PV = "124.0.6315.2"
+PV = "124.0.6342.3"
 
-SRC_URI[sha256sum] = "7991b789d556cb9afdd8f8ed61d294ce2d9f8c6bca2d450171fef4c2549b8f7e"
+SRC_URI[sha256sum] = "5104d8aa8b14f22b76fcc494d732f8bb3f1942bfcd0435e4de48d6de4c9edba8"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -70,7 +70,7 @@ LIC_FILES_CHKSUM = "\
   file://${S}/third_party/decklink/LICENSE;md5=85b197f7b7b1ef270b01a1b6377be50e \
   file://${S}/third_party/dom_distiller_js/LICENSE;md5=6cd778870ce5c0c08c8e16fbdf378532 \
   file://${S}/third_party/expat/src/expat/COPYING;md5=7b3b078238d0901d3b339289117cb7fb \
-  file://${S}/third_party/ffmpeg/CREDITS.chromium;md5=c1235892a92f75dfbc599772072869cd \
+  file://${S}/third_party/ffmpeg/CREDITS.chromium;md5=a1624152b484ce949c0db957a428ac07 \
   file://${S}/third_party/flac/COPYING.Xiph;md5=3d6da238b5b57a0965d6730291119f65 \
   file://${S}/third_party/flatbuffers/LICENSE;md5=a873c5645c184d51e0f9b34e1d7cf559 \
   file://${S}/third_party/fontconfig/src/COPYING;md5=00252fd272bf2e722925613ad74cb6c7 \
@@ -148,21 +148,21 @@ LIC_FILES_CHKSUM = "\
   file://${S}/v8/LICENSE.strongtalk;md5=956a43818dd13f2e93088fc2c93589d2 \
 "
 
-
 # Upstreamable patches
 SRC_URI += " \
-  file://0001-Enable-lightweight-libstdc-assertions.patch \
-  file://0002-switch-away-from-std-to_address.patch \
-  file://0003-GCC-move-template-specialization-out-of-class-namesp.patch \
-  file://0004-GCC-more-AVX-build-flags-in-xnnpack.patch \
-  file://0005-GCC-Bring-back-SFINAE-for-blink-NativeValueTraits.patch \
-  file://0006-IWYU-std-optional-usage-in-aggregate_frame_data.h-re.patch \
-  file://0007-IWYU-std-optional-usage-in-content_verifier_io_data..patch \
+  file://0001-GCC-only-build-unsafe_buffers_unittest.cc-in-Clang.patch \
+  file://0003-IWYU-usage-of-DawnContextProvider-in-gpu_init.h-requ.patch \
+  file://0004-Revert-streams-Support-ReadableStream-async-iteratio.patch \
+  file://0005-ScriptPromiseResolver-moved-PrepareToResolveOrReject.patch \
+  file://0006-GCC-Bring-back-SFINAE-for-blink-NativeValueTraits.patch \
+  file://0007-libstdc-replace-wrong-usage-of-std-reduce-in-history.patch \
+  file://0008-libstdc-avoid-requiring-views-View-declaration-in-le.patch \
 "
 
 # Upstream patches
 SRC_URI += " \
-  file://0008-base-add-a-SFINAE-friendly-std-to_address-wrapper.patch \
+  file://0001-Only-extract-components-when-necessary.patch \
+  file://0002-GCC-add-missing-template-argument-constructing-base-.patch \
 "
 
 # ARM build should not use Clang MTE flags
