@@ -1,8 +1,12 @@
 require chromium-upstream-tarball.inc
 
 PV = "124.0.6342.3"
+# This should be obtained running tools/rust/update_rust.py --print-package-version
+# in the tarball release
+RUST_PACKAGE_VERSION = "7168c13579a550f2c47f7eea22f5e226a436cd00-1-llvmorg-19-init-2941-ga0b3dbaf"
 
-SRC_URI[sha256sum] = "5104d8aa8b14f22b76fcc494d732f8bb3f1942bfcd0435e4de48d6de4c9edba8"
+SRC_URI[main.sha256sum] = "5104d8aa8b14f22b76fcc494d732f8bb3f1942bfcd0435e4de48d6de4c9edba8"
+SRC_URI[rust.sha256sum] = "5191bdd68dbc396c7b91f15ab34fe3b6413a737be6e70b82a8c6a60dd07bda23"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in

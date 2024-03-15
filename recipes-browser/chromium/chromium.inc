@@ -236,15 +236,11 @@ do_add_nodejs_symlink () {
 }
 addtask add_nodejs_symlink after do_configure before do_compile
 
-addtask do_fetch_rust after do_unpack before do_patch
-do_fetch_rust[network] = "1"
-do_fetch_rust[depends] += "ca-certificates-native:do_populate_sysroot"
-
-do_fetch_rust() {
-        export SSL_CERT_DIR="$OECORE_NATIVE_SYSROOT/etc/ssl/certs/"
-        cd ${S}
-        tools/rust/update_rust.py
+do_rust_qa_unpack () {
+        cp ${S}/third_party/rust-toolchain/VERSION ${S}/third_party/rust-toolchain/INSTALLED_VERSION
+        ${S}/tools/rust/update_rust.py --print-package-version
 }
+addtask rust_qa_unpack after do_unpack before do_patch
 
 do_configure() {
 	cd ${S}
