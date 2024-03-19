@@ -1,7 +1,10 @@
-From 8f3e8303d5a35c89d38e176e39368afeec6a1748 Mon Sep 17 00:00:00 2001
+From 3ddcee15b5af6f1042adff25335cc0be71b38b85 Mon Sep 17 00:00:00 2001
 From: Jose Dapena Paz <jdapena@igalia.com>
-Date: Mon, 4 Mar 2024 17:38:36 +0100
+Date: Thu, 14 Mar 2024 18:24:47 +0000
 Subject: ScriptPromiseResolver: moved PrepareToResolveOrReject to be protected
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
 PrepareToResolveOrReject is used from child class
 ScriptPromiseResolverTyped, but it is private, so GCC compiler fails
@@ -9,23 +12,28 @@ as expected (though it is not clear why it does not fail in Clang?).
 
 Bug: 40565911
 Change-Id: I0f6411c18c4aaf61ffa7ed8d2227e88e42da8ae9
+Reviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/5345231
+Reviewed-by: Michael Lippautz <mlippautz@chromium.org>
+Commit-Queue: José Dapena Paz <jdapena@igalia.com>
+Cr-Commit-Position: refs/heads/main@{#1272933}
 ---
- .../core/v8/script_promise_resolver.h         | 22 ++++++++++---------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+ .../core/v8/script_promise_resolver.h         | 23 +++++++++++--------
+ 1 file changed, 13 insertions(+), 10 deletions(-)
 
 diff --git a/third_party/blink/renderer/bindings/core/v8/script_promise_resolver.h b/third_party/blink/renderer/bindings/core/v8/script_promise_resolver.h
-index f62ecc5f8c0e3..cd1b8d65224ab 100644
+index 8e54d5a5d9adf..6f914590ca045 100644
 --- a/third_party/blink/renderer/bindings/core/v8/script_promise_resolver.h
 +++ b/third_party/blink/renderer/bindings/core/v8/script_promise_resolver.h
-@@ -233,6 +233,18 @@ class CORE_EXPORT ScriptPromiseResolver
+@@ -225,6 +225,19 @@ class CORE_EXPORT ScriptPromiseResolver
      NotifyResolveOrReject();
    }
  
 + protected:
 +  template <ResolutionState new_state>
 +  bool PrepareToResolveOrReject() {
++    ExecutionContext* execution_context = GetExecutionContext();
 +    if (state_ != kPending || !GetScriptState()->ContextIsValid() ||
-+        !GetExecutionContext() || GetExecutionContext()->IsContextDestroyed()) {
++        !execution_context || execution_context->IsContextDestroyed()) {
 +      return false;
 +    }
 +    static_assert(new_state == kResolving || new_state == kRejecting);
@@ -36,7 +44,7 @@ index f62ecc5f8c0e3..cd1b8d65224ab 100644
   private:
    template <typename T>
    void ResolveOrReject(T value) {
-@@ -255,16 +267,6 @@ class CORE_EXPORT ScriptPromiseResolver
+@@ -247,16 +260,6 @@ class CORE_EXPORT ScriptPromiseResolver
      NotifyResolveOrReject();
    }
  

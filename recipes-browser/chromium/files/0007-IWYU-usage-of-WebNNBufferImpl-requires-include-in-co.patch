@@ -1,0 +1,33 @@
+From 638726d7dd838be24e29fa9ccebe0047636ea12b Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Fri, 15 Mar 2024 08:36:17 +0000
+Subject: IWYU: usage of WebNNBufferImpl requires include in context_impl.cc
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Bug: 40939315
+Change-Id: I3a87b4f021281668f8083fedca7be0b9e06562ea
+Reviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/5369297
+Reviewed-by: Andrew Moylan <amoylan@chromium.org>
+Commit-Queue: José Dapena Paz <jdapena@igalia.com>
+Cr-Commit-Position: refs/heads/main@{#1273283}
+---
+ services/webnn/tflite/context_impl.cc | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/services/webnn/tflite/context_impl.cc b/services/webnn/tflite/context_impl.cc
+index 833e610c9fcab..83b6d0ccd2d94 100644
+--- a/services/webnn/tflite/context_impl.cc
++++ b/services/webnn/tflite/context_impl.cc
+@@ -5,6 +5,7 @@
+ #include "services/webnn/tflite/context_impl.h"
+ 
+ #include "services/webnn/tflite/graph_impl.h"
++#include "services/webnn/webnn_buffer_impl.h"
+ 
+ namespace webnn::tflite {
+ 
+-- 
+2.40.1
+

@@ -1,11 +1,11 @@
 require chromium-upstream-tarball.inc
 
-PV = "124.0.6342.3"
+PV = "124.0.6356.6"
 # This should be obtained running tools/rust/update_rust.py --print-package-version
 # in the tarball release
 RUST_PACKAGE_VERSION = "7168c13579a550f2c47f7eea22f5e226a436cd00-1-llvmorg-19-init-2941-ga0b3dbaf"
 
-SRC_URI[main.sha256sum] = "5104d8aa8b14f22b76fcc494d732f8bb3f1942bfcd0435e4de48d6de4c9edba8"
+SRC_URI[main.sha256sum] = "c0be01ecc22d730ae43d2ad2092e664bba521c2402da0943ea8b46e4a58ed375"
 SRC_URI[rust.sha256sum] = "5191bdd68dbc396c7b91f15ab34fe3b6413a737be6e70b82a8c6a60dd07bda23"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
@@ -154,19 +154,20 @@ LIC_FILES_CHKSUM = "\
 
 # Upstreamable patches
 SRC_URI += " \
-  file://0001-GCC-only-build-unsafe_buffers_unittest.cc-in-Clang.patch \
-  file://0003-IWYU-usage-of-DawnContextProvider-in-gpu_init.h-requ.patch \
-  file://0004-Revert-streams-Support-ReadableStream-async-iteratio.patch \
-  file://0005-ScriptPromiseResolver-moved-PrepareToResolveOrReject.patch \
+  file://0001-IWYU-missing-include-for-std-optional-usage-in-first.patch \
+  file://0002-IWYU-usage-of-DawnContextProvider-in-gpu_init.h-requ.patch \
+  file://0003-streams-Fix-gcc-compatibility-for-ReadableStream-val.patch \
+  file://0004-IWYU-use-regular-atomic-include-instead-of-hardcodin.patch \
+  file://0005-IWYU-missing-include-for-usage-of-std-optional-in-gp.patch \
   file://0006-GCC-Bring-back-SFINAE-for-blink-NativeValueTraits.patch \
-  file://0007-libstdc-replace-wrong-usage-of-std-reduce-in-history.patch \
-  file://0008-libstdc-avoid-requiring-views-View-declaration-in-le.patch \
+  file://0001-libstdc-replace-std-powf-with-std-pow.patch;patchdir=third_party/angle \
 "
 
 # Upstream patches
 SRC_URI += " \
-  file://0001-Only-extract-components-when-necessary.patch \
-  file://0002-GCC-add-missing-template-argument-constructing-base-.patch \
+  file://0007-IWYU-usage-of-WebNNBufferImpl-requires-include-in-co.patch \
+  file://0008-ScriptPromiseResolver-moved-PrepareToResolveOrReject.patch \
+  file://0009-Only-extract-components-when-necessary.patch \
 "
 
 # ARM build should not use Clang MTE flags

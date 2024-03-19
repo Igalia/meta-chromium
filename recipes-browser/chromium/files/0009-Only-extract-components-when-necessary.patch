@@ -1,7 +1,7 @@
-From 0079bcb8234e717c768918408fe5c6d471751854 Mon Sep 17 00:00:00 2001
+From 1bc024ea3b74664cd7bf3e493bd87011d274dc8b Mon Sep 17 00:00:00 2001
 From: Ariel Zhang <arielzhang@google.com>
 Date: Wed, 13 Mar 2024 17:19:21 +0000
-Subject: Only extract components when necessary
+Subject: [PATCH] Only extract components when necessary
 
 Bug: b/327296393
 Change-Id: Iabf48a1c413f33df3522809692f1cd33e2fde8b3

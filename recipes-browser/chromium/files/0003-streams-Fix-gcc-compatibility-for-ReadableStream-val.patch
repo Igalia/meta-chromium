@@ -1,0 +1,145 @@
+From c4e9f17a668faf6a45bf486b10714dca50bb4412 Mon Sep 17 00:00:00 2001
+From: Mattias Buelens <mattias.buelens@gmail.com>
+Date: Thu, 14 Mar 2024 21:11:22 +0100
+Subject: streams: Fix gcc compatibility for ReadableStream::valuesForBinding()
+
+The perfect forwarding technique we used turned out to be incompatible
+with gcc. Revert to something simpler.
+
+Bug: 40612900
+Change-Id: I45f3588354fe96159c7f84d969ac222a935b1c1a
+---
+ .../bindings/core/v8/async_iterable.h         | 52 ++++++++-----------
+ .../renderer/core/streams/readable_stream.cc  |  2 +-
+ .../renderer/core/streams/readable_stream.h   |  2 +-
+ 3 files changed, 24 insertions(+), 32 deletions(-)
+
+diff --git a/third_party/blink/renderer/bindings/core/v8/async_iterable.h b/third_party/blink/renderer/bindings/core/v8/async_iterable.h
+index 115ee5303414c..2989b802f073e 100644
+--- a/third_party/blink/renderer/bindings/core/v8/async_iterable.h
++++ b/third_party/blink/renderer/bindings/core/v8/async_iterable.h
+@@ -200,42 +200,36 @@ class PairAsyncIterable {
+   PairAsyncIterable(const PairAsyncIterable&) = delete;
+   PairAsyncIterable& operator=(const PairAsyncIterable&) = delete;
+ 
+-  AsyncIteratorType* keysForBinding(
+-      ScriptState* script_state,
+-      std::convertible_to<InitArgs> auto&&... args,
+-      ExceptionState& exception_state) {
++  AsyncIteratorType* keysForBinding(ScriptState* script_state,
++                                    InitArgs&... args,
++                                    ExceptionState& exception_state) {
+     const auto kind = IterationSource::Kind::kKey;
+-    IterationSource* source = CreateIterationSource(
+-        script_state, kind, std::forward<decltype(args)>(args)...,
+-        exception_state);
++    IterationSource* source =
++        CreateIterationSource(script_state, kind, args..., exception_state);
+     if (!source) {
+       return nullptr;
+     }
+     return MakeGarbageCollected<AsyncIteratorType>(source);
+   }
+ 
+-  AsyncIteratorType* valuesForBinding(
+-      ScriptState* script_state,
+-      std::convertible_to<InitArgs> auto&&... args,
+-      ExceptionState& exception_state) {
++  AsyncIteratorType* valuesForBinding(ScriptState* script_state,
++                                      InitArgs&... args,
++                                      ExceptionState& exception_state) {
+     const auto kind = IterationSource::Kind::kValue;
+-    IterationSource* source = CreateIterationSource(
+-        script_state, kind, std::forward<decltype(args)>(args)...,
+-        exception_state);
++    IterationSource* source =
++        CreateIterationSource(script_state, kind, args..., exception_state);
+     if (!source) {
+       return nullptr;
+     }
+     return MakeGarbageCollected<AsyncIteratorType>(source);
+   }
+ 
+-  AsyncIteratorType* entriesForBinding(
+-      ScriptState* script_state,
+-      std::convertible_to<InitArgs> auto&&... args,
+-      ExceptionState& exception_state) {
++  AsyncIteratorType* entriesForBinding(ScriptState* script_state,
++                                       InitArgs&... args,
++                                       ExceptionState& exception_state) {
+     const auto kind = IterationSource::Kind::kKeyValue;
+-    IterationSource* source = CreateIterationSource(
+-        script_state, kind, std::forward<decltype(args)>(args)...,
+-        exception_state);
++    IterationSource* source =
++        CreateIterationSource(script_state, kind, args..., exception_state);
+     if (!source) {
+       return nullptr;
+     }
+@@ -246,7 +240,7 @@ class PairAsyncIterable {
+   virtual IterationSource* CreateIterationSource(
+       ScriptState* script_state,
+       IterationSource::Kind kind,
+-      InitArgs... args,
++      InitArgs&... args,
+       ExceptionState& exception_state) = 0;
+ };
+ 
+@@ -274,14 +268,12 @@ class ValueAsyncIterable {
+   ValueAsyncIterable(const ValueAsyncIterable&) = delete;
+   ValueAsyncIterable& operator=(const ValueAsyncIterable&) = delete;
+ 
+-  AsyncIteratorType* valuesForBinding(
+-      ScriptState* script_state,
+-      std::convertible_to<InitArgs> auto&&... args,
+-      ExceptionState& exception_state) {
++  AsyncIteratorType* valuesForBinding(ScriptState* script_state,
++                                      InitArgs&... args,
++                                      ExceptionState& exception_state) {
+     const auto kind = IterationSource::Kind::kValue;
+-    IterationSource* source = CreateIterationSource(
+-        script_state, kind, std::forward<decltype(args)>(args)...,
+-        exception_state);
++    IterationSource* source =
++        CreateIterationSource(script_state, kind, args..., exception_state);
+     if (!source) {
+       return nullptr;
+     }
+@@ -292,7 +284,7 @@ class ValueAsyncIterable {
+   virtual IterationSource* CreateIterationSource(
+       ScriptState* script_state,
+       IterationSource::Kind kind,
+-      InitArgs... args,
++      InitArgs&... args,
+       ExceptionState& exception_state) = 0;
+ };
+ 
+diff --git a/third_party/blink/renderer/core/streams/readable_stream.cc b/third_party/blink/renderer/core/streams/readable_stream.cc
+index 2779dfe8a8749..698f51bc0a608 100644
+--- a/third_party/blink/renderer/core/streams/readable_stream.cc
++++ b/third_party/blink/renderer/core/streams/readable_stream.cc
+@@ -1335,7 +1335,7 @@ HeapVector<Member<ReadableStream>> ReadableStream::CallTeeAndReturnBranchArray(
+ ReadableStream::IterationSourceBase* ReadableStream::CreateIterationSource(
+     ScriptState* script_state,
+     ReadableStream::IterationSourceBase::Kind kind,
+-    ReadableStreamIteratorOptions* options,
++    ReadableStreamIteratorOptions*& options,
+     ExceptionState& exception_state) {
+   // 1. Let reader be ? AcquireReadableStreamDefaultReader(stream).
+   ReadableStreamDefaultReader* reader =
+diff --git a/third_party/blink/renderer/core/streams/readable_stream.h b/third_party/blink/renderer/core/streams/readable_stream.h
+index d0944021a3d14..89c9c36223ba1 100644
+--- a/third_party/blink/renderer/core/streams/readable_stream.h
++++ b/third_party/blink/renderer/core/streams/readable_stream.h
+@@ -373,7 +373,7 @@ class CORE_EXPORT ReadableStream
+   IterationSourceBase* CreateIterationSource(
+       ScriptState* script_state,
+       IterationSourceBase::Kind kind,
+-      ReadableStreamIteratorOptions* options,
++      ReadableStreamIteratorOptions*& options,
+       ExceptionState& exception_state) override;
+ };
+ 
+-- 
+2.40.1
+

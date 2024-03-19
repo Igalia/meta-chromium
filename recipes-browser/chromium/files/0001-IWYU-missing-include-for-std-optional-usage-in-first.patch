@@ -1,0 +1,27 @@
+From 57306fa52455b5fd060af7f02d4b373339aad0d3 Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Mon, 18 Mar 2024 13:48:26 +0100
+Subject: IWYU: missing include for std::optional usage in
+ first_party_sets_handler_database_helper.h
+
+Bug: 41455655
+Change-Id: Ia644d2e6baa904190d162575dd16264e66ea227e
+---
+ .../first_party_sets/first_party_sets_handler_database_helper.h  | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/content/browser/first_party_sets/first_party_sets_handler_database_helper.h b/content/browser/first_party_sets/first_party_sets_handler_database_helper.h
+index a6299e5681932..53ace4b365dd3 100644
+--- a/content/browser/first_party_sets/first_party_sets_handler_database_helper.h
++++ b/content/browser/first_party_sets/first_party_sets_handler_database_helper.h
+@@ -6,6 +6,7 @@
+ #define CONTENT_BROWSER_FIRST_PARTY_SETS_FIRST_PARTY_SETS_HANDLER_DATABASE_HELPER_H_
+ 
+ #include <memory>
++#include <optional>
+ #include <string>
+ #include <utility>
+ #include <vector>
+-- 
+2.40.1
+

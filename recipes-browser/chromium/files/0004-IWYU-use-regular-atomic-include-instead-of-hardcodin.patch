@@ -1,0 +1,26 @@
+From ff11a9910fbe0dd3466fc4a929259cac62ff43bf Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Mon, 18 Mar 2024 15:52:26 +0100
+Subject: IWYU: use regular atomic include instead of hardcoding libc++ path
+
+Bug: 41455655
+Change-Id: I2f2076d533b9732d1f7ff8aea5dc027547f62347
+---
+ third_party/blink/renderer/bindings/core/v8/script_streamer.cc | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/third_party/blink/renderer/bindings/core/v8/script_streamer.cc b/third_party/blink/renderer/bindings/core/v8/script_streamer.cc
+index 41e25d41ffbe4..51167bfa5d6cb 100644
+--- a/third_party/blink/renderer/bindings/core/v8/script_streamer.cc
++++ b/third_party/blink/renderer/bindings/core/v8/script_streamer.cc
+@@ -4,6 +4,7 @@
+ 
+ #include "third_party/blink/renderer/bindings/core/v8/script_streamer.h"
+ 
++#include <atomic>
+ #include <memory>
+ #include <utility>
+ 
+-- 
+2.40.1
+
