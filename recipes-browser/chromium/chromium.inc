@@ -37,7 +37,6 @@ COMPATIBLE_MACHINE:x86-64 = "(.*)"
 RDEPENDS:${PN} = "bash"
 
 PACKAGECONFIG ??= "\
-  ftp \
   use-gold \
   ${@bb.utils.filter('DISTRO_FEATURES', 'pulseaudio wayland x11', d)} \
 "
