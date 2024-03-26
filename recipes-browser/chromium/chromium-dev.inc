@@ -1,11 +1,11 @@
 require chromium-upstream-tarball.inc
 
-PV = "124.0.6356.6"
+PV = "125.0.6368.2"
 # This should be obtained running tools/rust/update_rust.py --print-package-version
 # in the tarball release
 RUST_PACKAGE_VERSION = "7168c13579a550f2c47f7eea22f5e226a436cd00-1-llvmorg-19-init-2941-ga0b3dbaf"
 
-SRC_URI[main.sha256sum] = "c0be01ecc22d730ae43d2ad2092e664bba521c2402da0943ea8b46e4a58ed375"
+SRC_URI[main.sha256sum] = "3003bdd0d96b6d88c506e39b85ee5dd28374a22ce4f3b461e805c846f2973c86"
 SRC_URI[rust.sha256sum] = "5191bdd68dbc396c7b91f15ab34fe3b6413a737be6e70b82a8c6a60dd07bda23"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
@@ -154,20 +154,20 @@ LIC_FILES_CHKSUM = "\
 
 # Upstreamable patches
 SRC_URI += " \
-  file://0001-IWYU-missing-include-for-std-optional-usage-in-first.patch \
-  file://0002-IWYU-usage-of-DawnContextProvider-in-gpu_init.h-requ.patch \
-  file://0003-streams-Fix-gcc-compatibility-for-ReadableStream-val.patch \
-  file://0004-IWYU-use-regular-atomic-include-instead-of-hardcodin.patch \
-  file://0005-IWYU-missing-include-for-usage-of-std-optional-in-gp.patch \
-  file://0006-GCC-Bring-back-SFINAE-for-blink-NativeValueTraits.patch \
-  file://0001-libstdc-replace-std-powf-with-std-pow.patch;patchdir=third_party/angle \
+  file://0001-GCC-make-base-span-as_chars-a-constexpr.patch \
+  file://0002-IWYU-missing-include-for-usage-of-std-optional-in-fe.patch \
+  file://0003-IWYU-usage-of-DawnContextProvider-in-gpu_init.h-requ.patch \
+  file://0004-streams-Fix-gcc-compatibility-for-ReadableStream-val.patch \
+  file://0005-IWYU-use-regular-atomic-include-instead-of-hardcodin.patch \
+  file://0006-IWYU-missing-include-for-usage-of-std-optional-in-in.patch \
+  file://0007-GCC-Bring-back-SFINAE-for-blink-NativeValueTraits.patch \
+  file://0008-IWYU-add-missing-include-for-usage-of-FieldDataManag.patch \
+  file://0009-IWYU-usage-of-std-optional-in-tab_contents_synced_ta.patch \
 "
 
 # Upstream patches
 SRC_URI += " \
-  file://0007-IWYU-usage-of-WebNNBufferImpl-requires-include-in-co.patch \
-  file://0008-ScriptPromiseResolver-moved-PrepareToResolveOrReject.patch \
-  file://0009-Only-extract-components-when-necessary.patch \
+  file://0010-IWYU-missing-includes-in-ukm-BitSet.patch \
 "
 
 # ARM build should not use Clang MTE flags

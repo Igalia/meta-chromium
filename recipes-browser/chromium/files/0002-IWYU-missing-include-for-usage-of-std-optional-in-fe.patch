@@ -1,0 +1,27 @@
+From 417ee513f80464b40fa08bd4ab831692cef206b8 Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Mon, 25 Mar 2024 12:50:34 +0100
+Subject: IWYU: missing include for usage of std::optional in
+ federated_identity_modal_dialog_view_delegate.h
+
+Bug: 41455655
+Change-Id: I66d7175a0dee9dee46c54560edea51fa9fc5a41e
+---
+ .../browser/federated_identity_modal_dialog_view_delegate.h      | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/content/public/browser/federated_identity_modal_dialog_view_delegate.h b/content/public/browser/federated_identity_modal_dialog_view_delegate.h
+index ad40dee90514f..74f5f4773003b 100644
+--- a/content/public/browser/federated_identity_modal_dialog_view_delegate.h
++++ b/content/public/browser/federated_identity_modal_dialog_view_delegate.h
+@@ -5,6 +5,7 @@
+ #ifndef CONTENT_PUBLIC_BROWSER_FEDERATED_IDENTITY_MODAL_DIALOG_VIEW_DELEGATE_H_
+ #define CONTENT_PUBLIC_BROWSER_FEDERATED_IDENTITY_MODAL_DIALOG_VIEW_DELEGATE_H_
+ 
++#include <optional>
+ #include <string>
+ 
+ #include "content/common/content_export.h"
+-- 
+2.40.1
+

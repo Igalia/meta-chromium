@@ -1,0 +1,31 @@
+From 9a09d050960812cf160453cf3dae9be599b5ccc5 Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Mon, 25 Mar 2024 12:15:21 +0100
+Subject: GCC: make base::span::as_chars a constexpr
+
+Quite often, base::span::as_chars is called from constexpr, and
+warnings are emited by GCC that it is not a constexpr. So add the
+keyword accordingly.
+
+Bug: 40565911
+Change-Id: If620c3105f7119dcc6e893a7e70024685d1294a5
+---
+ base/containers/span.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/base/containers/span.h b/base/containers/span.h
+index 3f7913cbf003d..51db84df700ed 100644
+--- a/base/containers/span.h
++++ b/base/containers/span.h
+@@ -1078,7 +1078,7 @@ auto as_writable_bytes(span<T, X> s) noexcept {
+ // added since chrome still represents many things as char arrays which
+ // rightfully should be uint8_t.
+ template <typename T, size_t X>
+-auto as_chars(span<T, X> s) noexcept {
++constexpr auto as_chars(span<T, X> s) noexcept {
+   constexpr size_t N = X == dynamic_extent ? dynamic_extent : sizeof(T) * X;
+   // SAFETY: span provides that data() points to at least size_bytes() many
+   // bytes. So since `char` has a size of 1 byte, the size_bytes() value is a
+-- 
+2.40.1
+
