@@ -1,12 +1,12 @@
 require chromium-upstream-tarball.inc
 
-PV = "125.0.6368.2"
+PV = "125.0.6382.3"
 # This should be obtained running tools/rust/update_rust.py --print-package-version
 # in the tarball release
-RUST_PACKAGE_VERSION = "7168c13579a550f2c47f7eea22f5e226a436cd00-1-llvmorg-19-init-2941-ga0b3dbaf"
+RUST_PACKAGE_VERSION = "7168c13579a550f2c47f7eea22f5e226a436cd00-2-llvmorg-19-init-2941-ga0b3dbaf"
 
-SRC_URI[main.sha256sum] = "3003bdd0d96b6d88c506e39b85ee5dd28374a22ce4f3b461e805c846f2973c86"
-SRC_URI[rust.sha256sum] = "5191bdd68dbc396c7b91f15ab34fe3b6413a737be6e70b82a8c6a60dd07bda23"
+SRC_URI[main.sha256sum] = "dbf58a0b6d83c63e6468bc5ca12a3c1d1758cf109775c313cace8af56c7023a4"
+SRC_URI[rust.sha256sum] = "2cfeb812531810447acff5df25b79928e20271b829cae4be084ed82c8c26d67e"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -154,20 +154,11 @@ LIC_FILES_CHKSUM = "\
 
 # Upstreamable patches
 SRC_URI += " \
-  file://0001-GCC-make-base-span-as_chars-a-constexpr.patch \
-  file://0002-IWYU-missing-include-for-usage-of-std-optional-in-fe.patch \
-  file://0003-IWYU-usage-of-DawnContextProvider-in-gpu_init.h-requ.patch \
-  file://0004-streams-Fix-gcc-compatibility-for-ReadableStream-val.patch \
-  file://0005-IWYU-use-regular-atomic-include-instead-of-hardcodin.patch \
-  file://0006-IWYU-missing-include-for-usage-of-std-optional-in-in.patch \
-  file://0007-GCC-Bring-back-SFINAE-for-blink-NativeValueTraits.patch \
-  file://0008-IWYU-add-missing-include-for-usage-of-FieldDataManag.patch \
-  file://0009-IWYU-usage-of-std-optional-in-tab_contents_synced_ta.patch \
-"
-
-# Upstream patches
-SRC_URI += " \
-  file://0010-IWYU-missing-includes-in-ukm-BitSet.patch \
+  file://0001-IWYU-missing-include-for-usage-of-TracingDelegate-in.patch \
+  file://0002-GCC-make-base-span-as_chars-a-constexpr.patch \
+  file://0003-GCC-Bring-back-SFINAE-for-blink-NativeValueTraits.patch \
+  file://0004-IWYU-add-missing-include-for-usage-of-FieldDataManag.patch \
+  file://0001-Reapply-IWYU-fix-for-std-string-usage-in-instrumenta.patch;patchdir=third_party/ruy/src \
 "
 
 # ARM build should not use Clang MTE flags

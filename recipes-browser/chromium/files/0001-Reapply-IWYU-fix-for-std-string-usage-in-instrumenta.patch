@@ -1,0 +1,29 @@
+From ea490a71262cc9cd375755b3d3cc984a5e0226c5 Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Mon, 25 Mar 2024 11:21:17 +0100
+Subject: Reapply IWYU fix for std::string usage in instrumentation.h
+
+The fix applied by Stephan Hartmann adding the missing include for
+std::string usage in libruy has been removed again after syncing
+again with the copybara service.
+
+Bug: chromium:41455655
+---
+ ruy/profiler/instrumentation.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/ruy/profiler/instrumentation.h b/ruy/profiler/instrumentation.h
+index c4df1e6..2b15ae3 100644
+--- a/ruy/profiler/instrumentation.h
++++ b/ruy/profiler/instrumentation.h
+@@ -19,6 +19,7 @@ limitations under the License.
+ #ifdef RUY_PROFILER
+ #include <cstdio>
+ #include <mutex>
++#include <string>
+ #include <vector>
+ #endif
+ 
+-- 
+2.40.1
+
