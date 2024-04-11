@@ -1,0 +1,28 @@
+From b3578f33f65fc9ac4aa0c26cad59b80eb76e3255 Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Mon, 8 Apr 2024 13:10:34 +0200
+Subject: IWYU: usage of std::optional in justification_utils.h requires
+ include
+
+Bug: 41455655
+Change-Id: I79db3036922650f72e5025d1d6f72ff66a83969d
+---
+ .../blink/renderer/core/layout/inline/justification_utils.h     | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/third_party/blink/renderer/core/layout/inline/justification_utils.h b/third_party/blink/renderer/core/layout/inline/justification_utils.h
+index a99f2b3354217..d278ceb897642 100644
+--- a/third_party/blink/renderer/core/layout/inline/justification_utils.h
++++ b/third_party/blink/renderer/core/layout/inline/justification_utils.h
+@@ -5,6 +5,8 @@
+ #ifndef THIRD_PARTY_BLINK_RENDERER_CORE_LAYOUT_INLINE_JUSTIFICATION_UTILS_H_
+ #define THIRD_PARTY_BLINK_RENDERER_CORE_LAYOUT_INLINE_JUSTIFICATION_UTILS_H_
+ 
++#include <optional>
++
+ #include "third_party/blink/renderer/platform/geometry/layout_unit.h"
+ 
+ namespace blink {
+-- 
+2.40.1
+

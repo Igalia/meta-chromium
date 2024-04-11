@@ -1,0 +1,27 @@
+From 31568ea56a2cf5caf9a50e6d179307fefdc4a24e Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Mon, 8 Apr 2024 13:04:57 +0200
+Subject: IWYU: declaration of garbage collected requires definition of
+ LogicalLineContainer
+
+Bug: 41455655
+Change-Id: I57d88badfe50188aa0dfcff553f29e2d86a21b48
+---
+ .../blink/renderer/core/layout/inline/fragment_items_builder.h   | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/third_party/blink/renderer/core/layout/inline/fragment_items_builder.h b/third_party/blink/renderer/core/layout/inline/fragment_items_builder.h
+index 5a1eb8829fd6b..73c9f9fc9bf46 100644
+--- a/third_party/blink/renderer/core/layout/inline/fragment_items_builder.h
++++ b/third_party/blink/renderer/core/layout/inline/fragment_items_builder.h
+@@ -9,6 +9,7 @@
+ 
+ #include "third_party/blink/renderer/core/core_export.h"
+ #include "third_party/blink/renderer/core/layout/inline/fragment_item.h"
++#include "third_party/blink/renderer/core/layout/inline/logical_line_container.h"
+ #include "third_party/blink/renderer/core/layout/inline/logical_line_item.h"
+ #include "third_party/blink/renderer/platform/heap/collection_support/heap_hash_map.h"
+ #include "third_party/blink/renderer/platform/text/writing_direction_mode.h"
+-- 
+2.40.1
+

@@ -1,0 +1,26 @@
+From 4bf09c3dba0c16100a452925d696088764e5a87d Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Mon, 8 Apr 2024 11:07:37 +0200
+Subject: IWYU: missing include for std::optional usage in bindings_internal.h
+
+Bug: 41455655
+Change-Id: Id3e3ade6c8cc89a526462ea9ff6c8bc1dc93a375
+---
+ mojo/public/cpp/bindings/lib/bindings_internal.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/mojo/public/cpp/bindings/lib/bindings_internal.h b/mojo/public/cpp/bindings/lib/bindings_internal.h
+index d88b2cde9bce4..d392589cdd73a 100644
+--- a/mojo/public/cpp/bindings/lib/bindings_internal.h
++++ b/mojo/public/cpp/bindings/lib/bindings_internal.h
+@@ -8,6 +8,7 @@
+ #include <stdint.h>
+ 
+ #include <functional>
++#include <optional>
+ #include <type_traits>
+ #include <utility>
+ 
+-- 
+2.40.1
+

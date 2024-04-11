@@ -1,12 +1,12 @@
 require chromium-upstream-tarball.inc
 
-PV = "125.0.6382.3"
+PV = "125.0.6396.3"
 # This should be obtained running tools/rust/update_rust.py --print-package-version
 # in the tarball release
-RUST_PACKAGE_VERSION = "7168c13579a550f2c47f7eea22f5e226a436cd00-2-llvmorg-19-init-2941-ga0b3dbaf"
+RUST_PACKAGE_VERSION = "b13a71a2e77f4625d1a2b8a5b9488414686ebca9-1-llvmorg-19-init-6501-g5b544b51"
 
-SRC_URI[main.sha256sum] = "dbf58a0b6d83c63e6468bc5ca12a3c1d1758cf109775c313cace8af56c7023a4"
-SRC_URI[rust.sha256sum] = "2cfeb812531810447acff5df25b79928e20271b829cae4be084ed82c8c26d67e"
+SRC_URI[main.sha256sum] = "f5b6a1abb8b843597c6d4f8e01f2d4c006754d1de1fb3389efedd1983d60e47a"
+SRC_URI[rust.sha256sum] = "22d66e07e81ff8b115d570f57cffac5d0342ac790d1a1183b9ecf23a9ba51b7a"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -154,10 +154,14 @@ LIC_FILES_CHKSUM = "\
 
 # Upstreamable patches
 SRC_URI += " \
-  file://0001-IWYU-missing-include-for-usage-of-TracingDelegate-in.patch \
-  file://0002-GCC-make-base-span-as_chars-a-constexpr.patch \
-  file://0003-GCC-Bring-back-SFINAE-for-blink-NativeValueTraits.patch \
-  file://0004-IWYU-add-missing-include-for-usage-of-FieldDataManag.patch \
+  file://0001-IWYU-missing-include-for-std-optional-usage-in-bindi.patch \
+  file://0002-IWYU-usage-of-std-optinal-in-span_writer.h-requires-.patch \
+  file://0003-IWYU-add-missing-include-for-usage-of-FieldDataManag.patch \
+  file://0004-IWYU-declaration-of-garbage-collected-requires-defin.patch \
+  file://0005-Revert-IWYU-declaration-of-garbage-collected-require.patch \
+  file://0006-IWYU-usage-of-std-optional-in-justification_utils.h-.patch \
+  file://0007-GCC-Bring-back-SFINAE-for-blink-NativeValueTraits.patch \
+  file://0008-libstdc-std-vector-of-const-in-ProductSpecification-.patch \
   file://0001-Reapply-IWYU-fix-for-std-string-usage-in-instrumenta.patch;patchdir=third_party/ruy/src \
 "
 
