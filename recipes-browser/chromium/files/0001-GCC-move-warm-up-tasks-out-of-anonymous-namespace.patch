@@ -1,0 +1,53 @@
+From 562b4acbbc96b6d3203df85da57953730f8c1138 Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Tue, 9 Apr 2024 11:20:07 +0200
+Subject: GCC: move warm up tasks out of anonymous namespace
+
+GCC anonymous namespace is set per file. So forward declaring in the
+anonymous namespace of .h will not be valid in the .cpp file.
+---
+ src/libANGLE/renderer/vulkan/ProgramExecutableVk.cpp | 2 +-
+ src/libANGLE/renderer/vulkan/ProgramExecutableVk.h   | 7 -------
+ 2 files changed, 1 insertion(+), 8 deletions(-)
+
+diff --git a/src/libANGLE/renderer/vulkan/ProgramExecutableVk.cpp b/src/libANGLE/renderer/vulkan/ProgramExecutableVk.cpp
+index b27103426..f5c0b6c10 100644
+--- a/src/libANGLE/renderer/vulkan/ProgramExecutableVk.cpp
++++ b/src/libANGLE/renderer/vulkan/ProgramExecutableVk.cpp
+@@ -303,6 +303,7 @@ void ReadFromDefaultUniformBlock(int componentCount,
+         memcpy(dst, readPtr, elementSize);
+     }
+ }
++}  // namespace
+ 
+ class WarmUpTaskCommon : public vk::Context, public LinkSubTask
+ {
+@@ -452,7 +453,6 @@ class WarmUpGraphicsTask : public WarmUpTaskCommon
+     // Temporary objects to clean up at the end
+     SharedRenderPass *mCompatibleRenderPass;
+ };
+-}  // namespace
+ 
+ DefaultUniformBlockVk::DefaultUniformBlockVk() = default;
+ 
+diff --git a/src/libANGLE/renderer/vulkan/ProgramExecutableVk.h b/src/libANGLE/renderer/vulkan/ProgramExecutableVk.h
+index 538915f24..60f0cd607 100644
+--- a/src/libANGLE/renderer/vulkan/ProgramExecutableVk.h
++++ b/src/libANGLE/renderer/vulkan/ProgramExecutableVk.h
+@@ -106,13 +106,6 @@ struct DefaultUniformBlockVk final : private angle::NonCopyable
+     std::vector<sh::BlockMemberInfo> uniformLayout;
+ };
+ 
+-namespace
+-{
+-class WarmUpTaskCommon;
+-class WarmUpComputeTask;
+-class WarmUpGraphicsTask;
+-}  // namespace
+-
+ // Performance and resource counters.
+ using DescriptorSetCountList   = angle::PackedEnumMap<DescriptorSetIndex, uint32_t>;
+ using ImmutableSamplerIndexMap = angle::HashMap<vk::YcbcrConversionDesc, uint32_t>;
+-- 
+2.40.1
+

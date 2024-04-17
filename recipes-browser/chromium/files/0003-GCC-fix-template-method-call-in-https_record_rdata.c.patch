@@ -1,0 +1,34 @@
+From 9e179d076ded34af92135ea7b2f3ee214e2bd517 Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Mon, 15 Apr 2024 14:49:24 +0200
+Subject: GCC: fix template method call in https_record_rdata.cc
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+GCC does not allow to call a template method with its parameters.
+It shows a warning first: "expected ‘template’ keyword before
+dependent template name". But then it fails to parse properly.
+
+Bug: 40565911
+Change-Id: I0faeec539d141eae33854ac53f5351b9697c0039
+---
+ net/dns/https_record_rdata.cc | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/net/dns/https_record_rdata.cc b/net/dns/https_record_rdata.cc
+index e534f9aa13e6c..d23a51da13dfe 100644
+--- a/net/dns/https_record_rdata.cc
++++ b/net/dns/https_record_rdata.cc
+@@ -116,7 +116,7 @@ bool ParseIpAddresses(std::string_view param_value,
+ 
+   std::vector<IPAddress> addresses;
+   do {
+-    if (auto addr_bytes = reader.Read<ADDRESS_SIZE>();
++    if (auto addr_bytes = reader.template Read<ADDRESS_SIZE>();
+         !addr_bytes.has_value()) {
+       return false;
+     } else {
+-- 
+2.40.1
+

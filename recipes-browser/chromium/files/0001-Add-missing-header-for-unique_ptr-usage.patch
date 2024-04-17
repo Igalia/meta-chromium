@@ -1,0 +1,26 @@
+From b07483a244da971af3fa47a5f8dccb6dfc827fcf Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Mon, 8 Apr 2024 10:04:22 +0200
+Subject: Add missing header for unique_ptr usage.
+
+vk_small_containers.hpp uses std::unique_ptr for members declaration,
+that requires an include.
+---
+ include/vulkan/utility/vk_small_containers.hpp | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/include/vulkan/utility/vk_small_containers.hpp b/include/vulkan/utility/vk_small_containers.hpp
+index 0c0786d..71cae2f 100644
+--- a/include/vulkan/utility/vk_small_containers.hpp
++++ b/include/vulkan/utility/vk_small_containers.hpp
+@@ -9,6 +9,7 @@
+ #pragma once
+ 
+ #include <cassert>
++#include <memory>
+ #include <unordered_map>
+ #include <unordered_set>
+ 
+-- 
+2.40.1
+

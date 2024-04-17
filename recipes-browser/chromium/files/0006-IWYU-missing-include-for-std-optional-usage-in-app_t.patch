@@ -1,0 +1,27 @@
+From aa5b96215ee138655359c3b54432739f4698a867 Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Mon, 15 Apr 2024 17:40:25 +0200
+Subject: IWYU: missing include for std::optional usage in app_types.h
+
+Bug: 40939315
+Change-Id: I845f4dd1598e38cbe5b22fe472079c41d24a8bd5
+---
+ components/services/app_service/public/cpp/app_types.h | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/components/services/app_service/public/cpp/app_types.h b/components/services/app_service/public/cpp/app_types.h
+index d637405930e99..e87d322c8f0df 100644
+--- a/components/services/app_service/public/cpp/app_types.h
++++ b/components/services/app_service/public/cpp/app_types.h
+@@ -5,6 +5,8 @@
+ #ifndef COMPONENTS_SERVICES_APP_SERVICE_PUBLIC_CPP_APP_TYPES_H_
+ #define COMPONENTS_SERVICES_APP_SERVICE_PUBLIC_CPP_APP_TYPES_H_
+ 
++#include <optional>
++
+ #include "base/component_export.h"
+ #include "components/services/app_service/public/cpp/macros.h"
+ #include "components/services/app_service/public/protos/app_types.pb.h"
+-- 
+2.40.1
+

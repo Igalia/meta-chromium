@@ -1,12 +1,12 @@
 require chromium-upstream-tarball.inc
 
-PV = "125.0.6396.3"
+PV = "125.0.6420.3"
 # This should be obtained running tools/rust/update_rust.py --print-package-version
 # in the tarball release
-RUST_PACKAGE_VERSION = "b13a71a2e77f4625d1a2b8a5b9488414686ebca9-1-llvmorg-19-init-6501-g5b544b51"
+RUST_PACKAGE_VERSION = "ab71ee7a9214c2793108a41efb065aa77aeb7326-1-llvmorg-19-init-8091-gab037c4f"
 
-SRC_URI[main.sha256sum] = "f5b6a1abb8b843597c6d4f8e01f2d4c006754d1de1fb3389efedd1983d60e47a"
-SRC_URI[rust.sha256sum] = "22d66e07e81ff8b115d570f57cffac5d0342ac790d1a1183b9ecf23a9ba51b7a"
+SRC_URI[main.sha256sum] = "f04d9c7b869678ba5080fc741360bd93bedc96c1d93e674c41e318c2738023b6"
+SRC_URI[rust.sha256sum] = "4a06a7daa389c4064373af83e445a82c99ae7d10c710168dbb15a9d2d10c16b4"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -86,7 +86,7 @@ LIC_FILES_CHKSUM = "\
   file://${S}/third_party/hunspell/COPYING.MPL;md5=bfe1f75d606912a4111c90743d6c7325 \
   file://${S}/third_party/iaccessible2/LICENSE;md5=43bbd0bfb581347ec10def720000a645 \
   file://${S}/third_party/iccjpeg/LICENSE;md5=26834d132689a03abf860f4572705494 \
-  file://${S}/third_party/icu/LICENSE;md5=80c2cf39ad8ae12b9b9482a1737c6650 \
+  file://${S}/third_party/icu/LICENSE;md5=08dc3852df8fffa807301902ad899ff8 \
   file://${S}/third_party/inspector_protocol/LICENSE;md5=db90dcb101891a7285d25f2fbceca752 \
   file://${S}/third_party/isimpledom/LICENSE;md5=822502c0e010ccdbb6a3e681dd47888e \
   file://${S}/third_party/jsoncpp/LICENSE;md5=c56ee55c03a55f8105b969d8270632ce \
@@ -154,15 +154,15 @@ LIC_FILES_CHKSUM = "\
 
 # Upstreamable patches
 SRC_URI += " \
-  file://0001-IWYU-missing-include-for-std-optional-usage-in-bindi.patch \
-  file://0002-IWYU-usage-of-std-optinal-in-span_writer.h-requires-.patch \
-  file://0003-IWYU-add-missing-include-for-usage-of-FieldDataManag.patch \
-  file://0004-IWYU-declaration-of-garbage-collected-requires-defin.patch \
-  file://0005-Revert-IWYU-declaration-of-garbage-collected-require.patch \
-  file://0006-IWYU-usage-of-std-optional-in-justification_utils.h-.patch \
-  file://0007-GCC-Bring-back-SFINAE-for-blink-NativeValueTraits.patch \
-  file://0008-libstdc-std-vector-of-const-in-ProductSpecification-.patch \
+  file://0001-GCC-Bring-back-SFINAE-for-blink-NativeValueTraits.patch \
+  file://0002-IWYU-missing-include-for-std-optional-usage-in-bindi.patch \
+  file://0003-GCC-fix-template-method-call-in-https_record_rdata.c.patch \
+  file://0004-Remove-more-instances-of-std-vector-const-T.patch \
+  file://0005-IWYU-add-missing-include-for-usage-of-FieldDataManag.patch \
+  file://0006-IWYU-missing-include-for-std-optional-usage-in-app_t.patch \
+  file://0001-GCC-move-warm-up-tasks-out-of-anonymous-namespace.patch;patchdir=third_party/angle \
   file://0001-Reapply-IWYU-fix-for-std-string-usage-in-instrumenta.patch;patchdir=third_party/ruy/src \
+  file://0001-Add-missing-header-for-unique_ptr-usage.patch;patchdir=third_party/vulkan-deps/vulkan-utility-libraries/src \
 "
 
 # ARM build should not use Clang MTE flags

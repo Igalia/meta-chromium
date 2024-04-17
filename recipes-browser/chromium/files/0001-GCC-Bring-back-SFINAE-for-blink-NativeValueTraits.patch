@@ -1,4 +1,4 @@
-From 92813e4f42c48e8dc6e3d3f9e6cdf5391423ba49 Mon Sep 17 00:00:00 2001
+From 7ca6c84506773bddb8cb9cd7ee9cdb2b78583d62 Mon Sep 17 00:00:00 2001
 From: Ivan Pavlotsky <ivan.pavlotsky@lge.com>
 Date: Fri, 12 Jan 2024 14:34:49 +0300
 Subject: GCC: Bring back SFINAE for blink::NativeValueTraits
@@ -35,7 +35,7 @@ index a5c28b37e9454..2cd45ff27569e 100644
  
  // This declaration serves only as a blueprint for specializations: the
 diff --git a/third_party/blink/renderer/bindings/core/v8/native_value_traits_impl.h b/third_party/blink/renderer/bindings/core/v8/native_value_traits_impl.h
-index 9daaddfe4146a..3aacd7c5ce383 100644
+index 4c70cec1b2cdd..bd44bf3b15a3e 100644
 --- a/third_party/blink/renderer/bindings/core/v8/native_value_traits_impl.h
 +++ b/third_party/blink/renderer/bindings/core/v8/native_value_traits_impl.h
 @@ -718,8 +718,11 @@ struct CORE_EXPORT NativeValueTraits<
