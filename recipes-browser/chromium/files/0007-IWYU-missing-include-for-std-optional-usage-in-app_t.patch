@@ -1,16 +1,23 @@
-From aa5b96215ee138655359c3b54432739f4698a867 Mon Sep 17 00:00:00 2001
+From b6693ff8d8ffe4581992c1bdd1ef1e7cf5d5945e Mon Sep 17 00:00:00 2001
 From: Jose Dapena Paz <jdapena@igalia.com>
-Date: Mon, 15 Apr 2024 17:40:25 +0200
+Date: Wed, 17 Apr 2024 08:19:26 +0000
 Subject: IWYU: missing include for std::optional usage in app_types.h
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
 Bug: 40939315
 Change-Id: I845f4dd1598e38cbe5b22fe472079c41d24a8bd5
+Reviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/5456358
+Reviewed-by: Tim Sergeant <tsergeant@chromium.org>
+Commit-Queue: José Dapena Paz <jdapena@igalia.com>
+Cr-Commit-Position: refs/heads/main@{#1288572}
 ---
  components/services/app_service/public/cpp/app_types.h | 2 ++
  1 file changed, 2 insertions(+)
 
 diff --git a/components/services/app_service/public/cpp/app_types.h b/components/services/app_service/public/cpp/app_types.h
-index d637405930e99..e87d322c8f0df 100644
+index 988b6b30f48ff..833ce6d975b0b 100644
 --- a/components/services/app_service/public/cpp/app_types.h
 +++ b/components/services/app_service/public/cpp/app_types.h
 @@ -5,6 +5,8 @@

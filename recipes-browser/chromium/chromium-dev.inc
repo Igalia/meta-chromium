@@ -1,12 +1,12 @@
 require chromium-upstream-tarball.inc
 
-PV = "125.0.6420.3"
+PV = "126.0.6423.2"
 # This should be obtained running tools/rust/update_rust.py --print-package-version
 # in the tarball release
-RUST_PACKAGE_VERSION = "ab71ee7a9214c2793108a41efb065aa77aeb7326-1-llvmorg-19-init-8091-gab037c4f"
+RUST_PACKAGE_VERSION = "ab71ee7a9214c2793108a41efb065aa77aeb7326-2-llvmorg-19-init-8091-gab037c4f"
 
-SRC_URI[main.sha256sum] = "f04d9c7b869678ba5080fc741360bd93bedc96c1d93e674c41e318c2738023b6"
-SRC_URI[rust.sha256sum] = "4a06a7daa389c4064373af83e445a82c99ae7d10c710168dbb15a9d2d10c16b4"
+SRC_URI[main.sha256sum] = "f69d13ca0065a28f121a91f14b52ac12758a632fe6bf681ca06a22b6aa307ff5"
+SRC_URI[rust.sha256sum] = "999b242fc75e812414464298642db68fb6f37834be627e5db666f642f5258427"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -155,14 +155,19 @@ LIC_FILES_CHKSUM = "\
 # Upstreamable patches
 SRC_URI += " \
   file://0001-GCC-Bring-back-SFINAE-for-blink-NativeValueTraits.patch \
-  file://0002-IWYU-missing-include-for-std-optional-usage-in-bindi.patch \
-  file://0003-GCC-fix-template-method-call-in-https_record_rdata.c.patch \
-  file://0004-Remove-more-instances-of-std-vector-const-T.patch \
-  file://0005-IWYU-add-missing-include-for-usage-of-FieldDataManag.patch \
-  file://0006-IWYU-missing-include-for-std-optional-usage-in-app_t.patch \
+  file://0002-IWYU-missing-include-for-usage-of-std-vector-in-hybr.patch \
+  file://0003-IWYU-missing-include-for-usage-of-std-array-in-featu.patch \
+  file://0004-IWYU-missing-include-for-usage-of-std-vector-in-nois.patch \
+  file://0005-IWYU-missing-include-for-std-optional-usage-in-prope.patch \
+  file://0006-IWYU-missing-include-for-usage-of-std-optional-in-le.patch \
   file://0001-GCC-move-warm-up-tasks-out-of-anonymous-namespace.patch;patchdir=third_party/angle \
   file://0001-Reapply-IWYU-fix-for-std-string-usage-in-instrumenta.patch;patchdir=third_party/ruy/src \
   file://0001-Add-missing-header-for-unique_ptr-usage.patch;patchdir=third_party/vulkan-deps/vulkan-utility-libraries/src \
+"
+
+# Upstream patches
+SRC_URI += " \
+  file://0007-IWYU-missing-include-for-std-optional-usage-in-app_t.patch \
 "
 
 # ARM build should not use Clang MTE flags

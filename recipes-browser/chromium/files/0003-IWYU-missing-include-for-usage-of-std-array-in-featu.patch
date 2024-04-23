@@ -1,0 +1,26 @@
+From 310accbe8dd493ccdf07f08475cf9584ab4fa6d8 Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Mon, 22 Apr 2024 11:36:54 +0200
+Subject: IWYU: missing include for usage of std::array in feature_keys.h
+
+Bug: 41455655
+Change-Id: I14e87e12a5dc029fbf8db4f3bef5475d498be135
+---
+ .../optimization_guide/core/model_execution/feature_keys.h       | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/components/optimization_guide/core/model_execution/feature_keys.h b/components/optimization_guide/core/model_execution/feature_keys.h
+index 176a254fabf47..7fb8285f68c14 100644
+--- a/components/optimization_guide/core/model_execution/feature_keys.h
++++ b/components/optimization_guide/core/model_execution/feature_keys.h
+@@ -5,6 +5,7 @@
+ #ifndef COMPONENTS_OPTIMIZATION_GUIDE_CORE_MODEL_EXECUTION_FEATURE_KEYS_H_
+ #define COMPONENTS_OPTIMIZATION_GUIDE_CORE_MODEL_EXECUTION_FEATURE_KEYS_H_
+ 
++#include <array>
+ #include <optional>
+ 
+ #include "base/notreached.h"
+-- 
+2.40.1
+
