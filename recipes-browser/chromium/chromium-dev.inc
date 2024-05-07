@@ -1,12 +1,12 @@
 require chromium-upstream-tarball.inc
 
-PV = "126.0.6423.2"
+PV = "126.0.6452.3"
 # This should be obtained running tools/rust/update_rust.py --print-package-version
 # in the tarball release
-RUST_PACKAGE_VERSION = "ab71ee7a9214c2793108a41efb065aa77aeb7326-2-llvmorg-19-init-8091-gab037c4f"
+RUST_PACKAGE_VERSION = "31e6e8c6c5b6ce62656c922c7384d3376018c980-1-llvmorg-19-init-9433-g76ea5feb"
 
-SRC_URI[main.sha256sum] = "f69d13ca0065a28f121a91f14b52ac12758a632fe6bf681ca06a22b6aa307ff5"
-SRC_URI[rust.sha256sum] = "999b242fc75e812414464298642db68fb6f37834be627e5db666f642f5258427"
+SRC_URI[main.sha256sum] = "254218846e27d40a91b379997841b9a192add6412087c686ef11417f0b99903c"
+SRC_URI[rust.sha256sum] = "eeeddb70ee12155df7558c0eb8481a16ff255e1cbe5040b158657b2b5e0d0881"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -26,7 +26,6 @@ LIC_FILES_CHKSUM = "\
   file://${S}/LICENSE.chromium_os;md5=775979d3e1e3bf163e4882e231727de5 \
   file://${S}/base/third_party/cityhash/COPYING;md5=f714c995c5bd9b175938acdd69226b60 \
   file://${S}/base/third_party/double_conversion/LICENSE;md5=1ea35644f0ec0d9767897115667e901f \
-  file://${S}/base/third_party/dynamic_annotations/LICENSE;md5=b6bd7011ecc1a4f7ac3525589f45e565 \
   file://${S}/base/third_party/nspr/LICENSE;md5=0806173dfb7e6d060074595e968fd02e \
   file://${S}/base/third_party/superfasthash/LICENSE;md5=c66981f8ad23c9f279a5b9e07385128c \
   file://${S}/base/third_party/symbolize/LICENSE;md5=17ae3b22fe8fa438966625593e2eea85 \
@@ -74,7 +73,7 @@ LIC_FILES_CHKSUM = "\
   file://${S}/third_party/decklink/LICENSE;md5=85b197f7b7b1ef270b01a1b6377be50e \
   file://${S}/third_party/dom_distiller_js/LICENSE;md5=6cd778870ce5c0c08c8e16fbdf378532 \
   file://${S}/third_party/expat/src/expat/COPYING;md5=7b3b078238d0901d3b339289117cb7fb \
-  file://${S}/third_party/ffmpeg/CREDITS.chromium;md5=a1624152b484ce949c0db957a428ac07 \
+  file://${S}/third_party/ffmpeg/CREDITS.chromium;md5=dbec96c09140718ea111e66592c92e34 \
   file://${S}/third_party/flac/COPYING.Xiph;md5=3d6da238b5b57a0965d6730291119f65 \
   file://${S}/third_party/flatbuffers/LICENSE;md5=a873c5645c184d51e0f9b34e1d7cf559 \
   file://${S}/third_party/fontconfig/src/COPYING;md5=00252fd272bf2e722925613ad74cb6c7 \
@@ -154,20 +153,21 @@ LIC_FILES_CHKSUM = "\
 
 # Upstreamable patches
 SRC_URI += " \
-  file://0001-GCC-Bring-back-SFINAE-for-blink-NativeValueTraits.patch \
-  file://0002-IWYU-missing-include-for-usage-of-std-vector-in-hybr.patch \
-  file://0003-IWYU-missing-include-for-usage-of-std-array-in-featu.patch \
-  file://0004-IWYU-missing-include-for-usage-of-std-vector-in-nois.patch \
-  file://0005-IWYU-missing-include-for-std-optional-usage-in-prope.patch \
-  file://0006-IWYU-missing-include-for-usage-of-std-optional-in-le.patch \
-  file://0001-GCC-move-warm-up-tasks-out-of-anonymous-namespace.patch;patchdir=third_party/angle \
+  file://0001-IWYU-missing-include-for-std-vector-usage-in-poison_.patch \
+  file://0002-libstdc-move-ColorProviderInternal-to-.h.patch \
+  file://0003-IWYU-missing-include-for-usage-of-std-optional-in-la.patch \
+  file://0004-GCC-Bring-back-SFINAE-for-blink-NativeValueTraits.patch \
+  file://0005-GCC-missing-template-instanciation-in-CSS-parsing-ut.patch \
+  file://0006-IWYU-missing-include-for-std-variant-usage-in-url_vi.patch \
+  file://0007-IWYU-missing-include-for-usage-of-std-format-in-read.patch \
   file://0001-Reapply-IWYU-fix-for-std-string-usage-in-instrumenta.patch;patchdir=third_party/ruy/src \
-  file://0001-Add-missing-header-for-unique_ptr-usage.patch;patchdir=third_party/vulkan-deps/vulkan-utility-libraries/src \
+  file://0001-Revert-Cleanup-replace-DirtyObjectType-check-with-co.patch;patchdir=third_party/angle \
 "
 
 # Upstream patches
 SRC_URI += " \
-  file://0007-IWYU-missing-include-for-std-optional-usage-in-app_t.patch \
+  file://0001-Fix-Linux-ARM-build-issue-with-soda_util.cc.patch \
+  file://0002-Fix-Linux-ARM-build-issue-with-screen_ai_install_sta.patch \
 "
 
 # ARM build should not use Clang MTE flags

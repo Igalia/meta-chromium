@@ -1,0 +1,48 @@
+From 12db00780ed2c9d73cd208aabd3e884fcc40b5be Mon Sep 17 00:00:00 2001
+From: Lei Zhang <thestig@chromium.org>
+Date: Tue, 7 May 2024 16:56:15 +0000
+Subject: Fix Linux/ARM build issue with screen_ai_install_state.cc
+
+After https://crrev.com/1294664 landed, base::CPU::has_sse41() is no
+longer defined on non-X86 platforms. Fix the caller in
+screen_ai_install_state.cc to account for Linux/ARM build configs.
+
+Bug: 338471691
+Change-Id: I33ee0886d6523a63023f99294e477afb7bff9362
+Reviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/5522933
+Commit-Queue: Lei Zhang <thestig@chromium.org>
+Reviewed-by: Ramin Halavati <rhalavati@chromium.org>
+Cr-Commit-Position: refs/heads/main@{#1297576}
+---
+ chrome/browser/screen_ai/screen_ai_install_state.cc | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
+
+diff --git a/chrome/browser/screen_ai/screen_ai_install_state.cc b/chrome/browser/screen_ai/screen_ai_install_state.cc
+index b12b6d705bd65..2c432a27088af 100644
+--- a/chrome/browser/screen_ai/screen_ai_install_state.cc
++++ b/chrome/browser/screen_ai/screen_ai_install_state.cc
+@@ -33,13 +33,18 @@ const int kScreenAICleanUpDelayInDays = 30;
+ const char kMinExpectedVersion[] = "123.1";
+ 
+ bool IsDeviceCompatible() {
++#if BUILDFLAG(IS_LINUX)
++#if defined(ARCH_CPU_X86_FAMILY)
+   // Check if the CPU has the required instruction set to run the Screen AI
+   // library.
+-#if BUILDFLAG(IS_LINUX)
+-  if (!base::CPU().has_sse41()) {
++  static const bool has_sse41 = base::CPU().has_sse41();
++#else
++  static constexpr bool has_sse41 = false;
++#endif  // defined(ARCH_CPU_X86_FAMILY)
++  if (!has_sse41) {
+     return false;
+   }
+-#endif
++#endif  // BUILDFLAG(IS_LINUX)
+   return true;
+ }
+ 
+-- 
+2.40.1
+

@@ -1,0 +1,249 @@
+From 122c8a4bf25ec03b6dc3062fee7eb59d09548b40 Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Mon, 6 May 2024 10:24:43 +0200
+Subject: libstdc++: move ColorProviderInternal to .h
+
+ColorProvider includes an std::unique_ptr of its ColorProviderInternal
+member that is default-declared with std::make_unique. In libstdc++
+this requires the class declaration, so compilation is broken.
+
+To fix the problem, move the ColorProviderInternal declaration to .h
+
+Bug: 41455655
+Change-Id: I713403f6c2a68616467304913b0b7df3053b5ada
+---
+ ui/color/color_provider.cc | 145 +++++++++++++++++--------------------
+ ui/color/color_provider.h  |  32 +++++++-
+ 2 files changed, 97 insertions(+), 80 deletions(-)
+
+diff --git a/ui/color/color_provider.cc b/ui/color/color_provider.cc
+index 1597715de1f63..186ec88c0ba18 100644
+--- a/ui/color/color_provider.cc
++++ b/ui/color/color_provider.cc
+@@ -4,7 +4,6 @@
+ 
+ #include "ui/color/color_provider.h"
+ 
+-#include <forward_list>
+ #include <map>
+ #include <set>
+ #include <utility>
+@@ -21,99 +20,87 @@ namespace ui {
+ ////////////////////////////////////////////////////////////////////////////////
+ // ColorProvider::ColorProviderInternal:
+ 
+-class ColorProvider::ColorProviderInternal {
+- public:
+-  using Mixers = std::forward_list<ColorMixer>;
++ColorMixer& ColorProvider::ColorProviderInternal::AddMixer() {
++  color_map_.clear();
++  mixers_.emplace_after(
++      first_postprocessing_mixer_,
++      base::BindRepeating([](const ColorMixer* mixer) { return mixer; },
++                          GetLastNonPostprocessingMixer()),
++      base::BindRepeating(
++          &ColorProvider::ColorProviderInternal::GetLastNonPostprocessingMixer,
++          base::Unretained(this)));
+ 
+-  ColorProviderInternal() = default;
+-  ColorProviderInternal(const ColorProviderInternal&) = delete;
+-  ColorProviderInternal& operator=(const ColorProviderInternal&) = delete;
+-  ~ColorProviderInternal() = default;
++  return *std::next(first_postprocessing_mixer_, 1);
++}
+ 
+-  ColorMixer& AddMixer() {
+-    color_map_.clear();
+-    mixers_.emplace_after(
+-        first_postprocessing_mixer_,
++ColorMixer& ColorProvider::ColorProviderInternal::AddPostprocessingMixer() {
++  color_map_.clear();
++  if (first_postprocessing_mixer_ == mixers_.before_begin()) {
++    // The first postprocessing mixer points to the last regular mixer.
++    auto previous_mixer_getter = base::BindRepeating(
++        &ColorProvider::ColorProviderInternal::GetLastNonPostprocessingMixer,
++        base::Unretained(this));
++    mixers_.emplace_front(previous_mixer_getter, previous_mixer_getter);
++    first_postprocessing_mixer_ = mixers_.begin();
++  } else {
++    // Other postprocessing mixers point to the next postprocessing mixer.
++    auto previous_mixer_getter =
+         base::BindRepeating([](const ColorMixer* mixer) { return mixer; },
+-                            GetLastNonPostprocessingMixer()),
+-        base::BindRepeating(&ColorProvider::ColorProviderInternal::
+-                                GetLastNonPostprocessingMixer,
+-                            base::Unretained(this)));
+-
+-    return *std::next(first_postprocessing_mixer_, 1);
++                            base::Unretained(&mixers_.front()));
++    mixers_.emplace_front(previous_mixer_getter, previous_mixer_getter);
+   }
++  return mixers_.front();
++}
+ 
+-  ColorMixer& AddPostprocessingMixer() {
+-    color_map_.clear();
+-    if (first_postprocessing_mixer_ == mixers_.before_begin()) {
+-      // The first postprocessing mixer points to the last regular mixer.
+-      auto previous_mixer_getter = base::BindRepeating(
+-          &ColorProvider::ColorProviderInternal::GetLastNonPostprocessingMixer,
+-          base::Unretained(this));
+-      mixers_.emplace_front(previous_mixer_getter, previous_mixer_getter);
+-      first_postprocessing_mixer_ = mixers_.begin();
+-    } else {
+-      // Other postprocessing mixers point to the next postprocessing mixer.
+-      auto previous_mixer_getter =
+-          base::BindRepeating([](const ColorMixer* mixer) { return mixer; },
+-                              base::Unretained(&mixers_.front()));
+-      mixers_.emplace_front(previous_mixer_getter, previous_mixer_getter);
++SkColor ColorProvider::ColorProviderInternal::GetColor(ColorId id) const {
++  auto i = color_map_.find(id);
++  if (i == color_map_.end()) {
++    if (mixers_.empty()) {
++      DVLOG(2) << "ColorProvider::GetColor: No mixers defined!";
++      return gfx::kPlaceholderColor;
+     }
+-    return mixers_.front();
+-  }
+-
+-  SkColor GetColor(ColorId id) const {
+-    auto i = color_map_.find(id);
+-    if (i == color_map_.end()) {
+-      if (mixers_.empty()) {
+-        DVLOG(2) << "ColorProvider::GetColor: No mixers defined!";
+-        return gfx::kPlaceholderColor;
+-      }
+-      DVLOG(2) << "ColorProvider::GetColor: Computing color for ColorId: "
+-               << ColorIdName(id);
+-      const SkColor color = mixers_.front().GetResultColor(id);
+-      if (color == gfx::kPlaceholderColor) {
+-        return gfx::kPlaceholderColor;
+-      }
+-      i = color_map_.insert({id, color}).first;
++    DVLOG(2) << "ColorProvider::GetColor: Computing color for ColorId: "
++             << ColorIdName(id);
++    const SkColor color = mixers_.front().GetResultColor(id);
++    if (color == gfx::kPlaceholderColor) {
++      return gfx::kPlaceholderColor;
+     }
+-
+-    DVLOG(2) << "ColorProvider::GetColor: ColorId: " << ColorIdName(id)
+-             << " Value: " << SkColorName(i->second);
+-    return i->second;
++    i = color_map_.insert({id, color}).first;
+   }
+ 
+-  const ColorMixer* GetLastNonPostprocessingMixer() const {
+-    const auto it = std::next(first_postprocessing_mixer_, 1);
+-    return (it == mixers_.cend()) ? nullptr : &(*it);
+-  }
++  DVLOG(2) << "ColorProvider::GetColor: ColorId: " << ColorIdName(id)
++           << " Value: " << SkColorName(i->second);
++  return i->second;
++}
+ 
+-  bool HasMixers() const { return !mixers_.empty(); }
++const ColorMixer*
++ColorProvider::ColorProviderInternal::GetLastNonPostprocessingMixer() const {
++  const auto it = std::next(first_postprocessing_mixer_, 1);
++  return (it == mixers_.cend()) ? nullptr : &(*it);
++}
+ 
+-  void SetColorForTesting(ColorId id, SkColor color) { color_map_[id] = color; }
++bool ColorProvider::ColorProviderInternal::HasMixers() const {
++  return !mixers_.empty();
++}
+ 
+-  void GenerateColorMapForTesting() {
+-    for (const auto& mixer : mixers_) {
+-      const auto mixer_color_ids = mixer.GetDefinedColorIds();
+-      for (const auto color_id : mixer_color_ids) {
+-        GetColor(color_id);
+-      }
++void ColorProvider::ColorProviderInternal::SetColorForTesting(ColorId id,
++                                                              SkColor color) {
++  color_map_[id] = color;
++}
++
++void ColorProvider::ColorProviderInternal::GenerateColorMapForTesting() {
++  for (const auto& mixer : mixers_) {
++    const auto mixer_color_ids = mixer.GetDefinedColorIds();
++    for (const auto color_id : mixer_color_ids) {
++      GetColor(color_id);
+     }
+   }
++}
+ 
+-  const ColorProvider::ColorMap& color_map_for_testing() { return color_map_; }
+-
+- private:
+-  // The entire color pipeline, in reverse order (that is, the "last" mixer is
+-  // at the front).
+-  Mixers mixers_;
+-
+-  // The first mixer in the chain that is a "postprocessing" mixer.
+-  Mixers::iterator first_postprocessing_mixer_ = mixers_.before_begin();
+-
+-  // A cached map of ColorId => SkColor mappings for this provider.
+-  mutable ColorMap color_map_;
+-};
++const ColorProvider::ColorMap&
++ColorProvider::ColorProviderInternal::color_map_for_testing() {
++  return color_map_;
++}
+ 
+ ////////////////////////////////////////////////////////////////////////////////
+ // ColorProvider:
+diff --git a/ui/color/color_provider.h b/ui/color/color_provider.h
+index 50fff33ae6ab6..4946d5a0885a0 100644
+--- a/ui/color/color_provider.h
++++ b/ui/color/color_provider.h
+@@ -5,6 +5,7 @@
+ #ifndef UI_COLOR_COLOR_PROVIDER_H_
+ #define UI_COLOR_COLOR_PROVIDER_H_
+ 
++#include <forward_list>
+ #include <map>
+ #include <memory>
+ #include <optional>
+@@ -63,7 +64,36 @@ class COMPONENT_EXPORT(COLOR) ColorProvider {
+   // ColorProviderInternal provides the actual implementation of ColorProvider.
+   // It's non-movable and non-copyable so that ColorMixer's callbacks can safely
+   // bind to it.
+-  class ColorProviderInternal;
++  class ColorProviderInternal {
++   public:
++    using Mixers = std::forward_list<ColorMixer>;
++
++    ColorProviderInternal() = default;
++    ColorProviderInternal(const ColorProviderInternal&) = delete;
++    ColorProviderInternal& operator=(const ColorProviderInternal&) = delete;
++    ~ColorProviderInternal() = default;
++
++    ColorMixer& AddMixer();
++    ColorMixer& AddPostprocessingMixer();
++    SkColor GetColor(ColorId id) const;
++    const ColorMixer* GetLastNonPostprocessingMixer() const;
++    bool HasMixers() const;
++
++    void SetColorForTesting(ColorId id, SkColor color);
++    void GenerateColorMapForTesting();
++    const ColorProvider::ColorMap& color_map_for_testing();
++
++   private:
++    // The entire color pipeline, in reverse order (that is, the "last" mixer is
++    // at the front).
++    Mixers mixers_;
++
++    // The first mixer in the chain that is a "postprocessing" mixer.
++    Mixers::iterator first_postprocessing_mixer_ = mixers_.before_begin();
++
++    // A cached map of ColorId => SkColor mappings for this provider.
++    mutable ColorMap color_map_;
++  };
+ 
+   std::unique_ptr<ColorProviderInternal> internal_ =
+       std::make_unique<ColorProviderInternal>();
+-- 
+2.40.1
+

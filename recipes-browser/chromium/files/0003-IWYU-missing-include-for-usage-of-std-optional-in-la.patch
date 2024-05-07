@@ -1,0 +1,28 @@
+From bba00300814f02f29f73353807941716468937b5 Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Mon, 6 May 2024 10:37:40 +0200
+Subject: IWYU: missing include for usage of std::optional in
+ large_icon_service.h
+
+Bug: 41455655
+Change-Id: Ib1f17c724ab70f36c8f3857b3a8353da2f10509e
+---
+ components/favicon/core/large_icon_service.h | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/components/favicon/core/large_icon_service.h b/components/favicon/core/large_icon_service.h
+index 1df03834d43f1..67e11ae185330 100644
+--- a/components/favicon/core/large_icon_service.h
++++ b/components/favicon/core/large_icon_service.h
+@@ -5,6 +5,8 @@
+ #ifndef COMPONENTS_FAVICON_CORE_LARGE_ICON_SERVICE_H_
+ #define COMPONENTS_FAVICON_CORE_LARGE_ICON_SERVICE_H_
+ 
++#include <optional>
++
+ #include "base/task/cancelable_task_tracker.h"
+ #include "components/favicon_base/favicon_callback.h"
+ #include "components/keyed_service/core/keyed_service.h"
+-- 
+2.40.1
+
