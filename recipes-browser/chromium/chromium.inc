@@ -187,6 +187,8 @@ def gn_arch_name(yocto_arch):
     except KeyError:
         bb.msg.fatal('"%s" is not a supported architecture.' % yocto_arch)
 
+HOST_LINKER_LDFLAGS = " ${@bb.utils.contains('PACKAGECONFIG', 'use-gold', '-fuse-ld=gold', '', d)}"
+
 # Use ChromeOS toolchains, as they are also working for cross compiling
 # Chrome. They should allow to use GCC toolchains accordingly.
 GN_ARGS += '\
@@ -195,7 +197,7 @@ GN_ARGS += '\
   cros_host_ar="${BUILD_AR}" \
   cros_host_cc="${BUILD_CC}" \
   cros_host_cxx="${@d.getVar('BUILD_CXX', True).strip()}" \
-  cros_host_extra_ldflags="${BUILD_LDFLAGS}" \
+  cros_host_extra_ldflags="${BUILD_LDFLAGS} ${HOST_LINKER_LDFLAGS}" \
   custom_toolchain="//build/toolchain/cros:target" \
   is_clang=false \
   use_custom_libcxx=false \
@@ -211,6 +213,7 @@ GN_ARGS += '\
   cros_v8_snapshot_ar="${BUILD_AR}" \
   cros_v8_snapshot_cc="${BUILD_CC}" \
   cros_v8_snapshot_cxx="${BUILD_CXX}" \
+  cros_v8_snapshot_extra_ldflags="${HOST_LINKER_LDFLAGS}" \
   gold_path="" \
   use_v8_context_snapshot=false \
 '
