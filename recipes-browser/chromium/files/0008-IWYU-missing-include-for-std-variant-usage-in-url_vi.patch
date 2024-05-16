@@ -1,4 +1,4 @@
-From 93b0dbb1b7e06f2e8d82a2c886044aea88c384ef Mon Sep 17 00:00:00 2001
+From 610dc1d265339191158bce0452597d4e5588d190 Mon Sep 17 00:00:00 2001
 From: Jose Dapena Paz <jdapena@igalia.com>
 Date: Mon, 6 May 2024 14:25:23 +0200
 Subject: IWYU: missing include for std::variant usage in url_visit.h
@@ -10,13 +10,13 @@ Change-Id: I1c5d2ef5d230d60a62e9c3aee8709b73b5b85fae
  1 file changed, 1 insertion(+)
 
 diff --git a/components/visited_url_ranking/public/url_visit.h b/components/visited_url_ranking/public/url_visit.h
-index 73ab3f8233dad..ba3363ccdd006 100644
+index 8cdd99db92e40..7c786a9c10e36 100644
 --- a/components/visited_url_ranking/public/url_visit.h
 +++ b/components/visited_url_ranking/public/url_visit.h
-@@ -7,6 +7,7 @@
- 
+@@ -8,6 +8,7 @@
  #include <memory>
  #include <optional>
+ #include <set>
 +#include <variant>
  #include <vector>
  

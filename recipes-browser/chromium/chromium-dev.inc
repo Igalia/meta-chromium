@@ -1,11 +1,11 @@
 require chromium-upstream-tarball.inc
 
-PV = "126.0.6452.3"
+PV = "126.0.6468.2"
 # This should be obtained running tools/rust/update_rust.py --print-package-version
 # in the tarball release
 RUST_PACKAGE_VERSION = "31e6e8c6c5b6ce62656c922c7384d3376018c980-1-llvmorg-19-init-9433-g76ea5feb"
 
-SRC_URI[main.sha256sum] = "254218846e27d40a91b379997841b9a192add6412087c686ef11417f0b99903c"
+SRC_URI[main.sha256sum] = "fd455c9a598dd6d2d7d3fbb17143900512e7fd502fe4addea0d9134441e88f78"
 SRC_URI[rust.sha256sum] = "eeeddb70ee12155df7558c0eb8481a16ff255e1cbe5040b158657b2b5e0d0881"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
@@ -153,21 +153,18 @@ LIC_FILES_CHKSUM = "\
 
 # Upstreamable patches
 SRC_URI += " \
-  file://0001-IWYU-missing-include-for-std-vector-usage-in-poison_.patch \
-  file://0002-libstdc-move-ColorProviderInternal-to-.h.patch \
-  file://0003-IWYU-missing-include-for-usage-of-std-optional-in-la.patch \
-  file://0004-GCC-Bring-back-SFINAE-for-blink-NativeValueTraits.patch \
-  file://0005-GCC-missing-template-instanciation-in-CSS-parsing-ut.patch \
-  file://0006-IWYU-missing-include-for-std-variant-usage-in-url_vi.patch \
-  file://0007-IWYU-missing-include-for-usage-of-std-format-in-read.patch \
+  file://0001-GCC-Bring-back-SFINAE-for-blink-NativeValueTraits.patch \
+  file://0002-IWYU-missing-include-for-usage-of-uint64_t-in-webgpu.patch \
+  file://0003-libstdc-move-ColorProviderInternal-to-.h.patch \
+  file://0004-GCC-returning-an-std-optional-of-a-value-requires-mo.patch \
+  file://0005-libstdc-real-time-reporting-bindings-vector-requires.patch \
+  file://0006-IWYU-missing-include-for-usage-of-std-optional-in-te.patch \
+  file://0007-IWYU-missing-include-for-usage-of-std-optional-in-ru.patch \
+  file://0008-IWYU-missing-include-for-std-variant-usage-in-url_vi.patch \
+  file://0009-IWYU-missing-include-for-usage-of-std-format-in-read.patch \
+  file://0010-Fix-linking-Rust-libraries-with-GNU-linkers.patch \
   file://0001-Reapply-IWYU-fix-for-std-string-usage-in-instrumenta.patch;patchdir=third_party/ruy/src \
   file://0001-Revert-Cleanup-replace-DirtyObjectType-check-with-co.patch;patchdir=third_party/angle \
-"
-
-# Upstream patches
-SRC_URI += " \
-  file://0001-Fix-Linux-ARM-build-issue-with-soda_util.cc.patch \
-  file://0002-Fix-Linux-ARM-build-issue-with-screen_ai_install_sta.patch \
 "
 
 # ARM build should not use Clang MTE flags

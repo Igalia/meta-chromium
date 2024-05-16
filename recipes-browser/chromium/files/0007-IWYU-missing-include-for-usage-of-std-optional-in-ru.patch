@@ -1,0 +1,27 @@
+From 630a06be742e7ccf4b4a33269d297f43d3b1888e Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Tue, 14 May 2024 17:29:13 +0200
+Subject: IWYU: missing include for usage of std::optional in run_segmenter.h
+
+Bug: 41455655
+Change-Id: If28c13730926447b1d362ecfe08ae0bc44112876
+---
+ .../blink/renderer/platform/fonts/shaping/run_segmenter.h       | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/third_party/blink/renderer/platform/fonts/shaping/run_segmenter.h b/third_party/blink/renderer/platform/fonts/shaping/run_segmenter.h
+index 406c4070e9148..77260fbf2920e 100644
+--- a/third_party/blink/renderer/platform/fonts/shaping/run_segmenter.h
++++ b/third_party/blink/renderer/platform/fonts/shaping/run_segmenter.h
+@@ -7,6 +7,8 @@
+ 
+ #include <unicode/uscript.h>
+ #include <memory>
++#include <optional>
++
+ #include "third_party/blink/renderer/platform/fonts/font_orientation.h"
+ #include "third_party/blink/renderer/platform/fonts/orientation_iterator.h"
+ #include "third_party/blink/renderer/platform/fonts/script_run_iterator.h"
+-- 
+2.40.1
+

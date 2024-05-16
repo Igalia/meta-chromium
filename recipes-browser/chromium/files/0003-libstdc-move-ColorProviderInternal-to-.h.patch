@@ -1,4 +1,4 @@
-From 122c8a4bf25ec03b6dc3062fee7eb59d09548b40 Mon Sep 17 00:00:00 2001
+From 2a988d3b638a9d0d854fb841a61d0183955d2753 Mon Sep 17 00:00:00 2001
 From: Jose Dapena Paz <jdapena@igalia.com>
 Date: Mon, 6 May 2024 10:24:43 +0200
 Subject: libstdc++: move ColorProviderInternal to .h
@@ -12,12 +12,12 @@ To fix the problem, move the ColorProviderInternal declaration to .h
 Bug: 41455655
 Change-Id: I713403f6c2a68616467304913b0b7df3053b5ada
 ---
- ui/color/color_provider.cc | 145 +++++++++++++++++--------------------
+ ui/color/color_provider.cc | 148 +++++++++++++++++--------------------
  ui/color/color_provider.h  |  32 +++++++-
- 2 files changed, 97 insertions(+), 80 deletions(-)
+ 2 files changed, 100 insertions(+), 80 deletions(-)
 
 diff --git a/ui/color/color_provider.cc b/ui/color/color_provider.cc
-index 1597715de1f63..186ec88c0ba18 100644
+index 1597715de1f63..4dd66791be748 100644
 --- a/ui/color/color_provider.cc
 +++ b/ui/color/color_provider.cc
 @@ -4,7 +4,6 @@
@@ -28,13 +28,20 @@ index 1597715de1f63..186ec88c0ba18 100644
  #include <map>
  #include <set>
  #include <utility>
-@@ -21,99 +20,87 @@ namespace ui {
+@@ -21,99 +20,90 @@ namespace ui {
  ////////////////////////////////////////////////////////////////////////////////
  // ColorProvider::ColorProviderInternal:
  
 -class ColorProvider::ColorProviderInternal {
 - public:
 -  using Mixers = std::forward_list<ColorMixer>;
++ColorProvider::ColorProviderInternal::ColorProviderInternal() = default;
++ColorProvider::ColorProviderInternal::~ColorProviderInternal() = default;
+ 
+-  ColorProviderInternal() = default;
+-  ColorProviderInternal(const ColorProviderInternal&) = delete;
+-  ColorProviderInternal& operator=(const ColorProviderInternal&) = delete;
+-  ~ColorProviderInternal() = default;
 +ColorMixer& ColorProvider::ColorProviderInternal::AddMixer() {
 +  color_map_.clear();
 +  mixers_.emplace_after(
@@ -45,17 +52,19 @@ index 1597715de1f63..186ec88c0ba18 100644
 +          &ColorProvider::ColorProviderInternal::GetLastNonPostprocessingMixer,
 +          base::Unretained(this)));
  
--  ColorProviderInternal() = default;
--  ColorProviderInternal(const ColorProviderInternal&) = delete;
--  ColorProviderInternal& operator=(const ColorProviderInternal&) = delete;
--  ~ColorProviderInternal() = default;
-+  return *std::next(first_postprocessing_mixer_, 1);
-+}
- 
 -  ColorMixer& AddMixer() {
 -    color_map_.clear();
 -    mixers_.emplace_after(
 -        first_postprocessing_mixer_,
+-        base::BindRepeating([](const ColorMixer* mixer) { return mixer; },
+-                            GetLastNonPostprocessingMixer()),
+-        base::BindRepeating(&ColorProvider::ColorProviderInternal::
+-                                GetLastNonPostprocessingMixer,
+-                            base::Unretained(this)));
++  return *std::next(first_postprocessing_mixer_, 1);
++}
+ 
+-    return *std::next(first_postprocessing_mixer_, 1);
 +ColorMixer& ColorProvider::ColorProviderInternal::AddPostprocessingMixer() {
 +  color_map_.clear();
 +  if (first_postprocessing_mixer_ == mixers_.before_begin()) {
@@ -68,13 +77,7 @@ index 1597715de1f63..186ec88c0ba18 100644
 +  } else {
 +    // Other postprocessing mixers point to the next postprocessing mixer.
 +    auto previous_mixer_getter =
-         base::BindRepeating([](const ColorMixer* mixer) { return mixer; },
--                            GetLastNonPostprocessingMixer()),
--        base::BindRepeating(&ColorProvider::ColorProviderInternal::
--                                GetLastNonPostprocessingMixer,
--                            base::Unretained(this)));
--
--    return *std::next(first_postprocessing_mixer_, 1);
++        base::BindRepeating([](const ColorMixer* mixer) { return mixer; },
 +                            base::Unretained(&mixers_.front()));
 +    mixers_.emplace_front(previous_mixer_getter, previous_mixer_getter);
    }
@@ -153,6 +156,11 @@ index 1597715de1f63..186ec88c0ba18 100644
 +bool ColorProvider::ColorProviderInternal::HasMixers() const {
 +  return !mixers_.empty();
 +}
++
++void ColorProvider::ColorProviderInternal::SetColorForTesting(ColorId id,
++                                                              SkColor color) {
++  color_map_[id] = color;
++}
  
 -  void GenerateColorMapForTesting() {
 -    for (const auto& mixer : mixers_) {
@@ -160,11 +168,6 @@ index 1597715de1f63..186ec88c0ba18 100644
 -      for (const auto color_id : mixer_color_ids) {
 -        GetColor(color_id);
 -      }
-+void ColorProvider::ColorProviderInternal::SetColorForTesting(ColorId id,
-+                                                              SkColor color) {
-+  color_map_[id] = color;
-+}
-+
 +void ColorProvider::ColorProviderInternal::GenerateColorMapForTesting() {
 +  for (const auto& mixer : mixers_) {
 +    const auto mixer_color_ids = mixer.GetDefinedColorIds();
@@ -195,7 +198,7 @@ index 1597715de1f63..186ec88c0ba18 100644
  ////////////////////////////////////////////////////////////////////////////////
  // ColorProvider:
 diff --git a/ui/color/color_provider.h b/ui/color/color_provider.h
-index 50fff33ae6ab6..4946d5a0885a0 100644
+index 50fff33ae6ab6..1821752b27e4d 100644
 --- a/ui/color/color_provider.h
 +++ b/ui/color/color_provider.h
 @@ -5,6 +5,7 @@
@@ -215,10 +218,10 @@ index 50fff33ae6ab6..4946d5a0885a0 100644
 +   public:
 +    using Mixers = std::forward_list<ColorMixer>;
 +
-+    ColorProviderInternal() = default;
++    ColorProviderInternal();
 +    ColorProviderInternal(const ColorProviderInternal&) = delete;
 +    ColorProviderInternal& operator=(const ColorProviderInternal&) = delete;
-+    ~ColorProviderInternal() = default;
++    ~ColorProviderInternal();
 +
 +    ColorMixer& AddMixer();
 +    ColorMixer& AddPostprocessingMixer();

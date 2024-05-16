@@ -1,0 +1,34 @@
+From 4b76a468b406f88d96823ccbcc233ff16d1e2409 Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Thu, 16 May 2024 13:44:10 +0200
+Subject: Fix linking Rust libraries with GNU linkers
+
+GNU linkers work as smart linkers, and unresolved symbols are
+progressively resolved with later components being linked. That means
+users of a library should be linked before the library.
+
+As Rust libraries are sorted by name, linking will break. To solve
+this, put all Rust libraries in a linking group.
+
+Bug: 40945821
+Change-Id: Ie064ec05264673ac9756953a764da5588923ed4b
+---
+ build/toolchain/gcc_toolchain.gni | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/build/toolchain/gcc_toolchain.gni b/build/toolchain/gcc_toolchain.gni
+index 154369f1ff5ee..4479511ca61e5 100644
+--- a/build/toolchain/gcc_toolchain.gni
++++ b/build/toolchain/gcc_toolchain.gni
+@@ -629,7 +629,7 @@ template("single_gcc_toolchain") {
+         start_group_flag = "-Wl,--start-group"
+         end_group_flag = "-Wl,--end-group "
+       }
+-      link_command = "$ld {{ldflags}}${extra_ldflags} -o \"$unstripped_outfile\" $start_group_flag @\"$rspfile\" {{solibs}} $end_group_flag {{libs}} {{rlibs}}"
++      link_command = "$ld {{ldflags}}${extra_ldflags} -o \"$unstripped_outfile\" $start_group_flag @\"$rspfile\" {{solibs}} $end_group_flag {{libs}} $start_group_flag {{rlibs}} $end_group_flag"
+ 
+       # Generate a map file to be used for binary size analysis.
+       # Map file adds ~10% to the link time on a z620.
+-- 
+2.40.1
+
