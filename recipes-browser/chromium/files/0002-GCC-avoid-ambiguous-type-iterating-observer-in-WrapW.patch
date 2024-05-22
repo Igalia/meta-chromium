@@ -1,0 +1,37 @@
+From 98fa52e5254ce461c67ffc53a8b9362b9d46e579 Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Mon, 20 May 2024 14:23:57 +0200
+Subject: GCC: avoid ambiguous type iterating observer in
+ WrapWithPrefixPrefStore
+
+Bug: 40565911
+Change-Id: Ie6c84dcf3f207db35614461ef4b1b99df769883d
+---
+ components/prefs/wrap_with_prefix_pref_store.cc | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/components/prefs/wrap_with_prefix_pref_store.cc b/components/prefs/wrap_with_prefix_pref_store.cc
+index 15378aa89ad41..9a6e966b9ad4a 100644
+--- a/components/prefs/wrap_with_prefix_pref_store.cc
++++ b/components/prefs/wrap_with_prefix_pref_store.cc
+@@ -137,7 +137,7 @@ void WrapWithPrefixPrefStore::OnPrefValueChanged(const std::string& key) {
+     return;
+   }
+   std::string original_key(RemoveDottedPrefix(key));
+-  for (Observer& observer : observers_) {
++  for (PrefStore::Observer& observer : observers_) {
+     observer.OnPrefValueChanged(original_key);
+   }
+ }
+@@ -148,7 +148,7 @@ void WrapWithPrefixPrefStore::OnInitializationCompleted(bool succeeded) {
+       read_error_delegate_.has_value() && read_error_delegate_.value()) {
+     read_error_delegate_.value()->OnError(read_error);
+   }
+-  for (Observer& observer : observers_) {
++  for (PrefStore::Observer& observer : observers_) {
+     observer.OnInitializationCompleted(succeeded);
+   }
+ }
+-- 
+2.40.1
+

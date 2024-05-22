@@ -1,0 +1,51 @@
+From e99700259ba1f648aa6142660e72add8a1a40be2 Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Mon, 20 May 2024 15:38:29 +0200
+Subject: libstdc++: move ColorProviderInternal to .h
+
+ColorProvider includes an std::unique_ptr of its ColorProviderInternal
+member that is default-declared with std::make_unique. In libstdc++
+this requires the class declaration, so compilation is broken.
+
+To fix the problem, do initialization in constructor in .cc file.
+
+Bug: 41455655
+Change-Id: I713403f6c2a68616467304913b0b7df3053b5ada
+---
+ ui/color/color_provider.cc | 4 ++--
+ ui/color/color_provider.h  | 3 +--
+ 2 files changed, 3 insertions(+), 4 deletions(-)
+
+diff --git a/ui/color/color_provider.cc b/ui/color/color_provider.cc
+index 1597715de1f63..10a129adb6388 100644
+--- a/ui/color/color_provider.cc
++++ b/ui/color/color_provider.cc
+@@ -118,9 +118,9 @@ class ColorProvider::ColorProviderInternal {
+ ////////////////////////////////////////////////////////////////////////////////
+ // ColorProvider:
+ 
+-ColorProvider::ColorProvider() = default;
++ColorProvider::ColorProvider() : internal_(std::make_unique<ColorProviderInternal>()) {}
+ 
+-ColorProvider::ColorProvider(ColorProvider&&) = default;
++ColorProvider::ColorProvider(ColorProvider&& other) : internal_(std::move(other.internal_)) {}
+ 
+ ColorProvider& ColorProvider::operator=(ColorProvider&&) = default;
+ 
+diff --git a/ui/color/color_provider.h b/ui/color/color_provider.h
+index 50fff33ae6ab6..6ac6ed6938cf2 100644
+--- a/ui/color/color_provider.h
++++ b/ui/color/color_provider.h
+@@ -65,8 +65,7 @@ class COMPONENT_EXPORT(COLOR) ColorProvider {
+   // bind to it.
+   class ColorProviderInternal;
+ 
+-  std::unique_ptr<ColorProviderInternal> internal_ =
+-      std::make_unique<ColorProviderInternal>();
++  std::unique_ptr<ColorProviderInternal> internal_;
+ };
+ 
+ }  // namespace ui
+-- 
+2.40.1
+

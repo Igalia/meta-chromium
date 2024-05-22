@@ -1,4 +1,4 @@
-From 49b235dd01d8c98a86ca541867f26f49b60f8a81 Mon Sep 17 00:00:00 2001
+From 51347c64231802e05d2f5c10fdaa523ff04a092a Mon Sep 17 00:00:00 2001
 From: Jose Dapena Paz <jdapena@igalia.com>
 Date: Tue, 14 May 2024 11:02:04 +0200
 Subject: IWYU: missing include for usage of uint64_t in

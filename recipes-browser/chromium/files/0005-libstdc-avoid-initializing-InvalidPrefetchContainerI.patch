@@ -1,0 +1,39 @@
+From b19192c39c4ef983773e4253d0d52250f86857a6 Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Mon, 20 May 2024 19:44:52 +0200
+Subject: libstdc++: avoid initializing InvalidPrefetchContainerIdForTesting
+ from literal
+
+The literal initialization of std::string in libstdc++ is failing
+as the resulting expression is not constexpr.
+
+Bug: 41455655
+Change-Id: If0b6744329399745de4e4af620cd6385b9ae8b4e
+---
+ content/browser/preloading/prefetch/prefetch_test_util.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/content/browser/preloading/prefetch/prefetch_test_util.h b/content/browser/preloading/prefetch/prefetch_test_util.h
+index 7b557da51cf4d..eb9506fb627dc 100644
+--- a/content/browser/preloading/prefetch/prefetch_test_util.h
++++ b/content/browser/preloading/prefetch/prefetch_test_util.h
+@@ -6,6 +6,7 @@
+ #define CONTENT_BROWSER_PRELOADING_PREFETCH_PREFETCH_TEST_UTIL_H_
+ 
+ #include <memory>
++#include <string>
+ 
+ #include "base/types/strong_alias.h"
+ #include "third_party/blink/public/common/tokens/tokens.h"
+@@ -16,7 +17,7 @@ namespace content::test {
+ using PrefetchContainerIdForTesting =
+     base::StrongAlias<class PrefetchContainerIdForTestingTag, std::string>;
+ static constexpr PrefetchContainerIdForTesting
+-    InvalidPrefetchContainerIdForTesting = PrefetchContainerIdForTesting("");
++    InvalidPrefetchContainerIdForTesting;
+ 
+ class TestPrefetchWatcherImpl;
+ 
+-- 
+2.40.1
+

@@ -1,0 +1,62 @@
+From b33b1b238b1373df48f40e794e5260d25dbb7e8c Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Tue, 21 May 2024 17:00:56 +0200
+Subject: Add more template instanciations in css parsing utils
+
+GCC linking is complaining because of missing implementation of
+several helpers. Added template instanciation for them.
+
+Bug: 40565911
+Change-Id: Ifc8c08722452bdfc2ac0e6de9eea288317ef9855
+---
+ .../core/css/properties/css_parsing_utils.cc  | 20 +++++++++++++++++++
+ 1 file changed, 20 insertions(+)
+
+diff --git a/third_party/blink/renderer/core/css/properties/css_parsing_utils.cc b/third_party/blink/renderer/core/css/properties/css_parsing_utils.cc
+index edc4b1b223353..eb7be64ab6db3 100644
+--- a/third_party/blink/renderer/core/css/properties/css_parsing_utils.cc
++++ b/third_party/blink/renderer/core/css/properties/css_parsing_utils.cc
+@@ -1886,6 +1886,9 @@ CSSCustomIdentValue* ConsumeDashedIdent(T& stream,
+   return ConsumeCustomIdent(stream, context);
+ }
+ 
++template CSSCustomIdentValue* ConsumeDashedIdent(CSSParserTokenStream&, const CSSParserContext&);
++template CSSCustomIdentValue* ConsumeDashedIdent(CSSParserTokenRange&, const CSSParserContext&);
++
+ CSSStringValue* ConsumeString(CSSParserTokenRange& range) {
+   if (range.Peek().GetType() != kStringToken) {
+     return nullptr;
+@@ -4038,6 +4041,20 @@ CSSValue* ConsumeImage(
+   return nullptr;
+ }
+ 
++template CSSValue* ConsumeImage(
++    CSSParserTokenStream& stream,
++    const CSSParserContext& context,
++    const ConsumeGeneratedImagePolicy generated_image_policy,
++    const ConsumeStringUrlImagePolicy string_url_image_policy,
++    const ConsumeImageSetImagePolicy image_set_image_policy);
++template CSSValue* ConsumeImage(
++    CSSParserTokenRange& stream,
++    const CSSParserContext& context,
++    const ConsumeGeneratedImagePolicy generated_image_policy,
++    const ConsumeStringUrlImagePolicy string_url_image_policy,
++    const ConsumeImageSetImagePolicy image_set_image_policy);
++
++
+ // https://drafts.csswg.org/css-shapes-1/#typedef-shape-box
+ CSSIdentifierValue* ConsumeShapeBox(CSSParserTokenStream& stream) {
+   return ConsumeIdent<CSSValueID::kContentBox, CSSValueID::kPaddingBox,
+@@ -8114,6 +8131,9 @@ CSSValue* ConsumeTransformList(T& range,
+   return list;
+ }
+ 
++template CSSValue* ConsumeTransformList(CSSParserTokenStream&, const CSSParserContext&, const CSSParserLocalContext&);
++template CSSValue* ConsumeTransformList(CSSParserTokenRange&, const CSSParserContext&, const CSSParserLocalContext&);
++
+ CSSValue* ConsumeTransitionProperty(CSSParserTokenStream& stream,
+                                     const CSSParserContext& context) {
+   const CSSParserToken& token = stream.Peek();
+-- 
+2.40.1
+

@@ -1,12 +1,12 @@
 require chromium-upstream-tarball.inc
 
-PV = "126.0.6468.2"
+PV = "127.0.6485.0"
 # This should be obtained running tools/rust/update_rust.py --print-package-version
 # in the tarball release
-RUST_PACKAGE_VERSION = "31e6e8c6c5b6ce62656c922c7384d3376018c980-1-llvmorg-19-init-9433-g76ea5feb"
+RUST_PACKAGE_VERSION = "32dd3795bce8b347fda786529cf5e42a813e0b7d-2-llvmorg-19-init-10646-g084e2b53"
 
-SRC_URI[main.sha256sum] = "fd455c9a598dd6d2d7d3fbb17143900512e7fd502fe4addea0d9134441e88f78"
-SRC_URI[rust.sha256sum] = "eeeddb70ee12155df7558c0eb8481a16ff255e1cbe5040b158657b2b5e0d0881"
+SRC_URI[main.sha256sum] = "79421d98c1b8e980d7b8a149c3919b97c47f5df34ba6407853b8ffe569aaddef"
+SRC_URI[rust-toolchain.sha256sum] = "e7e236fe6e61b7a41ba6b1e4bc64e91119359cdddce268597c6328b9fea8d76d"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -153,16 +153,17 @@ LIC_FILES_CHKSUM = "\
 
 # Upstreamable patches
 SRC_URI += " \
-  file://0001-GCC-Bring-back-SFINAE-for-blink-NativeValueTraits.patch \
-  file://0002-IWYU-missing-include-for-usage-of-uint64_t-in-webgpu.patch \
-  file://0003-libstdc-move-ColorProviderInternal-to-.h.patch \
-  file://0004-GCC-returning-an-std-optional-of-a-value-requires-mo.patch \
-  file://0005-libstdc-real-time-reporting-bindings-vector-requires.patch \
-  file://0006-IWYU-missing-include-for-usage-of-std-optional-in-te.patch \
-  file://0007-IWYU-missing-include-for-usage-of-std-optional-in-ru.patch \
-  file://0008-IWYU-missing-include-for-std-variant-usage-in-url_vi.patch \
-  file://0009-IWYU-missing-include-for-usage-of-std-format-in-read.patch \
-  file://0010-Fix-linking-Rust-libraries-with-GNU-linkers.patch \
+  file://0001-IWYU-usage-of-std-optional-requires-include-in-card_.patch \
+  file://0002-GCC-avoid-ambiguous-type-iterating-observer-in-WrapW.patch \
+  file://0003-IWYU-missing-include-for-usage-of-uint64_t-in-webgpu.patch \
+  file://0004-libstdc-move-ColorProviderInternal-to-.h.patch \
+  file://0005-libstdc-avoid-initializing-InvalidPrefetchContainerI.patch \
+  file://0006-GCC-PhysicalFragment-constructor-cannot-be-constexpr.patch \
+  file://0007-Fix-linking-Rust-libraries-with-GNU-linkers.patch \
+  file://0008-GCC-Bring-back-SFINAE-for-blink-NativeValueTraits.patch \
+  file://0009-Add-more-template-instanciations-in-css-parsing-util.patch \
+  file://0010-IWYU-usage-of-std-optional-requires-include-in-trans.patch \
+  file://0011-Do-not-use-std-format-in-ReadAnythingAppModel.patch \
   file://0001-Reapply-IWYU-fix-for-std-string-usage-in-instrumenta.patch;patchdir=third_party/ruy/src \
   file://0001-Revert-Cleanup-replace-DirtyObjectType-check-with-co.patch;patchdir=third_party/angle \
 "
@@ -186,6 +187,9 @@ GN_ARGS:append = " v8_enable_static_roots=false "
 
 # Using Skia Fontations breaks Chromium linking because of missing Rust symbols
 GN_ARGS:append = " use_typeface_fontations=false "
+
+# Rust fails to generate the bindings for crabbyavif with libstdc++
+GN_ARGS:append = " enable_av1_decoder=false "
 
 do_install:append() {
         install -m 0755 chrome_crashpad_handler ${D}${libdir}/chromium/chrome_crashpad_handler
