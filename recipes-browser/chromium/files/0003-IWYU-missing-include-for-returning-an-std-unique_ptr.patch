@@ -1,0 +1,61 @@
+From 95e935698e2e2a3fe278075c43f7b1e2360e351d Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Sat, 1 Jun 2024 09:46:14 +0000
+Subject: IWYU: missing include for returning an std::unique_ptr of
+ DownloadItemRenameHandler
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Bug: 41455655
+Change-Id: Idb6c011b4633bc52b869896f9ca8b76743a63c01
+Reviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/5587739
+Reviewed-by: Min Qin <qinmin@chromium.org>
+Commit-Queue: José Dapena Paz <jdapena@igalia.com>
+Reviewed-by: Nasko Oskov <nasko@chromium.org>
+Cr-Commit-Position: refs/heads/main@{#1309052}
+---
+ chrome/browser/download/chrome_download_manager_delegate.cc      | 1 +
+ .../download/internal/common/download_item_impl_delegate.cc      | 1 +
+ content/public/browser/download_manager_delegate.cc              | 1 +
+ 3 files changed, 3 insertions(+)
+
+diff --git a/chrome/browser/download/chrome_download_manager_delegate.cc b/chrome/browser/download/chrome_download_manager_delegate.cc
+index d68847eff9f71..2628f1751cd14 100644
+--- a/chrome/browser/download/chrome_download_manager_delegate.cc
++++ b/chrome/browser/download/chrome_download_manager_delegate.cc
+@@ -63,6 +63,7 @@
+ #include "components/download/public/common/download_features.h"
+ #include "components/download/public/common/download_interrupt_reasons.h"
+ #include "components/download/public/common/download_item.h"
++#include "components/download/public/common/download_item_rename_handler.h"
+ #include "components/download/public/common/download_stats.h"
+ #include "components/offline_pages/buildflags/buildflags.h"
+ #include "components/pdf/common/constants.h"
+diff --git a/components/download/internal/common/download_item_impl_delegate.cc b/components/download/internal/common/download_item_impl_delegate.cc
+index 29d5a0f53ad0d..53c308235ae35 100644
+--- a/components/download/internal/common/download_item_impl_delegate.cc
++++ b/components/download/internal/common/download_item_impl_delegate.cc
+@@ -9,6 +9,7 @@
+ #include "build/build_config.h"
+ #include "components/download/public/common/download_danger_type.h"
+ #include "components/download/public/common/download_item_impl.h"
++#include "components/download/public/common/download_item_rename_handler.h"
+ #include "components/download/public/common/download_target_info.h"
+ 
+ #if BUILDFLAG(IS_ANDROID)
+diff --git a/content/public/browser/download_manager_delegate.cc b/content/public/browser/download_manager_delegate.cc
+index 490b675f0543a..945f104deef2b 100644
+--- a/content/public/browser/download_manager_delegate.cc
++++ b/content/public/browser/download_manager_delegate.cc
+@@ -8,6 +8,7 @@
+ #include "base/functional/callback_helpers.h"
+ #include "base/task/single_thread_task_runner.h"
+ #include "components/download/public/common/download_item.h"
++#include "components/download/public/common/download_item_rename_handler.h"
+ #include "content/public/browser/web_contents_delegate.h"
+ 
+ namespace content {
+-- 
+2.43.0
+

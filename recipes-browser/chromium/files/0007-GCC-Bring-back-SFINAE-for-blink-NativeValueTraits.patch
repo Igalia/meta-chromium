@@ -1,4 +1,4 @@
-From ed5eefd584622b71c70c6e9803cc7920574599c0 Mon Sep 17 00:00:00 2001
+From 91d1215b5f0fb876dc0c339ddc64cf0a080d2737 Mon Sep 17 00:00:00 2001
 From: Ivan Pavlotsky <ivan.pavlotsky@lge.com>
 Date: Fri, 12 Jan 2024 14:34:49 +0300
 Subject: GCC: Bring back SFINAE for blink::NativeValueTraits
@@ -53,5 +53,5 @@ index a57ea284dea81..6325fd9eb6f70 100644
    static T* NativeValue(v8::Isolate* isolate,
                          v8::Local<v8::Value> value,
 -- 
-2.40.1
+2.43.0
 

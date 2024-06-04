@@ -1,11 +1,11 @@
 require chromium-upstream-tarball.inc
 
-PV = "127.0.6485.0"
+PV = "127.0.6510.4"
 # This should be obtained running tools/rust/update_rust.py --print-package-version
 # in the tarball release
 RUST_PACKAGE_VERSION = "32dd3795bce8b347fda786529cf5e42a813e0b7d-2-llvmorg-19-init-10646-g084e2b53"
 
-SRC_URI[main.sha256sum] = "79421d98c1b8e980d7b8a149c3919b97c47f5df34ba6407853b8ffe569aaddef"
+SRC_URI[main.sha256sum] = "3295dcd1b20c25d1b9d674cbc40854b5a3592f52c4094473cefb73e613484922"
 SRC_URI[rust-toolchain.sha256sum] = "e7e236fe6e61b7a41ba6b1e4bc64e91119359cdddce268597c6328b9fea8d76d"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
@@ -73,7 +73,7 @@ LIC_FILES_CHKSUM = "\
   file://${S}/third_party/decklink/LICENSE;md5=85b197f7b7b1ef270b01a1b6377be50e \
   file://${S}/third_party/dom_distiller_js/LICENSE;md5=6cd778870ce5c0c08c8e16fbdf378532 \
   file://${S}/third_party/expat/src/expat/COPYING;md5=7b3b078238d0901d3b339289117cb7fb \
-  file://${S}/third_party/ffmpeg/CREDITS.chromium;md5=dbec96c09140718ea111e66592c92e34 \
+  file://${S}/third_party/ffmpeg/CREDITS.chromium;md5=a0156e1de86eb34eb5d75486b539aa58 \
   file://${S}/third_party/flac/COPYING.Xiph;md5=3d6da238b5b57a0965d6730291119f65 \
   file://${S}/third_party/flatbuffers/LICENSE;md5=a873c5645c184d51e0f9b34e1d7cf559 \
   file://${S}/third_party/fontconfig/src/COPYING;md5=00252fd272bf2e722925613ad74cb6c7 \
@@ -153,19 +153,18 @@ LIC_FILES_CHKSUM = "\
 
 # Upstreamable patches
 SRC_URI += " \
-  file://0001-IWYU-usage-of-std-optional-requires-include-in-card_.patch \
-  file://0002-GCC-avoid-ambiguous-type-iterating-observer-in-WrapW.patch \
-  file://0003-IWYU-missing-include-for-usage-of-uint64_t-in-webgpu.patch \
-  file://0004-libstdc-move-ColorProviderInternal-to-.h.patch \
-  file://0005-libstdc-avoid-initializing-InvalidPrefetchContainerI.patch \
-  file://0006-GCC-PhysicalFragment-constructor-cannot-be-constexpr.patch \
-  file://0007-Fix-linking-Rust-libraries-with-GNU-linkers.patch \
-  file://0008-GCC-Bring-back-SFINAE-for-blink-NativeValueTraits.patch \
-  file://0009-Add-more-template-instanciations-in-css-parsing-util.patch \
-  file://0010-IWYU-usage-of-std-optional-requires-include-in-trans.patch \
-  file://0011-Do-not-use-std-format-in-ReadAnythingAppModel.patch \
+  file://0001-Fix-linking-Rust-libraries-with-GNU-linkers.patch \
+  file://0002-IWYU-returning-an-std-unique_ptr-requires-WebMediaPl.patch \
+  file://0007-GCC-Bring-back-SFINAE-for-blink-NativeValueTraits.patch \
   file://0001-Reapply-IWYU-fix-for-std-string-usage-in-instrumenta.patch;patchdir=third_party/ruy/src \
-  file://0001-Revert-Cleanup-replace-DirtyObjectType-check-with-co.patch;patchdir=third_party/angle \
+"
+
+# Upstream patches
+SRC_URI += " \
+  file://0003-IWYU-missing-include-for-returning-an-std-unique_ptr.patch \
+  file://0004-IWYU-missing-include-for-usage-of-std-optional-in-do.patch \
+  file://0005-GCC-PhysicalFragment-constructor-cannot-be-constexpr.patch \
+  file://0006-IWYU-missing-include-for-usage-of-std-optional-in-la.patch \
 "
 
 # ARM build should not use Clang MTE flags

@@ -1,0 +1,33 @@
+From a8b6af63d8719a94d1e9f98a91c3fd33f6735bba Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Fri, 31 May 2024 15:39:42 +0000
+Subject: IWYU: missing include for usage of std::optional in layout_unit.h
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Bug: 41455655
+Change-Id: I499262e43c65a19a13213a4bfd71d46cc2954bb2
+Reviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/5588039
+Commit-Queue: José Dapena Paz <jdapena@igalia.com>
+Reviewed-by: Jeremy Roman <jbroman@chromium.org>
+Cr-Commit-Position: refs/heads/main@{#1308659}
+---
+ third_party/blink/renderer/platform/geometry/layout_unit.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/third_party/blink/renderer/platform/geometry/layout_unit.h b/third_party/blink/renderer/platform/geometry/layout_unit.h
+index 1b9638fe2e80c..ab69ba2dfe7e4 100644
+--- a/third_party/blink/renderer/platform/geometry/layout_unit.h
++++ b/third_party/blink/renderer/platform/geometry/layout_unit.h
+@@ -34,6 +34,7 @@
+ #include <climits>
+ #include <iosfwd>
+ #include <limits>
++#include <optional>
+ 
+ #include "base/check_op.h"
+ #include "base/compiler_specific.h"
+-- 
+2.43.0
+

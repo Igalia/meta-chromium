@@ -1,22 +1,30 @@
-From cc01054a856053e7d1a21353028ac17a7f8ddb25 Mon Sep 17 00:00:00 2001
+From 22ec2253cb9dac3cc80012ec733ea4e2a6d58c4a Mon Sep 17 00:00:00 2001
 From: Jose Dapena Paz <jdapena@igalia.com>
-Date: Mon, 20 May 2024 19:46:06 +0200
+Date: Fri, 31 May 2024 15:37:42 +0000
 Subject: GCC: PhysicalFragment constructor cannot be constexpr
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
 The members of PhysicalFragment default constructors are not
 constexpr.
 
 Bug: 40565911
 Change-Id: I478752b4d25757814e00c2014a61be6619c71517
+Reviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/5553384
+Reviewed-by: Ian Kilpatrick <ikilpatrick@chromium.org>
+Commit-Queue: José Dapena Paz <jdapena@igalia.com>
+Reviewed-by: Aleks Totic <atotic@chromium.org>
+Cr-Commit-Position: refs/heads/main@{#1308657}
 ---
  third_party/blink/renderer/core/layout/physical_fragment.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/third_party/blink/renderer/core/layout/physical_fragment.h b/third_party/blink/renderer/core/layout/physical_fragment.h
-index 071f1a03bdb7c..6003c26a123b9 100644
+index 55ce7543dbe61..a1d1a7813532d 100644
 --- a/third_party/blink/renderer/core/layout/physical_fragment.h
 +++ b/third_party/blink/renderer/core/layout/physical_fragment.h
-@@ -564,7 +564,7 @@ class CORE_EXPORT PhysicalFragment : public GarbageCollected<PhysicalFragment> {
+@@ -566,7 +566,7 @@ class CORE_EXPORT PhysicalFragment : public GarbageCollected<PhysicalFragment> {
        using pointer = value_type*;
        using reference = value_type&;
  
@@ -26,5 +34,5 @@ index 071f1a03bdb7c..6003c26a123b9 100644
        ConstIterator(const PhysicalFragmentLink* current, wtf_size_t size)
            : current_(current), end_(current + size) {
 -- 
-2.40.1
+2.43.0
 

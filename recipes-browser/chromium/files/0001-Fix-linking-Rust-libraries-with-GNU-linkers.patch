@@ -1,9 +1,9 @@
-From bc55ad2ae9aedba927bfaca766de69df2a245117 Mon Sep 17 00:00:00 2001
+From 676e45179c18c2c27c5dfd05fee86a8b54b96183 Mon Sep 17 00:00:00 2001
 From: Jose Dapena Paz <jdapena@igalia.com>
 Date: Thu, 16 May 2024 13:44:10 +0200
 Subject: Fix linking Rust libraries with GNU linkers
 
-GNU linkers work as smart linkers, and unresolved symbols are
+GNU linkers work as single-pass linkers, and unresolved symbols are
 progressively resolved with later components being linked. That means
 users of a library should be linked before the library.
 
@@ -13,22 +13,25 @@ this, put all Rust libraries in a linking group.
 Bug: 40945821
 Change-Id: Ie064ec05264673ac9756953a764da5588923ed4b
 ---
- build/toolchain/gcc_toolchain.gni | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ build/toolchain/gcc_toolchain.gni | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/build/toolchain/gcc_toolchain.gni b/build/toolchain/gcc_toolchain.gni
-index 4537278479b8c..170983d07d901 100644
+index b737774cac4a9..fd3ef37b42c4b 100644
 --- a/build/toolchain/gcc_toolchain.gni
 +++ b/build/toolchain/gcc_toolchain.gni
-@@ -606,7 +606,7 @@ template("single_gcc_toolchain") {
+@@ -611,7 +611,10 @@ template("single_gcc_toolchain") {
          start_group_flag = "-Wl,--start-group"
          end_group_flag = "-Wl,--end-group "
        }
 -      link_command = "$ld {{ldflags}}${extra_ldflags} -o \"$unstripped_outfile\" $start_group_flag @\"$rspfile\" {{solibs}} $end_group_flag {{libs}} {{rlibs}}"
-+      link_command = "$ld {{ldflags}}${extra_ldflags} -o \"$unstripped_outfile\" $start_group_flag @\"$rspfile\" {{rlibs}} $end_group_flag {{solibs}} {{libs}}"
++      # We need to specify link groups, at least, for single pass linkers. I.e.
++      # Rust libraries are alphanumerically shorted instead of ordered by
++      # dependencies so they fail to link if not properly ordered or grouped.
++      link_command = "$ld {{ldflags}}${extra_ldflags} -o \"$unstripped_outfile\" $start_group_flag @\"$rspfile\" $end_group_flag {{solibs}} {{libs}} $start_group_flag {{rlibs}} $end_group_flag"
  
        # Generate a map file to be used for binary size analysis.
        # Map file adds ~10% to the link time on a z620.
 -- 
-2.40.1
+2.43.0
 

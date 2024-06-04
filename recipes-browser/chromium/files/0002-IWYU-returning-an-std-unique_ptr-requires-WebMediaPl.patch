@@ -1,0 +1,27 @@
+From ae4f49de2fe9db07856015860b7e7c334fc03189 Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Mon, 3 Jun 2024 16:30:20 +0200
+Subject: IWYU: returning an std::unique_ptr requires WebMediaPlayer type
+ definition
+
+Bug: 41455655
+Change-Id: I3b398f56783a4d273f54059b19fb7794c27b42db
+---
+ third_party/blink/public/web/web_local_frame_client.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/third_party/blink/public/web/web_local_frame_client.h b/third_party/blink/public/web/web_local_frame_client.h
+index a31299ea7d0e9..8690a7915a826 100644
+--- a/third_party/blink/public/web/web_local_frame_client.h
++++ b/third_party/blink/public/web/web_local_frame_client.h
+@@ -74,6 +74,7 @@
+ #include "third_party/blink/public/platform/web_content_settings_client.h"
+ #include "third_party/blink/public/platform/web_effective_connection_type.h"
+ #include "third_party/blink/public/platform/web_file_system_type.h"
++#include "third_party/blink/public/platform/web_media_player.h"
+ #include "third_party/blink/public/platform/web_prescient_networking.h"
+ #include "third_party/blink/public/platform/web_set_sink_id_callbacks.h"
+ #include "third_party/blink/public/platform/web_source_location.h"
+-- 
+2.43.0
+
