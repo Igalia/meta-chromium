@@ -1,0 +1,27 @@
+From ef09433b8987393d5ab7c1cf101ab34b9b43407e Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Mon, 10 Jun 2024 11:30:17 +0200
+Subject: IWYU: missing include for usage of std::exchange in lock_impl.h
+
+Bug: 41455655
+Change-Id: If324eb8eece3dc710e6bcc032cc0587f45dd876b
+---
+ base/synchronization/lock_impl.h | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/base/synchronization/lock_impl.h b/base/synchronization/lock_impl.h
+index 1ef514931da50..5f905e9ccbc6c 100644
+--- a/base/synchronization/lock_impl.h
++++ b/base/synchronization/lock_impl.h
+@@ -5,6 +5,8 @@
+ #ifndef BASE_SYNCHRONIZATION_LOCK_IMPL_H_
+ #define BASE_SYNCHRONIZATION_LOCK_IMPL_H_
+ 
++#include <utility>
++
+ #include "base/base_export.h"
+ #include "base/check.h"
+ #include "base/dcheck_is_on.h"
+-- 
+2.43.0
+

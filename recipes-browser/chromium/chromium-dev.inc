@@ -1,11 +1,11 @@
 require chromium-upstream-tarball.inc
 
-PV = "127.0.6510.4"
+PV = "127.0.6523.4"
 # This should be obtained running tools/rust/update_rust.py --print-package-version
 # in the tarball release
 RUST_PACKAGE_VERSION = "32dd3795bce8b347fda786529cf5e42a813e0b7d-2-llvmorg-19-init-10646-g084e2b53"
 
-SRC_URI[main.sha256sum] = "3295dcd1b20c25d1b9d674cbc40854b5a3592f52c4094473cefb73e613484922"
+SRC_URI[main.sha256sum] = "f632a32a5815d8f275fe39178f1d21242310d62a76aa5f3edf38c19342f3dd99"
 SRC_URI[rust-toolchain.sha256sum] = "e7e236fe6e61b7a41ba6b1e4bc64e91119359cdddce268597c6328b9fea8d76d"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
@@ -29,7 +29,6 @@ LIC_FILES_CHKSUM = "\
   file://${S}/base/third_party/nspr/LICENSE;md5=0806173dfb7e6d060074595e968fd02e \
   file://${S}/base/third_party/superfasthash/LICENSE;md5=c66981f8ad23c9f279a5b9e07385128c \
   file://${S}/base/third_party/symbolize/LICENSE;md5=17ae3b22fe8fa438966625593e2eea85 \
-  file://${S}/base/third_party/valgrind/LICENSE;md5=b95c9cb2560f157c60ea60ac1aa69469 \
   file://${S}/base/third_party/xdg_user_dirs/LICENSE;md5=d998f250c491c329a8254dd1ca62c647 \
   file://${S}/chrome/installer/mac/third_party/bsdiff/LICENSE;md5=0dbe7a50f028269750631fcbded3846a \
   file://${S}/chrome/installer/mac/third_party/xz/LICENSE;md5=3afc9a82601f26d2f6c3bae01aad57fa \
@@ -153,18 +152,18 @@ LIC_FILES_CHKSUM = "\
 
 # Upstreamable patches
 SRC_URI += " \
-  file://0001-Fix-linking-Rust-libraries-with-GNU-linkers.patch \
-  file://0002-IWYU-returning-an-std-unique_ptr-requires-WebMediaPl.patch \
-  file://0007-GCC-Bring-back-SFINAE-for-blink-NativeValueTraits.patch \
+  file://0001-IWYU-missing-include-for-usage-of-std-exchange-in-lo.patch \
+  file://0002-IWYU-missing-include-for-usage-of-std-optional-in-en.patch \
+  file://0003-IWYU-returning-an-std-unique_ptr-requires-WebMediaPl.patch \
+  file://0004-IWYU-missing-include-for-usage-of-std-optional-in-pa.patch \
+  file://0005-IWYU-missing-include-for-usage-of-SharedURLLoaderFac.patch \
   file://0001-Reapply-IWYU-fix-for-std-string-usage-in-instrumenta.patch;patchdir=third_party/ruy/src \
 "
 
 # Upstream patches
 SRC_URI += " \
-  file://0003-IWYU-missing-include-for-returning-an-std-unique_ptr.patch \
-  file://0004-IWYU-missing-include-for-usage-of-std-optional-in-do.patch \
-  file://0005-GCC-PhysicalFragment-constructor-cannot-be-constexpr.patch \
-  file://0006-IWYU-missing-include-for-usage-of-std-optional-in-la.patch \
+  file://0006-Backport-uint32_t-support-for-QUICHE_PROTOCOL_FLAG.patch \
+  file://0007-gpu-Update-casts-for-Dawn-s-getProc-injection-before.patch \
 "
 
 # ARM build should not use Clang MTE flags
