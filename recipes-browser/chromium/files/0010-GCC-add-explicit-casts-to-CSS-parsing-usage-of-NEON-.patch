@@ -1,0 +1,141 @@
+From 908b7412d25bc8ce75cfa71a225dc3978ce09bc6 Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Wed, 3 Jul 2024 10:42:40 +0200
+Subject: GCC: add explicit casts to CSS parsing usage of NEON intrinsics
+
+GCC is stricter checking the types of the NEON intrinsics, so
+explicit vreinterpret casts are required.
+
+Bug: 40565911
+Change-Id: Icde41a4723940e1f078a3ec90001beafb11bc993
+---
+ .../core/css/parser/css_parser_fast_paths.cc  |  9 +++--
+ .../renderer/core/css/parser/css_tokenizer.cc |  3 +-
+ .../find_length_of_declaration_list-inl.h     | 40 +++++++++++++------
+ 3 files changed, 35 insertions(+), 17 deletions(-)
+
+diff --git a/third_party/blink/renderer/core/css/parser/css_parser_fast_paths.cc b/third_party/blink/renderer/core/css/parser/css_parser_fast_paths.cc
+index 6c981bb51d70b..e93fc00c96724 100644
+--- a/third_party/blink/renderer/core/css/parser/css_parser_fast_paths.cc
++++ b/third_party/blink/renderer/core/css/parser/css_parser_fast_paths.cc
+@@ -330,9 +330,12 @@ static unsigned FindLengthOfValidDouble(const LChar* string, const LChar* end) {
+ 
+     // https://community.arm.com/arm-community-blogs/b/infrastructure-solutions-blog/posts/porting-x86-vector-bitmask-optimizations-to-arm-neon
+     uint64_t is_decimal_bits =
+-        vget_lane_u64(vreinterpret_u64_u8(vshrn_n_u16(is_decimal_mask, 4)), 0);
+-    uint64_t is_mark_bits =
+-        vget_lane_u64(vreinterpret_u64_u8(vshrn_n_u16(is_mark_mask, 4)), 0);
++        vget_lane_u64(vreinterpret_u64_u8(vshrn_n_u16(
++                          vreinterpretq_u16_s8(is_decimal_mask), 4)),
++                      0);
++    uint64_t is_mark_bits = vget_lane_u64(
++        vreinterpret_u64_u8(vshrn_n_u16(vreinterpretq_u16_s8(is_mark_mask), 4)),
++        0);
+ 
+     // Only count the first decimal mark.
+     is_mark_bits &= -is_mark_bits;
+diff --git a/third_party/blink/renderer/core/css/parser/css_tokenizer.cc b/third_party/blink/renderer/core/css/parser/css_tokenizer.cc
+index d0ef717cc22b6..c3f9f4ece30ed 100644
+--- a/third_party/blink/renderer/core/css/parser/css_tokenizer.cc
++++ b/third_party/blink/renderer/core/css/parser/css_tokenizer.cc
+@@ -785,7 +785,8 @@ StringView CSSTokenizer::ConsumeName() {
+       // or all-one for each byte, so we can use the code from
+       // https://community.arm.com/arm-community-blogs/b/infrastructure-solutions-blog/posts/porting-x86-vector-bitmask-optimizations-to-arm-neon
+       non_name_mask = non_name_mask && (b >= 0);
+-      uint8x8_t narrowed_mask = vshrn_n_u16(non_name_mask, 4);
++      uint8x8_t narrowed_mask =
++          vshrn_n_u16(vreinterpretq_u16_s8(non_name_mask), 4);
+       uint64_t bits = vget_lane_u64(vreinterpret_u64_u8(narrowed_mask), 0);
+       if (bits == 0) {
+         size += 16;
+diff --git a/third_party/blink/renderer/core/css/parser/find_length_of_declaration_list-inl.h b/third_party/blink/renderer/core/css/parser/find_length_of_declaration_list-inl.h
+index 447fc94c43651..98de5fedd2cf7 100644
+--- a/third_party/blink/renderer/core/css/parser/find_length_of_declaration_list-inl.h
++++ b/third_party/blink/renderer/core/css/parser/find_length_of_declaration_list-inl.h
+@@ -260,7 +260,9 @@ static inline uint8x16_t LoadAndCollapseHighBytes(const UChar* ptr) {
+   uint8x16_t x2;
+   memcpy(&x1, ptr, sizeof(x1));
+   memcpy(&x2, ptr + 8, sizeof(x2));
+-  return vcombine_u64(vqmovn_u16(x1), vqmovn_u16(x2));
++  return vreinterpretq_u8_u64(
++      vcombine_u64(vreinterpret_u64_u8(vqmovn_u16(vreinterpretq_u16_u8(x1))),
++                   vreinterpret_u64_u8(vqmovn_u16(vreinterpretq_u16_u8(x2)))));
+ }
+ static inline uint8x16_t LoadAndCollapseHighBytes(const LChar* ptr) {
+   uint8x16_t ret;
+@@ -304,13 +306,19 @@ ALWAYS_INLINE static size_t FindLengthOfDeclarationList(const CharType* begin,
+     // of the top half. (The alternative would be to use TBL
+     // instructions to simulate the shifts, but they can be slow
+     // on mobile CPUs.)
+-    quoted ^= vshlq_n_u64(vreinterpretq_u64_u8(quoted), 8);
+-    quoted ^= vshlq_n_u64(vreinterpretq_u64_u8(quoted), 16);
+-    quoted ^= vshlq_n_u64(vreinterpretq_u64_u8(quoted), 32);
+     quoted ^=
+-        vcombine_u64(vdup_n_u64(0), vdup_lane_u8(vget_low_u64(quoted), 7));
++        vreinterpretq_u8_u64(vshlq_n_u64(vreinterpretq_u64_u8(quoted), 8));
++    quoted ^=
++        vreinterpretq_u8_u64(vshlq_n_u64(vreinterpretq_u64_u8(quoted), 16));
++    quoted ^=
++        vreinterpretq_u8_u64(vshlq_n_u64(vreinterpretq_u64_u8(quoted), 32));
++    quoted ^= vreinterpretq_u8_u64(vcombine_u64(
++        vdup_n_u64(0),
++        vreinterpret_u64_u8(vdup_lane_u8(
++            vreinterpret_u8_u64(vget_low_u64(vreinterpretq_u64_u8(quoted))),
++            7))));
+     quoted ^= prev_quoted;
+-    const uint8x16_t mixed_quote = quoted == ('\'' ^ '"');
++    const uint8x16_t mixed_quote = quoted == static_cast<char>('\'' ^ '"');
+ 
+     x &= ~(quoted > vdupq_n_u8(0));
+ 
+@@ -324,8 +332,11 @@ ALWAYS_INLINE static size_t FindLengthOfDeclarationList(const CharType* begin,
+         vreinterpretq_u8_u64(vshlq_n_u64(vreinterpretq_u64_u8(parens), 16));
+     parens +=
+         vreinterpretq_u8_u64(vshlq_n_u64(vreinterpretq_u64_u8(parens), 32));
+-    parens += vreinterpretq_u8_u64(
+-        vcombine_u64(vdup_n_u64(0), vdup_lane_u8(vget_low_u64(parens), 7)));
++    parens += vreinterpretq_u8_u64(vcombine_u64(
++        vdup_n_u64(0),
++        vreinterpret_u64_u8(vdup_lane_u8(
++            vreinterpret_u8_u64(vget_low_u64(vreinterpretq_u64_u8(parens))),
++            7))));
+     parens += prev_parens;
+ 
+     // The VSHRN trick below doesn't guarantee the use of the top bit
+@@ -335,7 +346,8 @@ ALWAYS_INLINE static size_t FindLengthOfDeclarationList(const CharType* begin,
+     // so we do a signed shift to just replicate the top bit into the entire
+     // byte. (Supposedly, this also has one cycle better throughput on
+     // some CPUs.)
+-    const uint8x16_t parens_overflow = vshrq_n_s8(parens, 7);
++    const uint8x16_t parens_overflow =
++        vreinterpretq_u8_s8(vshrq_n_s8(vreinterpretq_s8_u8(parens), 7));
+ 
+     const uint8x16_t opening_block = (x | vdupq_n_u8(0x20)) == '{';
+     const uint8x16_t eq_rightbrace = x == '}';
+@@ -343,8 +355,8 @@ ALWAYS_INLINE static size_t FindLengthOfDeclarationList(const CharType* begin,
+                           comment_start | eq_rightbrace | parens_overflow;
+ 
+     // https://community.arm.com/arm-community-blogs/b/infrastructure-solutions-blog/posts/porting-x86-vector-bitmask-optimizations-to-arm-neon
+-    uint64_t must_end_narrowed =
+-        vget_lane_u64(vreinterpret_u64_u8(vshrn_n_u16(must_end, 4)), 0);
++    uint64_t must_end_narrowed = vget_lane_u64(
++        vreinterpret_u64_u8(vshrn_n_u16(vreinterpretq_u16_u8(must_end), 4)), 0);
+     if (must_end_narrowed != 0) {
+       unsigned idx = __builtin_ctzll(must_end_narrowed) >> 2;
+       ptr += idx;
+@@ -365,8 +377,10 @@ ALWAYS_INLINE static size_t FindLengthOfDeclarationList(const CharType* begin,
+ 
+     // As mentioned above, broadcast instead of shifting.
+     ptr += 16;
+-    prev_quoted = vdupq_lane_u8(vget_high_u64(quoted), 7);
+-    prev_parens = vdupq_lane_u8(vget_high_u64(parens), 7);
++    prev_quoted = vdupq_lane_u8(
++        vreinterpret_u8_u64(vget_high_u64(vreinterpretq_u64_u8(quoted))), 7);
++    prev_parens = vdupq_lane_u8(
++        vreinterpret_u8_u64(vget_high_u64(vreinterpretq_u64_u8(parens))), 7);
+   }
+   return 0;
+ }
+-- 
+2.43.0
+

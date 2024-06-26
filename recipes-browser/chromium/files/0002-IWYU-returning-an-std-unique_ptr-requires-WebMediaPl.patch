@@ -1,8 +1,14 @@
-From 22269a104e12c26474a02b94f7fe011e2e2b249e Mon Sep 17 00:00:00 2001
+From afc82d91805c93de2fb93dbc47128c818e2fd947 Mon Sep 17 00:00:00 2001
 From: Jose Dapena Paz <jdapena@igalia.com>
 Date: Mon, 3 Jun 2024 16:30:20 +0200
 Subject: IWYU: returning an std::unique_ptr requires WebMediaPlayer type
  definition
+
+Fixed missing include of WebMediaPlayer in WebLocalFrameClient.
+
+But doing just that breaks root_scroller_test.cc in MacOS, that will
+bring that dependency and include a macro fixed1 from Carbon. So
+change the name of the variable to avoid the clash.
 
 Bug: 41455655
 Change-Id: I3b398f56783a4d273f54059b19fb7794c27b42db
@@ -24,7 +30,7 @@ index 03bf5ef3fc666..1eafc236ca40b 100644
  #include "third_party/blink/public/platform/web_set_sink_id_callbacks.h"
  #include "third_party/blink/public/platform/web_source_location.h"
 diff --git a/third_party/blink/renderer/core/page/scrolling/root_scroller_test.cc b/third_party/blink/renderer/core/page/scrolling/root_scroller_test.cc
-index 9bec265be2c3e..d5b2ee036739c 100644
+index 7f10326106490..668c991b84693 100644
 --- a/third_party/blink/renderer/core/page/scrolling/root_scroller_test.cc
 +++ b/third_party/blink/renderer/core/page/scrolling/root_scroller_test.cc
 @@ -2373,22 +2373,22 @@ TEST_F(ImplicitRootScrollerSimTest, BottomFixedAffectedByTopControls) {

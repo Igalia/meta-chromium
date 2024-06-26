@@ -1,12 +1,12 @@
 require chromium-upstream-tarball.inc
 
-PV = "127.0.6523.4"
+PV = "128.0.6555.2"
 # This should be obtained running tools/rust/update_rust.py --print-package-version
 # in the tarball release
-RUST_PACKAGE_VERSION = "32dd3795bce8b347fda786529cf5e42a813e0b7d-2-llvmorg-19-init-10646-g084e2b53"
+RUST_PACKAGE_VERSION = "3cf924b934322fd7b514600a7dc84fc517515346-1-llvmorg-19-init-14561-gecea8371"
 
-SRC_URI[main.sha256sum] = "f632a32a5815d8f275fe39178f1d21242310d62a76aa5f3edf38c19342f3dd99"
-SRC_URI[rust-toolchain.sha256sum] = "e7e236fe6e61b7a41ba6b1e4bc64e91119359cdddce268597c6328b9fea8d76d"
+SRC_URI[main.sha256sum] = "a6dcb1db51fd2a69d41f140945ebce591f14ec84730c7b82f90353c93f68f282"
+SRC_URI[rust-toolchain.sha256sum] = "da968f038c46dc79d9b5bfb913db36f6dd6b5984f28d380d1e39e4027cacbdc2"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -152,18 +152,17 @@ LIC_FILES_CHKSUM = "\
 
 # Upstreamable patches
 SRC_URI += " \
-  file://0001-IWYU-missing-include-for-usage-of-std-exchange-in-lo.patch \
-  file://0002-IWYU-missing-include-for-usage-of-std-optional-in-en.patch \
-  file://0003-IWYU-returning-an-std-unique_ptr-requires-WebMediaPl.patch \
-  file://0004-IWYU-missing-include-for-usage-of-std-optional-in-pa.patch \
-  file://0005-IWYU-missing-include-for-usage-of-SharedURLLoaderFac.patch \
+  file://0001-IWYU-missing-include-for-usage-of-std-to_array-in-co.patch \
+  file://0002-IWYU-returning-an-std-unique_ptr-requires-WebMediaPl.patch \
+  file://0003-IWYU-missing-include-for-usage-of-std-optional-in-pr.patch \
+  file://0004-IWYU-missing-include-for-usage-of-std-optional-in-au.patch \
+  file://0005-GCC-do-not-define-template-instance-in-class-namespa.patch \
+  file://0006-IWYU-missing-include-for-usage-of-uint64_t-in-compar.patch \
+  file://0007-IWYU-missing-include-for-usage-of-int8_t-in-ink_stro.patch \
+  file://0008-IWYU-missing-include-for-usage-of-std-optional-in-em.patch \
+  file://0009-IWYU-missing-include-for-usage-of-std-variant-in-sig.patch \
+  file://0010-GCC-add-explicit-casts-to-CSS-parsing-usage-of-NEON-.patch \
   file://0001-Reapply-IWYU-fix-for-std-string-usage-in-instrumenta.patch;patchdir=third_party/ruy/src \
-"
-
-# Upstream patches
-SRC_URI += " \
-  file://0006-Backport-uint32_t-support-for-QUICHE_PROTOCOL_FLAG.patch \
-  file://0007-gpu-Update-casts-for-Dawn-s-getProc-injection-before.patch \
 "
 
 # ARM build should not use Clang MTE flags

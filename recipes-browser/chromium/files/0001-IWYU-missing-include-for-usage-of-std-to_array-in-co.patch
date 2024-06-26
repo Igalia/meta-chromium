@@ -1,0 +1,26 @@
+From cdfeb0070c17a037c2e7d7aa851634d32e23c075 Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Tue, 25 Jun 2024 14:41:35 +0200
+Subject: IWYU: missing include for usage of std::to_array in country_data.cc
+
+Bug: 41455655
+Change-Id: I3f313ee09ec0fed6ce5d54e866644ca586f78f21
+---
+ components/autofill/core/browser/geo/country_data.cc | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/components/autofill/core/browser/geo/country_data.cc b/components/autofill/core/browser/geo/country_data.cc
+index 36dc5f40c05df..aa14c53c77772 100644
+--- a/components/autofill/core/browser/geo/country_data.cc
++++ b/components/autofill/core/browser/geo/country_data.cc
+@@ -4,6 +4,7 @@
+ 
+ #include "components/autofill/core/browser/geo/country_data.h"
+ 
++#include <array>
+ #include <utility>
+ 
+ #include "base/memory/singleton.h"
+-- 
+2.43.0
+

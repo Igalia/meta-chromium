@@ -1,0 +1,26 @@
+From 232294c8259bbdaf084741ee9d4d0bdab550bcf3 Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Wed, 26 Jun 2024 10:41:26 +0200
+Subject: IWYU: missing include for usage of uint64_t in compare_utils.h
+
+Bug: 41455655
+Change-Id: I4901e84190a1439b1d4a3078ca448b656de0de67
+---
+ components/commerce/core/compare/compare_utils.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/components/commerce/core/compare/compare_utils.h b/components/commerce/core/compare/compare_utils.h
+index 27891fd17d6ab..e4ea3f499f734 100644
+--- a/components/commerce/core/compare/compare_utils.h
++++ b/components/commerce/core/compare/compare_utils.h
+@@ -5,6 +5,7 @@
+ #ifndef COMPONENTS_COMMERCE_CORE_COMPARE_COMPARE_UTILS_H_
+ #define COMPONENTS_COMMERCE_CORE_COMPARE_COMPARE_UTILS_H_
+ 
++#include <cstdint>
+ #include <string>
+ #include <vector>
+ 
+-- 
+2.43.0
+

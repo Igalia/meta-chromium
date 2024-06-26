@@ -1,0 +1,26 @@
+From 3a2733e81b4a0e4bda3884e0aa6e1943bb1feb22 Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Wed, 26 Jun 2024 10:49:25 +0200
+Subject: IWYU: missing include for usage of std::optional in embedder.h
+
+Bug: 41455655
+Change-Id: I4f165c3c68566e70d5494478ade03dd1f8f6fe11
+---
+ components/history_embeddings/embedder.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/components/history_embeddings/embedder.h b/components/history_embeddings/embedder.h
+index e0c4c53de7fec..47005dcddb3d2 100644
+--- a/components/history_embeddings/embedder.h
++++ b/components/history_embeddings/embedder.h
+@@ -5,6 +5,7 @@
+ #ifndef COMPONENTS_HISTORY_EMBEDDINGS_EMBEDDER_H_
+ #define COMPONENTS_HISTORY_EMBEDDINGS_EMBEDDER_H_
+ 
++#include <optional>
+ #include <string>
+ #include <vector>
+ 
+-- 
+2.43.0
+

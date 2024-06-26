@@ -1,0 +1,27 @@
+From a812bda80cc166e94c300a81517e4ad401005b86 Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Wed, 26 Jun 2024 10:47:37 +0200
+Subject: IWYU: missing include for usage of int8_t in ink_stroke_input.h
+
+Bug: 41455655
+Change-Id: I4fdbfe327216254ef88bfcef6460f9e4183ebb90
+---
+ pdf/ink/ink_stroke_input.h | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/pdf/ink/ink_stroke_input.h b/pdf/ink/ink_stroke_input.h
+index 7d940c06bd0c8..f3555d5968402 100644
+--- a/pdf/ink/ink_stroke_input.h
++++ b/pdf/ink/ink_stroke_input.h
+@@ -5,6 +5,8 @@
+ #ifndef PDF_INK_INK_STROKE_INPUT_H_
+ #define PDF_INK_INK_STROKE_INPUT_H_
+ 
++#include <cstdint>
++
+ namespace chrome_pdf {
+ 
+ struct InkStrokeInput {
+-- 
+2.43.0
+
