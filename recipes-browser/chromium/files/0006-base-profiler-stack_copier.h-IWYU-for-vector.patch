@@ -1,0 +1,35 @@
+From 9980e981776f64e7f1c1bf12838b3e7270ceafcf Mon Sep 17 00:00:00 2001
+From: Nico Weber <thakis@chromium.org>
+Date: Mon, 22 Jul 2024 16:01:53 +0000
+Subject: base/profiler/stack_copier.h: IWYU for <vector>
+
+No behavior change. Needed for an upcoming libc++ roll.
+
+Bug: 354621206
+Change-Id: Ie2abe1a14abe81694c8158227e0b95151cc2d368
+Reviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/5730413
+Auto-Submit: Nico Weber <thakis@chromium.org>
+Commit-Queue: danakj <danakj@chromium.org>
+Reviewed-by: danakj <danakj@chromium.org>
+Commit-Queue: Nico Weber <thakis@chromium.org>
+Cr-Commit-Position: refs/heads/main@{#1331090}
+---
+ base/profiler/stack_copier.h | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/base/profiler/stack_copier.h b/base/profiler/stack_copier.h
+index 13f3ff8cafd15..1c026ffde1756 100644
+--- a/base/profiler/stack_copier.h
++++ b/base/profiler/stack_copier.h
+@@ -7,6 +7,8 @@
+ 
+ #include <stdint.h>
+ 
++#include <vector>
++
+ #include "base/base_export.h"
+ #include "base/profiler/register_context.h"
+ #include "base/time/time.h"
+-- 
+2.43.0
+

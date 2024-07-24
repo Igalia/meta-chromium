@@ -1,12 +1,12 @@
 require chromium-upstream-tarball.inc
 
-PV = "128.0.6555.2"
+PV = "128.0.6601.2"
 # This should be obtained running tools/rust/update_rust.py --print-package-version
 # in the tarball release
-RUST_PACKAGE_VERSION = "3cf924b934322fd7b514600a7dc84fc517515346-1-llvmorg-19-init-14561-gecea8371"
+RUST_PACKAGE_VERSION = "3cf924b934322fd7b514600a7dc84fc517515346-3-llvmorg-19-init-14561-gecea8371"
 
-SRC_URI[main.sha256sum] = "a6dcb1db51fd2a69d41f140945ebce591f14ec84730c7b82f90353c93f68f282"
-SRC_URI[rust-toolchain.sha256sum] = "da968f038c46dc79d9b5bfb913db36f6dd6b5984f28d380d1e39e4027cacbdc2"
+SRC_URI[main.sha256sum] = "638ac138cee6a169f7054bf28162823486d22f082880a3ec239f245d145bb08c"
+SRC_URI[rust-toolchain.sha256sum] = "d3532ada45f1e47d5d7a197190842beebc20acbd1a9ec8fe442b67b9fd9c0074"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -152,21 +152,27 @@ LIC_FILES_CHKSUM = "\
 
 # Upstreamable patches
 SRC_URI += " \
-  file://0001-IWYU-missing-include-for-usage-of-std-to_array-in-co.patch \
-  file://0002-IWYU-returning-an-std-unique_ptr-requires-WebMediaPl.patch \
-  file://0003-IWYU-missing-include-for-usage-of-std-optional-in-pr.patch \
-  file://0004-IWYU-missing-include-for-usage-of-std-optional-in-au.patch \
-  file://0005-GCC-do-not-define-template-instance-in-class-namespa.patch \
-  file://0006-IWYU-missing-include-for-usage-of-uint64_t-in-compar.patch \
-  file://0007-IWYU-missing-include-for-usage-of-int8_t-in-ink_stro.patch \
-  file://0008-IWYU-missing-include-for-usage-of-std-optional-in-em.patch \
-  file://0009-IWYU-missing-include-for-usage-of-std-variant-in-sig.patch \
-  file://0010-GCC-add-explicit-casts-to-CSS-parsing-usage-of-NEON-.patch \
+  file://0001-IWYU-missing-include-for-usage-of-memset-in-rust-rem.patch \
+  file://0002-IWYU-missing-include-for-usage-of-memmove-in-span.h.patch \
+  file://0003-IWYU-usage-of-SSLCertRequestInfo-requires-include-at.patch \
+  file://0004-GCC-provide-default-values-for-syncer-ModelTypeInfo.patch \
+  file://0005-IWYU-missing-include-for-usage-of-std-optional-in-en.patch \
   file://0001-Reapply-IWYU-fix-for-std-string-usage-in-instrumenta.patch;patchdir=third_party/ruy/src \
 "
 
+# Upstream patches
+SRC_URI += " \
+  file://0006-base-profiler-stack_copier.h-IWYU-for-vector.patch \
+"
+
+# Follow target_os in cros_toolchain
+SRC_URI += " file://0001-Fix-Linux-cross-build-using-cros_toolchain.patch "
+
 # ARM build should not use Clang MTE flags
 SRC_URI += " file://0001-GCC-do-not-pass-Clang-specific-MTE-flags.patch "
+
+# Missing ARM extension in ZLib for ARM64
+SRC_URI += " file://0001-zlib-Add-missing-extension-for-PMULL-in-ARM64-GCC.patch "
 
 # Disable SVE extensions in libvpx, as they require GCC 14+
 SRC_URI += " file://0001-Drop-SVE-intrinsics-in-libvpx-for-GCC.patch "

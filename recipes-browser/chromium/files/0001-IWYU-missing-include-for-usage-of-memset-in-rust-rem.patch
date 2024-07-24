@@ -1,0 +1,26 @@
+From cc217ad0513d546fc67aecfc063331332c58aa4c Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Tue, 23 Jul 2024 11:09:02 +0200
+Subject: IWYU: missing include for usage of memset in rust remap_alloc.cc
+
+Bug: 41455655
+Change-Id: I99b630d4801ba0695ea2aea924a1ae903670ba5c
+---
+ build/rust/std/remap_alloc.cc | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/build/rust/std/remap_alloc.cc b/build/rust/std/remap_alloc.cc
+index 0a87be2479ed2..eca8fa14863c5 100644
+--- a/build/rust/std/remap_alloc.cc
++++ b/build/rust/std/remap_alloc.cc
+@@ -3,6 +3,7 @@
+ // found in the LICENSE file.
+ 
+ #include <cstddef>
++#include <cstring>
+ 
+ #include "build/build_config.h"
+ #include "build/rust/std/alias.h"
+-- 
+2.43.0
+

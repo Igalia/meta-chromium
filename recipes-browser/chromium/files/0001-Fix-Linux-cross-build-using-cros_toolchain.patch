@@ -1,0 +1,29 @@
+From ef2a09704d338db812b72af41d69914b1f93e565 Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Wed, 24 Jul 2024 19:54:49 +0200
+Subject: Fix Linux cross build using cros_toolchain
+
+Make cros_toolchain("target") follow target_os for current_os instead
+of hardcoding "chromeos".
+
+Change-Id: I695e6ca51403f03e65dbb1085dfcaefab73b05ac
+---
+ build/toolchain/cros/BUILD.gn | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/build/toolchain/cros/BUILD.gn b/build/toolchain/cros/BUILD.gn
+index 4aebec0c4a207..7a5c0238f62fc 100644
+--- a/build/toolchain/cros/BUILD.gn
++++ b/build/toolchain/cros/BUILD.gn
+@@ -58,7 +58,7 @@ template("cros_toolchain") {
+ cros_toolchain("target") {
+   toolchain_args = {
+     current_cpu = target_cpu
+-    current_os = "chromeos"
++    current_os = target_os
+     sysroot = target_sysroot
+   }
+ 
+-- 
+2.43.0
+

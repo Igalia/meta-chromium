@@ -1,0 +1,30 @@
+From 0703000798428bd4de5343d59da336ae9e406ed9 Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Thu, 4 Jul 2024 10:47:11 +0200
+Subject: IWYU: usage of SSLCertRequestInfo requires include at
+ stream_attempt.cc
+
+Converting from nullptr to std::unique_ptr<> requires declaration of
+the type.
+
+Bug: 41455655
+Change-Id: Ida65d996cc3c579d5e7890b440bd642c97cea8b0
+---
+ net/socket/stream_attempt.cc | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/net/socket/stream_attempt.cc b/net/socket/stream_attempt.cc
+index 564255a3427c5..c42d58d459f4b 100644
+--- a/net/socket/stream_attempt.cc
++++ b/net/socket/stream_attempt.cc
+@@ -13,6 +13,7 @@
+ #include "net/log/net_log.h"
+ #include "net/log/net_log_with_source.h"
+ #include "net/socket/stream_socket.h"
++#include "net/ssl/ssl_cert_request_info.h"
+ 
+ namespace net {
+ 
+-- 
+2.43.0
+

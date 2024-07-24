@@ -202,6 +202,7 @@ GN_ARGS += '\
   is_clang=false \
   use_custom_libcxx=false \
   target_cpu="${@gn_arch_name('${TUNE_ARCH}')}" \
+  target_os="linux" \
   cros_target_ar="${AR}" \
   cros_target_cc="${CC}" \
   cros_target_cxx="${CXX}" \
