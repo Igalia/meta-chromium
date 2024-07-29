@@ -1,14 +1,21 @@
-From 0703000798428bd4de5343d59da336ae9e406ed9 Mon Sep 17 00:00:00 2001
+From 5bb6fd3d53cadb8b92832f476ebf72f930ac14fc Mon Sep 17 00:00:00 2001
 From: Jose Dapena Paz <jdapena@igalia.com>
-Date: Thu, 4 Jul 2024 10:47:11 +0200
+Date: Tue, 23 Jul 2024 19:35:49 +0000
 Subject: IWYU: usage of SSLCertRequestInfo requires include at
  stream_attempt.cc
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
 Converting from nullptr to std::unique_ptr<> requires declaration of
 the type.
 
 Bug: 41455655
 Change-Id: Ida65d996cc3c579d5e7890b440bd642c97cea8b0
+Reviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/5675543
+Reviewed-by: Eric Orth <ericorth@chromium.org>
+Commit-Queue: José Dapena Paz <jdapena@igalia.com>
+Cr-Commit-Position: refs/heads/main@{#1331937}
 ---
  net/socket/stream_attempt.cc | 1 +
  1 file changed, 1 insertion(+)

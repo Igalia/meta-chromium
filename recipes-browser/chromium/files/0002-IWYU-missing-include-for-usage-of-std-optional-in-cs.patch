@@ -1,0 +1,28 @@
+From 56286e6819cb91e9791b4d9bccc3b1bcc2f69208 Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Mon, 29 Jul 2024 19:23:55 +0200
+Subject: IWYU: missing include for usage of std::optional in
+ css_color_channel_map.h
+
+Bug: 41455655
+Change-Id: I7f31662038d24342802d896df1488ca5d50d2445
+---
+ third_party/blink/renderer/core/css/css_color_channel_map.h | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/third_party/blink/renderer/core/css/css_color_channel_map.h b/third_party/blink/renderer/core/css/css_color_channel_map.h
+index 28d5d240cf740..3c1a76bd57f75 100644
+--- a/third_party/blink/renderer/core/css/css_color_channel_map.h
++++ b/third_party/blink/renderer/core/css/css_color_channel_map.h
+@@ -5,6 +5,8 @@
+ #ifndef THIRD_PARTY_BLINK_RENDERER_CORE_CSS_CSS_COLOR_CHANNEL_MAP_H_
+ #define THIRD_PARTY_BLINK_RENDERER_CORE_CSS_CSS_COLOR_CHANNEL_MAP_H_
+ 
++#include <optional>
++
+ #include "third_party/blink/renderer/core/css_value_keywords.h"
+ #include "third_party/blink/renderer/platform/wtf/hash_map.h"
+ 
+-- 
+2.43.0
+

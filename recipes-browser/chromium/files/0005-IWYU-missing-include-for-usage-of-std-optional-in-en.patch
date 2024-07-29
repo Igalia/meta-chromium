@@ -1,11 +1,18 @@
-From 69473c82f63ab13ced22675a4a90ce87da950abd Mon Sep 17 00:00:00 2001
+From f39e6cc7fb67b29f3063ceb4e0ec5e7fcf91c2f6 Mon Sep 17 00:00:00 2001
 From: Jose Dapena Paz <jdapena@igalia.com>
-Date: Wed, 24 Jul 2024 08:51:45 +0200
+Date: Wed, 24 Jul 2024 16:10:59 +0000
 Subject: IWYU: missing include for usage of std::optional in enterprise
  connectors.
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
 Bug: 41455655
 Change-Id: I2c95a3a1e1f9db9d23d0b2a4562a83363d79e86f
+Reviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/5735477
+Commit-Queue: José Dapena Paz <jdapena@igalia.com>
+Reviewed-by: Nancy Xiao <nancylanxiao@google.com>
+Cr-Commit-Position: refs/heads/main@{#1332370}
 ---
  components/enterprise/connectors/common.h | 1 +
  1 file changed, 1 insertion(+)

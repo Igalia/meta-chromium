@@ -1,4 +1,4 @@
-From 318c48bb801f7f843344245fd3e4f7bba571f52a Mon Sep 17 00:00:00 2001
+From 873f337384c66d7d0e607108f87829dd8f6d3be5 Mon Sep 17 00:00:00 2001
 From: Jose Dapena Paz <jdapena@igalia.com>
 Date: Tue, 23 Jul 2024 11:18:24 +0200
 Subject: IWYU: missing include for usage of memmove in span.h
@@ -10,17 +10,17 @@ Change-Id: I23262c60f3dcb1c294a854ce60f80f19ebd3f069
  1 file changed, 1 insertion(+)
 
 diff --git a/base/containers/span.h b/base/containers/span.h
-index 356851e11510a..c2021dc61e0ba 100644
+index 6fc6e8a641650..170fcd8cbc22f 100644
 --- a/base/containers/span.h
 +++ b/base/containers/span.h
-@@ -11,6 +11,7 @@
+@@ -7,6 +7,7 @@
+ 
+ #include <stddef.h>
+ #include <stdint.h>
++#include <string.h>
+ 
  #include <algorithm>
  #include <array>
- #include <concepts>
-+#include <cstring>
- #include <iosfwd>
- #include <iterator>
- #include <limits>
 -- 
 2.43.0
 

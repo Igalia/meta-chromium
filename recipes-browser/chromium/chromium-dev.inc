@@ -1,11 +1,11 @@
 require chromium-upstream-tarball.inc
 
-PV = "128.0.6601.2"
+PV = "128.0.6613.7"
 # This should be obtained running tools/rust/update_rust.py --print-package-version
 # in the tarball release
 RUST_PACKAGE_VERSION = "3cf924b934322fd7b514600a7dc84fc517515346-3-llvmorg-19-init-14561-gecea8371"
 
-SRC_URI[main.sha256sum] = "638ac138cee6a169f7054bf28162823486d22f082880a3ec239f245d145bb08c"
+SRC_URI[main.sha256sum] = "3b4fcf43aad018eb2862642e2c35fb7db4d857b4707b81d8d5d98e8f54f07c2f"
 SRC_URI[rust-toolchain.sha256sum] = "d3532ada45f1e47d5d7a197190842beebc20acbd1a9ec8fe442b67b9fd9c0074"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
@@ -152,17 +152,19 @@ LIC_FILES_CHKSUM = "\
 
 # Upstreamable patches
 SRC_URI += " \
-  file://0001-IWYU-missing-include-for-usage-of-memset-in-rust-rem.patch \
-  file://0002-IWYU-missing-include-for-usage-of-memmove-in-span.h.patch \
-  file://0003-IWYU-usage-of-SSLCertRequestInfo-requires-include-at.patch \
-  file://0004-GCC-provide-default-values-for-syncer-ModelTypeInfo.patch \
-  file://0005-IWYU-missing-include-for-usage-of-std-optional-in-en.patch \
+  file://0001-IWYU-missing-include-for-usage-of-memmove-in-span.h.patch \
+  file://0002-IWYU-missing-include-for-usage-of-std-optional-in-cs.patch \
   file://0001-Reapply-IWYU-fix-for-std-string-usage-in-instrumenta.patch;patchdir=third_party/ruy/src \
 "
 
 # Upstream patches
 SRC_URI += " \
-  file://0006-base-profiler-stack_copier.h-IWYU-for-vector.patch \
+  file://0001-IWYU-missing-include-for-usage-of-memset-in-rust-rem.patch \
+  file://0002-IWYU-missing-include-for-usage-of-std-variant-in-pro.patch \
+  file://0003-IWYU-usage-of-SSLCertRequestInfo-requires-include-at.patch \
+  file://0004-GCC-provide-default-values-for-syncer-ModelTypeInfo.patch \
+  file://0005-IWYU-missing-include-for-usage-of-std-optional-in-en.patch \
+  file://0006-IWYU-missing-include-for-usage-of-std-variant-in-chr.patch \
 "
 
 # Follow target_os in cros_toolchain
