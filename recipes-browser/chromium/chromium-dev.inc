@@ -1,11 +1,11 @@
 require chromium-upstream-tarball.inc
 
-PV = "128.0.6613.7"
+PV = "129.0.6628.3"
 # This should be obtained running tools/rust/update_rust.py --print-package-version
 # in the tarball release
 RUST_PACKAGE_VERSION = "3cf924b934322fd7b514600a7dc84fc517515346-3-llvmorg-19-init-14561-gecea8371"
 
-SRC_URI[main.sha256sum] = "3b4fcf43aad018eb2862642e2c35fb7db4d857b4707b81d8d5d98e8f54f07c2f"
+SRC_URI[main.sha256sum] = "7d6abc0f9c36e292ada61b45ed375855ba84588de0a9098cd8c22986f93a9650"
 SRC_URI[rust-toolchain.sha256sum] = "d3532ada45f1e47d5d7a197190842beebc20acbd1a9ec8fe442b67b9fd9c0074"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
@@ -133,7 +133,6 @@ LIC_FILES_CHKSUM = "\
   file://${S}/third_party/smhasher/LICENSE;md5=0d948322ab524e2b74f55eb8ef57c74a \
   file://${S}/third_party/snappy/src/COPYING;md5=f62f3080324a97b3159a7a7e61812d0c \
   file://${S}/third_party/sqlite/LICENSE;md5=7256769d4613c0af5a72be32ba20ccf7 \
-  file://${S}/third_party/sudden_motion_sensor/LICENSE;md5=6f89397ba4dda73a940f27f76e9ad9d4 \
   file://${S}/third_party/swiftshader/LICENSE.txt;md5=d273d63619c9aeaf15cdaf76422c4f87 \
   file://${S}/third_party/usb_ids/LICENSE;md5=8f694e3758e3e57a5223bfa2bf29d452 \
   file://${S}/third_party/v4l-utils/COPYING.libv4l;md5=d749e86a105281d7a44c2328acebc4b0 \
@@ -152,19 +151,15 @@ LIC_FILES_CHKSUM = "\
 
 # Upstreamable patches
 SRC_URI += " \
-  file://0001-IWYU-missing-include-for-usage-of-memmove-in-span.h.patch \
-  file://0002-IWYU-missing-include-for-usage-of-std-optional-in-cs.patch \
+  file://0001-IWYU-missing-include-for-usage-of-std-optional-in-cs.patch \
+  file://0002-libstdc-avoid-requiring-type-declaration-for-unique_.patch \
+  file://0003-IWYU-missing-include-for-usage-of-std-optional-in-to.patch \
   file://0001-Reapply-IWYU-fix-for-std-string-usage-in-instrumenta.patch;patchdir=third_party/ruy/src \
 "
 
 # Upstream patches
 SRC_URI += " \
-  file://0001-IWYU-missing-include-for-usage-of-memset-in-rust-rem.patch \
-  file://0002-IWYU-missing-include-for-usage-of-std-variant-in-pro.patch \
-  file://0003-IWYU-usage-of-SSLCertRequestInfo-requires-include-at.patch \
-  file://0004-GCC-provide-default-values-for-syncer-ModelTypeInfo.patch \
-  file://0005-IWYU-missing-include-for-usage-of-std-optional-in-en.patch \
-  file://0006-IWYU-missing-include-for-usage-of-std-variant-in-chr.patch \
+  file://0004-IWYU-missing-include-for-usage-of-std-optional-in-au.patch \
 "
 
 # Follow target_os in cros_toolchain
@@ -172,9 +167,6 @@ SRC_URI += " file://0001-Fix-Linux-cross-build-using-cros_toolchain.patch "
 
 # ARM build should not use Clang MTE flags
 SRC_URI += " file://0001-GCC-do-not-pass-Clang-specific-MTE-flags.patch "
-
-# Missing ARM extension in ZLib for ARM64
-SRC_URI += " file://0001-zlib-Add-missing-extension-for-PMULL-in-ARM64-GCC.patch "
 
 # Disable SVE extensions in libvpx, as they require GCC 14+
 SRC_URI += " file://0001-Drop-SVE-intrinsics-in-libvpx-for-GCC.patch "
