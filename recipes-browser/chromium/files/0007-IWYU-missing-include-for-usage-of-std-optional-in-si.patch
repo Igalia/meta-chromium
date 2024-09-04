@@ -1,0 +1,28 @@
+From 57168fb5b780d5556ba0c8a15ec80c9eca79e8e1 Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Tue, 3 Sep 2024 13:54:50 +0200
+Subject: IWYU: missing include for usage of std::optional in
+ site_engagement_observer.h
+
+Bug: 41455655
+Change-Id: Iaf50fe655ab881cb1920bdf6b4947d32f1f55dcc
+---
+ components/site_engagement/content/site_engagement_observer.h | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/components/site_engagement/content/site_engagement_observer.h b/components/site_engagement/content/site_engagement_observer.h
+index 65a366c09195a..b2f2b7b9ad514 100644
+--- a/components/site_engagement/content/site_engagement_observer.h
++++ b/components/site_engagement/content/site_engagement_observer.h
+@@ -5,6 +5,8 @@
+ #ifndef COMPONENTS_SITE_ENGAGEMENT_CONTENT_SITE_ENGAGEMENT_OBSERVER_H_
+ #define COMPONENTS_SITE_ENGAGEMENT_CONTENT_SITE_ENGAGEMENT_OBSERVER_H_
+ 
++#include <optional>
++
+ #include "base/gtest_prod_util.h"
+ #include "base/memory/raw_ptr.h"
+ #include "components/webapps/common/web_app_id.h"
+-- 
+2.43.0
+

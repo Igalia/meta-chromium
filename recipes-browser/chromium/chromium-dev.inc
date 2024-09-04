@@ -1,12 +1,12 @@
 require chromium-upstream-tarball.inc
 
-PV = "129.0.6628.3"
+PV = "130.0.6683.2"
 # This should be obtained running tools/rust/update_rust.py --print-package-version
 # in the tarball release
-RUST_PACKAGE_VERSION = "3cf924b934322fd7b514600a7dc84fc517515346-3-llvmorg-19-init-14561-gecea8371"
+RUST_PACKAGE_VERSION = "595316b4006932405a63862d8fe65f71a6356293-5-llvmorg-20-init-1009-g7088a5ed"
 
-SRC_URI[main.sha256sum] = "7d6abc0f9c36e292ada61b45ed375855ba84588de0a9098cd8c22986f93a9650"
-SRC_URI[rust-toolchain.sha256sum] = "d3532ada45f1e47d5d7a197190842beebc20acbd1a9ec8fe442b67b9fd9c0074"
+SRC_URI[main.sha256sum] = "944ec026814ffec6bede26b8f1615e436bdcd25c636e287e28c6adc55cf82979"
+SRC_URI[rust-toolchain.sha256sum] = "b1630f6ac2b100205e1d4076b6f11e50f30fd6f0868d39c6ffa379fd46ccf0c3"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -63,7 +63,7 @@ LIC_FILES_CHKSUM = "\
   file://${S}/third_party/breakpad/LICENSE;md5=828152b41153892a725f0e7f56faff73 \
   file://${S}/third_party/brotli/LICENSE;md5=941ee9cd1609382f946352712a319b4b \
   file://${S}/third_party/bspatch/LICENSE;md5=3e837ede9697ce4c789c3ca32aabe003 \
-  file://${S}/third_party/ced/LICENSE;md5=f63cd7e51ca7b7aac748e20dc60e083f \
+  file://${S}/third_party/ced/LICENSE;md5=175792518e4ac015ab6696d16c4f607e \
   file://${S}/third_party/chromevox/LICENSE;md5=45739090b454125d851ac7bb1bbd23a2 \
   file://${S}/third_party/cld_3/LICENSE;md5=d8b32ba83f8b11e4badd979f4319e706 \
   file://${S}/third_party/closure_compiler/LICENSE;md5=3b83ef96387f14655fc854ddc3c6bd57 \
@@ -106,7 +106,6 @@ LIC_FILES_CHKSUM = "\
   file://${S}/third_party/libsecret/LICENSE;md5=23c2a5e0106b99d75238986559bb5fc6 \
   file://${S}/third_party/libsrtp/LICENSE;md5=2909fcf6f09ffff8430463d91c08c4e1\
   file://${S}/third_party/libsync/LICENSE;md5=3b83ef96387f14655fc854ddc3c6bd57 \
-  file://${S}/third_party/libudev/LICENSE;md5=4fbd65380cdd255951079008b364516c \
   file://${S}/third_party/libusb/src/COPYING;md5=fbc093901857fcd118f065f900982c24 \
   file://${S}/third_party/libvpx/source/libvpx/LICENSE;md5=d5b04755015be901744a78cc30d390d4 \
   file://${S}/third_party/libwebm/source/LICENSE.TXT;md5=6e8dee932c26f2dab503abf70c96d8bb \
@@ -151,15 +150,15 @@ LIC_FILES_CHKSUM = "\
 
 # Upstreamable patches
 SRC_URI += " \
-  file://0001-IWYU-missing-include-for-usage-of-std-optional-in-cs.patch \
-  file://0002-libstdc-avoid-requiring-type-declaration-for-unique_.patch \
-  file://0003-IWYU-missing-include-for-usage-of-std-optional-in-to.patch \
+  file://0001-GCC-fix-passing-temporary-array-values-in-time_forma.patch \
+  file://0002-libstdc-fix-StringSplit-unit-test-comparisons.patch \
+  file://0003-IWYU-missing-include-for-usage-of-webauthn-InternalA.patch \
+  file://0004-IWYU-missing-include-for-usage-of-std-variant-in-ai_.patch \
+  file://0005-IWYU-missing-include-for-usage-of-std-variant-in-ech.patch \
+  file://0006-IWYU-missing-include-for-usage-of-std-variant-in-con.patch \
+  file://0007-IWYU-missing-include-for-usage-of-std-optional-in-si.patch \
+  file://0008-Fix-string-hasher-Neon-intrinsic-types.patch \
   file://0001-Reapply-IWYU-fix-for-std-string-usage-in-instrumenta.patch;patchdir=third_party/ruy/src \
-"
-
-# Upstream patches
-SRC_URI += " \
-  file://0004-IWYU-missing-include-for-usage-of-std-optional-in-au.patch \
 "
 
 # Follow target_os in cros_toolchain
@@ -187,6 +186,9 @@ GN_ARGS:append = " use_typeface_fontations=false "
 
 # Rust fails to generate the bindings for crabbyavif with libstdc++
 GN_ARGS:append = " enable_av1_decoder=false "
+
+# GCC ARM64 SME support is only available from GCC 14+
+GN_ARGS:append = " libyuv_use_sme=false "
 
 do_install:append() {
         install -m 0755 chrome_crashpad_handler ${D}${libdir}/chromium/chrome_crashpad_handler

@@ -1,0 +1,27 @@
+From ca68bf93e96fcdf41ef14af75d4e81b372241fa3 Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Mon, 2 Sep 2024 22:11:53 +0200
+Subject: IWYU: missing include for usage of std::variant in ai_text_session.h
+
+Bug: 41455655
+Change-Id: I8da4c461ef9921e24293ac4083ff496f020fc29f
+---
+ third_party/blink/renderer/modules/ai/ai_text_session.h | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/third_party/blink/renderer/modules/ai/ai_text_session.h b/third_party/blink/renderer/modules/ai/ai_text_session.h
+index 7194b8784c31a..41c3634151f42 100644
+--- a/third_party/blink/renderer/modules/ai/ai_text_session.h
++++ b/third_party/blink/renderer/modules/ai/ai_text_session.h
+@@ -5,6 +5,8 @@
+ #ifndef THIRD_PARTY_BLINK_RENDERER_MODULES_AI_AI_TEXT_SESSION_H_
+ #define THIRD_PARTY_BLINK_RENDERER_MODULES_AI_AI_TEXT_SESSION_H_
+ 
++#include <variant>
++
+ #include "base/memory/scoped_refptr.h"
+ #include "base/task/sequenced_task_runner.h"
+ #include "base/types/pass_key.h"
+-- 
+2.43.0
+

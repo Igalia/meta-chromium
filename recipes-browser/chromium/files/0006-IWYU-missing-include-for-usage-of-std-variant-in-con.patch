@@ -1,0 +1,27 @@
+From 7090b4ed6f2270fbec1529bc504320d4c4b014ea Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Tue, 3 Sep 2024 09:59:15 +0200
+Subject: IWYU: missing include for usage of std::variant in
+ content_browser_client.h
+
+Bug: 41455655
+Change-Id: Iab2e743d4225f6d0154942e90563ea9adce036f4
+---
+ content/public/browser/content_browser_client.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/content/public/browser/content_browser_client.h b/content/public/browser/content_browser_client.h
+index 19891b56fca5d..fe01a2856d68f 100644
+--- a/content/public/browser/content_browser_client.h
++++ b/content/public/browser/content_browser_client.h
+@@ -13,6 +13,7 @@
+ #include <set>
+ #include <string>
+ #include <string_view>
++#include <variant>
+ #include <vector>
+ 
+ #include "base/containers/flat_map.h"
+-- 
+2.43.0
+
