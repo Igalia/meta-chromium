@@ -1,0 +1,27 @@
+From b3edb083d3ab2ce59c90ace3d0bff14a03277272 Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Tue, 17 Sep 2024 08:13:59 +0200
+Subject: IWYU: missing include for usage of std::variant in
+ registration_token_helper.h
+
+Bug: 41455655
+Change-Id: Iff5b44d991e8f384f22e99c6faef836d8dc12442
+---
+ .../signin/bound_session_credentials/registration_token_helper.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/chrome/browser/signin/bound_session_credentials/registration_token_helper.h b/chrome/browser/signin/bound_session_credentials/registration_token_helper.h
+index f177f106a7b13..c1092f263fca2 100644
+--- a/chrome/browser/signin/bound_session_credentials/registration_token_helper.h
++++ b/chrome/browser/signin/bound_session_credentials/registration_token_helper.h
+@@ -8,6 +8,7 @@
+ #include <optional>
+ #include <string>
+ #include <string_view>
++#include <variant>
+ 
+ #include "base/containers/span.h"
+ #include "base/functional/callback.h"
+-- 
+2.43.0
+

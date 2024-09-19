@@ -1,12 +1,12 @@
 require chromium-upstream-tarball.inc
 
-PV = "130.0.6683.2"
+PV = "130.0.6710.0"
 # This should be obtained running tools/rust/update_rust.py --print-package-version
 # in the tarball release
-RUST_PACKAGE_VERSION = "595316b4006932405a63862d8fe65f71a6356293-5-llvmorg-20-init-1009-g7088a5ed"
+RUST_PACKAGE_VERSION = "009e73825af0e59ad4fc603562e038b3dbd6593a-2-llvmorg-20-init-3847-g69c43468"
 
-SRC_URI[main.sha256sum] = "944ec026814ffec6bede26b8f1615e436bdcd25c636e287e28c6adc55cf82979"
-SRC_URI[rust-toolchain.sha256sum] = "b1630f6ac2b100205e1d4076b6f11e50f30fd6f0868d39c6ffa379fd46ccf0c3"
+SRC_URI[main.sha256sum] = "4fac99195ea126b160801c066172287246cb6e8f602f1f2d693b6a1504d627e0"
+SRC_URI[rust-toolchain.sha256sum] = "043bc520520424fad9fdfc87102e3af7c8f1ca4da3f7885e18f54fd29fc783e4"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
 # depends upon several other projects whose copyright files are listed in
@@ -31,10 +31,8 @@ LIC_FILES_CHKSUM = "\
   file://${S}/base/third_party/symbolize/LICENSE;md5=17ae3b22fe8fa438966625593e2eea85 \
   file://${S}/base/third_party/xdg_user_dirs/LICENSE;md5=d998f250c491c329a8254dd1ca62c647 \
   file://${S}/chrome/installer/mac/third_party/bsdiff/LICENSE;md5=0dbe7a50f028269750631fcbded3846a \
-  file://${S}/chrome/installer/mac/third_party/xz/LICENSE;md5=3afc9a82601f26d2f6c3bae01aad57fa \
+  file://${S}/chrome/installer/mac/third_party/xz/LICENSE;md5=84982e6bf3ed99ef2647e48626ffa984 \
   file://${S}/chrome/third_party/mozilla_security_manager/LICENSE;md5=0c259b853bbf067b361100ce560adce7 \
-  file://${S}/courgette/third_party/bsdiff/LICENCE;md5=7c2ad392281bc3d9b04a31102ee7abdd \
-  file://${S}/courgette/third_party/divsufsort/LICENSE;md5=e261f081e52882dad3ff0225497ce451 \
   file://${S}/ios/third_party/blink/LICENSE;md5=9fdb47308c4e0a2b6d07c5af39e5da1a \
   file://${S}/ios/third_party/material_components_ios/LICENSE;md5=3b83ef96387f14655fc854ddc3c6bd57 \
   file://${S}/ios/third_party/material_font_disk_loader_ios/LICENSE;md5=3b83ef96387f14655fc854ddc3c6bd57 \
@@ -150,14 +148,16 @@ LIC_FILES_CHKSUM = "\
 
 # Upstreamable patches
 SRC_URI += " \
-  file://0001-GCC-fix-passing-temporary-array-values-in-time_forma.patch \
-  file://0002-libstdc-fix-StringSplit-unit-test-comparisons.patch \
-  file://0003-IWYU-missing-include-for-usage-of-webauthn-InternalA.patch \
-  file://0004-IWYU-missing-include-for-usage-of-std-variant-in-ai_.patch \
-  file://0005-IWYU-missing-include-for-usage-of-std-variant-in-ech.patch \
-  file://0006-IWYU-missing-include-for-usage-of-std-variant-in-con.patch \
-  file://0007-IWYU-missing-include-for-usage-of-std-optional-in-si.patch \
-  file://0008-Fix-string-hasher-Neon-intrinsic-types.patch \
+  file://0001-GCC-do-not-add-redundant-template-spec-in-constructo.patch \
+  file://0002-IWYU-missing-include-for-usage-of-std-optional-in-ip.patch \
+  file://0003-IwYU-missing-include-for-usage-of-std-optional-in-ac.patch \
+  file://0004-IWYU-missing-include-for-usage-of-std-stack-in-skia_.patch \
+  file://0005-IWYU-missing-include-for-usage-of-std-variant-in-exc.patch \
+  file://0006-IWYU-missing-include-for-usage-of-std-once_flag-in-c.patch \
+  file://0007-IWYU-missing-include-for-usage-of-std-variant-in-vtt.patch \
+  file://0008-libstdc-std-array-container-type-needs-empty-constru.patch \
+  file://0009-IWYU-missing-include-for-usage-of-webauthn-InternalA.patch \
+  file://0010-IWYU-missing-include-for-usage-of-std-variant-in-reg.patch \
   file://0001-Reapply-IWYU-fix-for-std-string-usage-in-instrumenta.patch;patchdir=third_party/ruy/src \
 "
 

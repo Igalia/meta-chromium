@@ -1,0 +1,28 @@
+From eec0955c53ba6a7a50fb4b7c190bac715d83c12b Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Mon, 16 Sep 2024 11:35:48 +0200
+Subject: IWYU: missing include for usage of std::optional in
+ ip_protection_data_types.h
+
+Bug: 41455655
+Change-Id: Id26fc5bc3a4bde79c2f9a3134d18eeaab68603ad
+---
+ components/ip_protection/common/ip_protection_data_types.h | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/components/ip_protection/common/ip_protection_data_types.h b/components/ip_protection/common/ip_protection_data_types.h
+index 35648110915fc..978dfac4ac74a 100644
+--- a/components/ip_protection/common/ip_protection_data_types.h
++++ b/components/ip_protection/common/ip_protection_data_types.h
+@@ -5,6 +5,8 @@
+ #ifndef COMPONENTS_IP_PROTECTION_COMMON_IP_PROTECTION_DATA_TYPES_H_
+ #define COMPONENTS_IP_PROTECTION_COMMON_IP_PROTECTION_DATA_TYPES_H_
+ 
++#include <optional>
++
+ #include "base/time/time.h"
+ 
+ namespace ip_protection {
+-- 
+2.43.0
+
