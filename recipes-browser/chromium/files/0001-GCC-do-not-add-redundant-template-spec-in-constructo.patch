@@ -1,4 +1,4 @@
-From 61cb71ae81974bb51234fdae10120f48a3b6669d Mon Sep 17 00:00:00 2001
+From 2dae04ae93663283f67e50fd3ba84a9fd24a65e0 Mon Sep 17 00:00:00 2001
 From: Jose Dapena Paz <jdapena@igalia.com>
 Date: Thu, 5 Sep 2024 10:34:07 +0200
 Subject: GCC: do not add redundant template spec in constructor
@@ -9,22 +9,23 @@ template declaration. This was done in SlotSpanMetadata.
 Bug: 40565911
 Change-Id: I47db61c6217f770e348e031a084cf2689abc6da8
 ---
- .../partition_allocator/src/partition_alloc/partition_page.h    | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../partition_allocator/src/partition_alloc/partition_page.h   | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/base/allocator/partition_allocator/src/partition_alloc/partition_page.h b/base/allocator/partition_allocator/src/partition_alloc/partition_page.h
-index 34a0dc857341d..c11e9dcee4742 100644
+index dfd948b163d2a..aa0c59bafdf69 100644
 --- a/base/allocator/partition_allocator/src/partition_alloc/partition_page.h
 +++ b/base/allocator/partition_allocator/src/partition_alloc/partition_page.h
-@@ -170,7 +170,7 @@ struct SlotSpanMetadata<MetadataKind::kReadOnly>
+@@ -170,8 +170,7 @@ struct SlotSpanMetadata<MetadataKind::kReadOnly>
        : SlotSpanMetadataBase<MetadataKind::kReadOnly>(b) {}
  #endif  // PA_CONFIG(ENABLE_SHADOW_METADATA)
    // pa_tcache_inspect needs the copy constructor.
 -  SlotSpanMetadata<MetadataKind::kReadOnly>(
-+  SlotSpanMetadata(
-       const SlotSpanMetadata<MetadataKind::kReadOnly>&) = default;
+-      const SlotSpanMetadata<MetadataKind::kReadOnly>&) = default;
++  SlotSpanMetadata(const SlotSpanMetadata<MetadataKind::kReadOnly>&) = default;
  
    // Public API
+   // Pointer/address manipulation functions. These must be static as the input
 -- 
 2.43.0
 

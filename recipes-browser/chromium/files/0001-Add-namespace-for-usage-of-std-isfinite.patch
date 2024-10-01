@@ -1,0 +1,56 @@
+From 291dbec90c67c908a6d130dae022b1d7d8bbd408 Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Mon, 30 Sep 2024 21:21:03 +0200
+Subject: Add namespace for usage of std::isfinite
+
+libstdc++ implementation of cmath do not provide isfinite without
+namespace.
+
+Bug: chromium:41455655
+---
+ ink/brush/brush_paint.cc | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/ink/brush/brush_paint.cc b/ink/brush/brush_paint.cc
+index 8c71a5c..b9078a5 100644
+--- a/ink/brush/brush_paint.cc
++++ b/ink/brush/brush_paint.cc
+@@ -84,7 +84,7 @@ absl::Status ValidateBrushPaintTextureKeyframe(
+         keyframe.progress));
+   }
+   if (keyframe.size.has_value()) {
+-    if (!isfinite(keyframe.size->x) || !isfinite(keyframe.size->y) ||
++    if (!std::isfinite(keyframe.size->x) || !std::isfinite(keyframe.size->y) ||
+         keyframe.size->x <= 0 || keyframe.size->y <= 0) {
+       return absl::InvalidArgumentError(
+           absl::StrFormat("`BrushPaint::TextureKeyframe::size` components must "
+@@ -102,7 +102,7 @@ absl::Status ValidateBrushPaintTextureKeyframe(
+     }
+   }
+   if (keyframe.rotation.has_value()) {
+-    if (!isfinite(keyframe.rotation->ValueInRadians())) {
++    if (!std::isfinite(keyframe.rotation->ValueInRadians())) {
+       return absl::InvalidArgumentError(
+           absl::StrFormat("`BrushPaint::TextureKeyframe::rotation` must be "
+                           "finite. Got %v",
+@@ -159,7 +159,7 @@ absl::Status ValidateBrushPaintTextureLayer(
+                         "interval [0, 1]. Got %v",
+                         layer.offset));
+   }
+-  if (!isfinite(layer.rotation.ValueInRadians())) {
++  if (!std::isfinite(layer.rotation.ValueInRadians())) {
+     return absl::InvalidArgumentError(
+         absl::StrFormat("`BrushPaint::TextureLayer::rotation` must be finite. "
+                         "Got %v",
+@@ -179,7 +179,7 @@ absl::Status ValidateBrushPaintTextureLayer(
+         "interval [0, 1]. Got %v",
+         layer.offset_jitter));
+   }
+-  if (!isfinite(layer.rotation_jitter.ValueInRadians())) {
++  if (!std::isfinite(layer.rotation_jitter.ValueInRadians())) {
+     return absl::InvalidArgumentError(absl::StrFormat(
+         "`BrushPaint::TextureLayer::rotation_jitter` must be finite. "
+         "Got %v",
+-- 
+2.43.0
+

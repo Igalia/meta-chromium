@@ -1,11 +1,11 @@
 require chromium-upstream-tarball.inc
 
-PV = "130.0.6710.0"
+PV = "131.0.6738.0"
 # This should be obtained running tools/rust/update_rust.py --print-package-version
 # in the tarball release
 RUST_PACKAGE_VERSION = "009e73825af0e59ad4fc603562e038b3dbd6593a-2-llvmorg-20-init-3847-g69c43468"
 
-SRC_URI[main.sha256sum] = "4fac99195ea126b160801c066172287246cb6e8f602f1f2d693b6a1504d627e0"
+SRC_URI[main.sha256sum] = "ee1dc8da263d2697a7123ae842aedfc1929765a00492b95b4467afbf50d009df"
 SRC_URI[rust-toolchain.sha256sum] = "043bc520520424fad9fdfc87102e3af7c8f1ca4da3f7885e18f54fd29fc783e4"
 
 # Chromium itself is licensed under the 3-clause BSD license. However, it
@@ -149,16 +149,15 @@ LIC_FILES_CHKSUM = "\
 # Upstreamable patches
 SRC_URI += " \
   file://0001-GCC-do-not-add-redundant-template-spec-in-constructo.patch \
-  file://0002-IWYU-missing-include-for-usage-of-std-optional-in-ip.patch \
-  file://0003-IwYU-missing-include-for-usage-of-std-optional-in-ac.patch \
-  file://0004-IWYU-missing-include-for-usage-of-std-stack-in-skia_.patch \
-  file://0005-IWYU-missing-include-for-usage-of-std-variant-in-exc.patch \
-  file://0006-IWYU-missing-include-for-usage-of-std-once_flag-in-c.patch \
-  file://0007-IWYU-missing-include-for-usage-of-std-variant-in-vtt.patch \
-  file://0008-libstdc-std-array-container-type-needs-empty-constru.patch \
-  file://0009-IWYU-missing-include-for-usage-of-webauthn-InternalA.patch \
-  file://0010-IWYU-missing-include-for-usage-of-std-variant-in-reg.patch \
+  file://0002-IWYU-missing-include-for-usage-of-std-variant-in-sav.patch \
+  file://0003-IWYU-missing-include-for-usage-of-uint64_t-in-visual.patch \
+  file://0001-Add-namespace-for-usage-of-std-isfinite.patch;patchdir=third_party/ink/src \
   file://0001-Reapply-IWYU-fix-for-std-string-usage-in-instrumenta.patch;patchdir=third_party/ruy/src \
+"
+
+# Upstream patches
+SRC_URI += " \
+  file://0004-PA-Fix-include-for-memcpy-memset.patch \
 "
 
 # Follow target_os in cros_toolchain

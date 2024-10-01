@@ -1,0 +1,27 @@
+From e14208e6f7d9f2d7b786a7e168e8f02e274ac1b4 Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jdapena@igalia.com>
+Date: Mon, 30 Sep 2024 17:40:13 +0200
+Subject: IWYU: missing include for usage of std::variant in
+ saved_tab_groups/types.h
+
+Bug: 41455655
+Change-Id: Ic4fdb5baeda2e4be3c35c976dfa6dfd396a60643
+---
+ components/saved_tab_groups/types.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/components/saved_tab_groups/types.h b/components/saved_tab_groups/types.h
+index 4c67e5007e53c..3488ea771479f 100644
+--- a/components/saved_tab_groups/types.h
++++ b/components/saved_tab_groups/types.h
+@@ -6,6 +6,7 @@
+ #define COMPONENTS_SAVED_TAB_GROUPS_TYPES_H_
+ 
+ #include <optional>
++#include <variant>
+ 
+ #include "base/logging.h"
+ #include "base/token.h"
+-- 
+2.43.0
+

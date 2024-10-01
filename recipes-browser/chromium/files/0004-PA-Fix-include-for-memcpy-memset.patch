@@ -1,0 +1,51 @@
+From 288ae0db90741cd1aef0f6a4d124c8c764f1a3fb Mon Sep 17 00:00:00 2001
+From: Arthur Sonzogni <arthursonzogni@chromium.org>
+Date: Fri, 27 Sep 2024 13:02:33 +0000
+Subject: PA: Fix #include for memcpy/memset.
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+In Skia, we are missing the include for memcpy/memset. It is not clear
+to me how this get "indirectly" included while built in Chrome.
+
+This is the only error I get locally when building Skia with the
+latest version of partition_alloc.
+
+Error:
+```
+[1/38] compile ../../third_party/externals/partition_alloc/src/partition_alloc/partition_address_space.cc
+FAILED: obj/third_party/externals/partition_alloc/src/partition_alloc/liballocator_core.partition_address_space.o
+c++ -MD -MF obj/third_party/externals/partition_alloc/src/partition_alloc/liballocator_core.partition_address_space.o.d -DIS_PARTITION_ALLOC_IMPL -DNDEBUG -I../../third_party/externals/partition_alloc/src -Igen/third_party/externals/partition_alloc/src -Wno-attributes -fstrict-aliasing -fPIC -fvisibility=hidden -g -gdwarf-4 -O3 -fdata-sections -ffunction-sections -fno-stack-protector -std=c++17 -fvisibility-inlines-hidden -fno-exceptions -fno-rtti -c ../../third_party/externals/partition_alloc/src/partition_alloc/partition_address_space.cc -o obj/third_party/externals/partition_alloc/src/partition_alloc/liballocator_core.partition_address_space.o
+../../third_party/externals/partition_alloc/src/partition_alloc/partition_address_space.cc: In static member function ‘static void partition_alloc::internal::PartitionAddressSpace::MapMetadata(uintptr_t, bool)’:
+../../third_party/externals/partition_alloc/src/partition_alloc/partition_address_space.cc:539:5: error: ‘memcpy’ was not declared in this scope
+  539 |     memcpy(reinterpret_cast<void*>(writable_metadata),
+      |     ^~~~~~
+```
+
+Bug: 351867706
+Change-Id: I8f464f0c0bd1bcd3e64cb4f5f4432fc7ac0e00cc
+Reviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/5890967
+Reviewed-by: danakj <danakj@chromium.org>
+Auto-Submit: Arthur Sonzogni <arthursonzogni@chromium.org>
+Commit-Queue: Arthur Sonzogni <arthursonzogni@chromium.org>
+Cr-Commit-Position: refs/heads/main@{#1361085}
+---
+ .../src/partition_alloc/partition_address_space.cc               | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/base/allocator/partition_allocator/src/partition_alloc/partition_address_space.cc b/base/allocator/partition_allocator/src/partition_alloc/partition_address_space.cc
+index 795954de669b4..16553d190d05e 100644
+--- a/base/allocator/partition_allocator/src/partition_alloc/partition_address_space.cc
++++ b/base/allocator/partition_allocator/src/partition_alloc/partition_address_space.cc
+@@ -7,6 +7,7 @@
+ #include <array>
+ #include <cstddef>
+ #include <cstdint>
++#include <cstring>
+ #include <ostream>
+ #include <string>
+ 
+-- 
+2.43.0
+
